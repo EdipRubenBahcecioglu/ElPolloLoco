@@ -8,4 +8,5 @@ function init(){
 
     console.log('My Character is', world.character);
     console.log('My Enemie is', world.enemies);
+    console.log('Background is', world.BackgroundObject);
 }

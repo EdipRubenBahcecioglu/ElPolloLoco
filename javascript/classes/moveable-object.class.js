@@ -1,8 +1,8 @@
 class MoveableObject { // Class = Eine Schablone, die uns verrät welche Felder bzw. Variablen enthalen sein sollen
-    x = 20;
-    y = 70;
+    x;
+    y;
     img;
-    height = 80;
+    height = 120;
     width = 50;
 
     loadImage(path){
