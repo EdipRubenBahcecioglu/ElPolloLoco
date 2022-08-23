@@ -20,13 +20,12 @@ class Chicken extends MoveableObject { // Die Classe Chicken übernimmt alle Sch
     }
 
     animate() {
-        this.moveLeft();
+        setInterval(() =>{ // Mithilfe von setInterval können wir eine Funktion zich mal die Sekunde aufrufen
+            this.moveLeft();
+        }, 1000 / 60); // 1000: 60 = 60 FPS
+
         setInterval(() =>{
-            let i = this.currentImage % this.IMAGES_WALKING.length // % bedeutet -> i = 0, dann 1, dann 2, dann 3, dann 4, dann 5 und dann weil es keine weitern Bilder gibt, starten wir wieder bei 0 d.h. % ist eine verkürzte if Abfrage
-            let path = this.IMAGES_WALKING[i]; // path = erstes Bild aus dem Array aus Zeile 8
-            this.img = this.imageCache[path]; // Das Bild aus der übergeordneten Klasse wird mit dem geladenem Bild aus Zeile 28 ersetzt
-            this.currentImage++; // Anschließend wird das nächste Bild geladen, indem mann die Variable currentImage um 1 erhöht
-        }, 150); // Bilder ändern sich jede 150 Milisekunden
+            this.playAnimation(this.IMAGES_WALKING);
+        }, 200); // Bilder ändern sich jede 200 Milisekunden
     }
 }
-
