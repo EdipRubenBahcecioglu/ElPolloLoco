@@ -23,7 +23,7 @@ class StatusBar extends DrawableObject {
 
     setPercentage(percentage) { // Wir aktuallisieren die Variable percentage aus Zeile 16 die standardgemäß 100 ist
         this.percentage = percentage;
-        console.log(percentage);
+        //console.log(percentage);
         let path = this.IMAGE_HEALTH[this.resolveImageIndex()]; // Unser Pfad der StatusBar wird uns aus der Funktion resolveImageIndex returned 
         this.img = this.imageCache[path];
     };

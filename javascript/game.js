@@ -24,6 +24,9 @@ window.addEventListener("keydown", (event) =>{ // Mithilfe dieser Eventfunktion 
     else if (event.keyCode == '32') {
         keyboard.space = true;
     }
+    else if (event.keyCode == '68') {
+        keyboard.attack = true;
+    }
 })
 
 window.addEventListener("keyup", (event) =>{ // Mithilfe dieser Eventfunktion wird uns ausgeloggt, was für eine Taste der User gedrückt hat //
@@ -41,5 +44,8 @@ window.addEventListener("keyup", (event) =>{ // Mithilfe dieser Eventfunktion wi
     }
     else if (event.keyCode == '32') {
         keyboard.space = false;
+    }
+    else if (event.keyCode == '68') {
+        keyboard.attack = false;
     }
 })

@@ -1,6 +1,7 @@
 class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns verrät welche Felder bzw. Variablen enthalen sein sollen
     speed = 0.15;
     speedY = 0; // Wie schnell fällt unser Objekt nach unten/oben
+    speedX = 0;
     acceleration = 2.5; // Wie schnell wird unser Obkejt beschleunigt z.B. wenn Char 1 sek in der Luft ist fällt er langsamer als wenn er 3 sek in der Luft ist
     energy = 100; // Leben vom Objekt z.B. Char und Chicken
     lastHit = 0; // Zeitpunkt, 
@@ -15,8 +16,11 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     }
 
     isAboveGround(){
+        if(this instanceof ThrowableObject){
+            return true;
+        } else {
         return this.y < 170; // Unsere Bodenhöhe hat 160 px d.h. unser Objekt soll nicht weiter fallen als die Bodenhöhe // 160
-    }
+    }}
 
 moveRight() {
     this.x += this.speed; // Wenn Rechte Pfeiltaste betätigt wurde, soll die X Achse um die Speedvariable erhöht werden
