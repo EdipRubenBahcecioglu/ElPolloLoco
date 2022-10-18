@@ -5,7 +5,9 @@ class World {
     canvas; // = Spielfeld
     keyboard; // Spieltasten
     camera_x  = 0;
-    statusBar = new StatusBar();
+    statusBarHealth = new StatusBar();
+    statusBarCoin = new StatusBarCoin();
+    statusBarBottle = new StatusBarBottle();
     throwableObject = [];
 
     constructor(canvas, keyboard){
@@ -36,7 +38,7 @@ class World {
             this.level.enemies.forEach((enemy) =>{ // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if(this.character.isColliding(enemy)){ //... ob die Elemente mit dem Char collidieren
                     this.character.hit();
-                    this.statusBar.setPercentage(this.character.energy); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
+                    this.statusBarHealth.setPercentage(this.character.energy); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
             })
         }, 200); // Diese Funktion wird jede 0,2 Sekunde ausgefürt
@@ -48,10 +50,13 @@ class World {
         this.addObjectsToMap(this.level.backgroundObject);
         this.addObjectsToMap(this.level.clouds); // Wir geben den Inhalt aus dem Array Zeile 13/14/15... an die Funktion weiter
         this.ctx.translate(-this.camera_x, 0); // Wir setzten die Koordinaten für die nachfolgende Zeile fest, d.h. diese bewegt sich beim Charmoven mit und ist nicht an den bewegendem Maphintergrund fixiert // Kurz gefasst ... fixierte Objekte
-        this.addToMap(this.statusBar);
+        this.addToMap(this.statusBarHealth);
+        this.addToMap(this.statusBarCoin);
+        this.addToMap(this.statusBarBottle);
         this.ctx.translate(this.camera_x, 0); // Die Koordinaten werden wieder freigegeben d.h. die nachfolgenden Objekte und Hintergründe ändern sich wenn der Char sich bewegt 
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.throwableObject); 
         this.ctx.translate(-this.camera_x, 0);
 
