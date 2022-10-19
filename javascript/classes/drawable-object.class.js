@@ -2,8 +2,8 @@ class DrawableObject{
     x;
     y;
     img;
-    height = 120;
-    width = 50;
+    height;
+    width;
     imageCache = {}; // Bilderspeicher // Alle Bilder werden hier rein geladen
     currentImage = 0;
 
@@ -25,16 +25,16 @@ class DrawableObject{
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height); // Wir zeichnen in das Spielfeld im Context 2D das Parameterbild, Parameter x Achse, Parameter Y Achse, Parameter Breite. Parameter Höhe
     }
 
-    /*drawBorder(ctx){
-        if(this instanceof Character || this instanceof Chicken){ // Instanceof bedeutet, dass nur ein Rahmen um Objekte gezeichnet wird, die entweder der Instance Charakter oder Chicken besitzen, andere Objekte wie z.B. Cloud(Wolke) wird kein Rahmen gezeichnet
+    drawBorder(ctx){
+        if(this instanceof Character || this instanceof Chicken || this instanceof Coin || this instanceof Endboss){ // Instanceof bedeutet, dass nur ein Rahmen um Objekte gezeichnet wird, die entweder der Instance Charakter oder Chicken besitzen, andere Objekte wie z.B. Cloud(Wolke) wird kein Rahmen gezeichnet
         ctx.beginPath(); // Ab hier und die nächsten 4 Zeilen, zeichen wir ein Viereck um ein Obkjekt
         ctx.lineWidth = '3'; // Liniendicke
         ctx.strokeStyle = 'blue'; // Linienfarbe
         ctx.rect(this.x, this.y, this.width, this.height); // Linienposition
         ctx.stroke();
         }
-    }*/
-    
+    }
+ 
 }
 
 

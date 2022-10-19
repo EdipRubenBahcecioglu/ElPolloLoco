@@ -17,6 +17,7 @@ class World {
         this.draw();
         this.setWorld();
         this.checkCollisions();
+        this.checkCoinCollisions();
         this.throwBottle();
     }
 
@@ -36,12 +37,27 @@ class World {
     checkCollisions(){
         setInterval(() => {
             this.level.enemies.forEach((enemy) =>{ // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
-                if(this.character.isColliding(enemy)){ //... ob die Elemente mit dem Char collidieren
+                if(this.character.isColliding(enemy)){
+                    console.log('Berührung Cicken findet statt'); //... ob die Elemente mit dem Char collidieren
                     this.character.hit();
                     this.statusBarHealth.setPercentage(this.character.energy); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
             })
         }, 200); // Diese Funktion wird jede 0,2 Sekunde ausgefürt
+    }
+
+    checkCoinCollisions(){
+        setInterval(() => {
+            this.level.coin.forEach((coin, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
+                if(this.character.isColliding(coin)){
+                    console.log('Der Coin ist', coin, 'und der Index ist', index);
+                    console.log('Berührung Coin findet statt');
+                    this.character.collect();
+                    level1.coin.splice(index, 1);
+                    this.statusBarCoin.setCoins(this.character.collectedCoins);
+                }
+            })
+        }, 200);
     }
 
     draw(){
@@ -78,7 +94,7 @@ class World {
         }
 
         mo.draw(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
-        //mo.drawBorder(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
+        mo.drawBorder(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
         
         if(mo.otherDirection){ // Ab Zeile 64 bis 66 wird die Spiegelung wieder zurückgesetzt 
             this.flipImageBack(mo); // Zeile 66

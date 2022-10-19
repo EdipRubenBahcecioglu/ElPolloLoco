@@ -3,6 +3,7 @@ class Chicken extends MoveableObject { // Die Classe Chicken übernimmt alle Sch
     y = 335;
     x = 150 + Math.random() * 2500; // math.random ist immer zwischen 0 und 1 d.h. wir haben hier einen maximalen Zufallswert von 500 // Dadurch ist die x Achse immer zwischen 80 und 700
     height = 80;
+    width = 50;
 
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',

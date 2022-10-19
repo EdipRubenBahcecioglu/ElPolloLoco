@@ -4,7 +4,15 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     speedX = 0;
     acceleration = 2.5; // Wie schnell wird unser Obkejt beschleunigt z.B. wenn Char 1 sek in der Luft ist fällt er langsamer als wenn er 3 sek in der Luft ist
     energy = 100; // Leben vom Objekt z.B. Char und Chicken
-    lastHit = 0; // Zeitpunkt, 
+    lastHit = 0; // Zeitpunkt,
+    collectedCoins = 0;
+
+    offset = {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    };
 
     applyGravity() { // Funktion wenn ein Objekt fällt z.B. beim Sprung
         setInterval(() => {
@@ -43,10 +51,10 @@ jump(){
 
 // isColliding(z.B. Chicken), diese Funktion zeigt uns, ob ein Objekt mit einem anderen Objekt auf der Achse kolidiert 
 isColliding(mo){
-    return this.x + this.width > mo.x &&
-        this.y + this.height > mo.y &&
-        this.x < mo.x &&
-        this.y < mo.y + mo.height
+    return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&  // Kollidierung von Rechts nach Links
+        this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && // Kollidierung von Oben nach Unten
+        this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // Kollidierung von Links nach Rechts
+        this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; // Kollidierung von Unten nach Oben
 }
 
 hit(){
@@ -55,6 +63,12 @@ hit(){
         this.energy = 0;
     } else {
         this.lastHit = new Date().getTime(); // Das ist der Zeitpunk in Milisek seit dem 1.1.1970, wir benutzen diesen Zeitpunk einfach nur um eine Rechengrundlage zu haben
+    }
+}
+
+collect(){
+    if(this.collectedCoins <5){
+    this.collectedCoins += 1;
     }
 }
 
