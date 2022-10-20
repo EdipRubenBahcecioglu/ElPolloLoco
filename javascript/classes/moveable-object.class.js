@@ -6,6 +6,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     energy = 100; // Leben vom Objekt z.B. Char und Chicken
     lastHit = 0; // Zeitpunkt,
     collectedCoins = 0;
+    collectedBottles = 0;
 
     offset = {
         top: 0,
@@ -57,18 +58,25 @@ isColliding(mo){
         this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; // Kollidierung von Unten nach Oben
 }
 
+collect(collectedObject){
+    if(collectedObject == 'coin'){
+        if(this.collectedCoins < 5){
+            this.collectedCoins += 1;
+    }}
+    if(collectedObject == 'bottle'){
+        console.log('in der If drin');
+        if(this.collectedBottles < 5){
+            this.collectedBottles += 1;
+        }
+    }
+}
+
 hit(){
     this.energy -= 5; // Wenn das Objekt mit etwas anderem kollidiert, wird vom Energy 5 Leben abgezogen
     if(this.energy < 0){
         this.energy = 0;
     } else {
         this.lastHit = new Date().getTime(); // Das ist der Zeitpunk in Milisek seit dem 1.1.1970, wir benutzen diesen Zeitpunk einfach nur um eine Rechengrundlage zu haben
-    }
-}
-
-collect(){
-    if(this.collectedCoins <5){
-    this.collectedCoins += 1;
     }
 }
 

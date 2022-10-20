@@ -18,6 +18,7 @@ class World {
         this.setWorld();
         this.checkCollisions();
         this.checkCoinCollisions();
+        this.checkBottleGroundCollisions();
         this.throwBottle();
     }
 
@@ -27,10 +28,13 @@ class World {
 
     throwBottle(){
         setInterval(() =>{
+            if(this.character.collectedBottles > 0){
             if(this.keyboard.attack){
                 let bottle = new ThrowableObject(this.character.x + 70, this.character.y + 100);
                 this.throwableObject.push(bottle);
-        }},100)}
+                this.character.collectedBottles --;
+                this.statusBarBottle.setBottles(this.character.collectedBottles);
+        }}},100)}
 
 
 
@@ -50,11 +54,21 @@ class World {
         setInterval(() => {
             this.level.coin.forEach((coin, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                 if(this.character.isColliding(coin)){
-                    console.log('Der Coin ist', coin, 'und der Index ist', index);
-                    console.log('Berührung Coin findet statt');
-                    this.character.collect();
+                    this.character.collect('coin');
                     level1.coin.splice(index, 1);
                     this.statusBarCoin.setCoins(this.character.collectedCoins);
+                }
+            })
+        }, 200);
+    }
+
+    checkBottleGroundCollisions(){
+        setInterval(() => {
+            this.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
+                if(this.character.isColliding(bottle)){
+                    this.character.collect('bottle');
+                    level1.bottle.splice(index, 1);
+                    this.statusBarBottle.setBottles(this.character.collectedBottles);
                 }
             })
         }, 200);
@@ -73,6 +87,7 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.coin);
+        this.addObjectsToMap(this.level.bottle);
         this.addObjectsToMap(this.throwableObject); 
         this.ctx.translate(-this.camera_x, 0);
 
