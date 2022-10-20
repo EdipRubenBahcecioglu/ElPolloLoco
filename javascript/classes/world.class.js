@@ -28,13 +28,12 @@ class World {
 
     throwBottle(){
         setInterval(() =>{
-            if(this.character.collectedBottles > 0){
-            if(this.keyboard.attack){
+            if(this.character.collectedBottles > 0 && this.keyboard.attack){
                 let bottle = new ThrowableObject(this.character.x + 70, this.character.y + 100);
                 this.throwableObject.push(bottle);
                 this.character.collectedBottles --;
                 this.statusBarBottle.setBottles(this.character.collectedBottles);
-        }}},100)}
+        }},100)}
 
 
 
@@ -42,7 +41,6 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) =>{ // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if(this.character.isColliding(enemy)){
-                    console.log('Berührung Cicken findet statt'); //... ob die Elemente mit dem Char collidieren
                     this.character.hit();
                     this.statusBarHealth.setPercentage(this.character.energy); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
@@ -64,6 +62,7 @@ class World {
 
     checkBottleGroundCollisions(){
         setInterval(() => {
+            if(this.character.collectedBottles < 5){
             this.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                 if(this.character.isColliding(bottle)){
                     this.character.collect('bottle');
@@ -71,7 +70,7 @@ class World {
                     this.statusBarBottle.setBottles(this.character.collectedBottles);
                 }
             })
-        }, 200);
+        }}, 200);
     }
 
     draw(){
