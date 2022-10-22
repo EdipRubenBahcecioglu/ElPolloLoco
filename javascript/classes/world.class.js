@@ -58,7 +58,7 @@ class World {
                     this.statusBarCoin.setCoins(this.character.collectedCoins);
                 }
             })
-        }, 200);
+        }, 50);
     }
 
     checkBottleGroundCollisions(){
@@ -71,7 +71,7 @@ class World {
                     this.statusBarBottle.setBottles(this.character.collectedBottles);
                 }
             })
-        }}, 200);
+        }}, 50);
     }
 
     checkHeartCollisions(){
@@ -84,7 +84,7 @@ class World {
                     this.statusBarHealth.setPercentage(this.character.energy);
                 }
             })
-        }}, 200);
+        }}, 50);
     }
 
     draw(){
