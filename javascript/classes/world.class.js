@@ -80,7 +80,6 @@ class World {
             this.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                 if(this.character.isColliding(heart)){
                     this.character.collect('heart');
-                    this.character.energy = this.character.energy + 50;
                     level1.heart.splice(index, 1);
                     this.statusBarHealth.setPercentage(this.character.energy);
                 }

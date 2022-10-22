@@ -70,7 +70,7 @@ collect(collectedObject){
     }
     if(collectedObject == 'heart'){
         if(this.energy < 100){
-            this.energy + 50;
+            this.energy += 25;
         }
     }
 }
