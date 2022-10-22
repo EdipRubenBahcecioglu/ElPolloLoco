@@ -31,7 +31,7 @@ class StatusBar extends DrawableObject {
 
 
     resolveImageIndex() { // WELCHES BILD DER LEBENSANZEIGE SOLL ANGEZEIGT WERDEN? WENN LEBEN BZW. PERCENTAGE XX DANN RETURN XX 
-        if (this.percentage == 100) {
+        if (this.percentage >= 100) {
             return 5;
         } else if (this.percentage > 80) {
             return 4;
