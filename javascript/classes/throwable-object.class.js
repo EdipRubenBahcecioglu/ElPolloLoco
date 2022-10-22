@@ -1,5 +1,7 @@
 class ThrowableObject extends MoveableObject {
 
+    playBottleSplashAnimation = false;
+
     IMAGES_BOTTLE_THROW = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -13,7 +15,8 @@ class ThrowableObject extends MoveableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
-        'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
+        '',
     ];
 
     constructor(x, y) {
@@ -32,12 +35,17 @@ class ThrowableObject extends MoveableObject {
         this.applyGravity();
         setInterval(() => {
             if(!this.objectHitGround()){
-                this.x += 10;
+                this.x += 8;
                 this.playAnimation(this.IMAGES_BOTTLE_THROW);
-            } else if (this.objectHitGround()) {
-                test();
+            } else if (this.objectHitGround() && this.playBottleSplashAnimation == false) {
                 this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
                 this.speedY = 0;
+                this.acceleration = 0;
+                setInterval(() => {
+                    this.width = 0;
+                    this.height = 0;
+                }, 600);
+                this.playBottleSplashAnimation = true;
             }
         }, 25);
     }
