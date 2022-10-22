@@ -19,6 +19,7 @@ class World {
         this.checkCollisions();
         this.checkCoinCollisions();
         this.checkBottleGroundCollisions();
+        this.checkHeartCollisions();
         this.throwBottle();
     }
 
@@ -73,6 +74,20 @@ class World {
         }}, 200);
     }
 
+    checkHeartCollisions(){
+        setInterval(() => {
+            if(this.character.energy < 100){
+            this.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
+                if(this.character.isColliding(heart)){
+                    this.character.collect('heart');
+                    this.character.energy = this.character.energy + 50;
+                    level1.heart.splice(index, 1);
+                    this.statusBarHealth.setPercentage(this.character.energy);
+                }
+            })
+        }}, 200);
+    }
+
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe
         this.ctx.translate(this.camera_x, 0);
@@ -87,6 +102,7 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.bottle);
+        this.addObjectsToMap(this.level.heart);
         this.addObjectsToMap(this.throwableObject); 
         this.ctx.translate(-this.camera_x, 0);
 

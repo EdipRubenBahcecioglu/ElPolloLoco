@@ -30,18 +30,18 @@ class StatusBarCoin extends DrawableObject {
     }
 
     resolveImageIndexCoins(){
-        if (this.collectedCoins == 0){
-            return 0;
-        } else if (this.collectedCoins == 1){
-            return 1;
-        } else if (this.collectedCoins == 2){
-            return 2;
-        } else if (this.collectedCoins == 3){
-            return 3;
-        } else if (this.collectedCoins == 4){
-            return 4;
-        } else if (this.collectedCoins == 5){
+        if (this.collectedCoins == 100) {
             return 5;
+        } else if (this.collectedCoins > 80) {
+            return 4;
+        } else if (this.collectedCoins > 60) {
+            return 3;
+        } else if (this.collectedCoins > 40) {
+            return 2;
+        } else if (this.collectedCoins > 20) {
+            return 1;
+        } else {
+            return 0
         }
     }
 }

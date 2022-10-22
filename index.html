@@ -11,11 +11,13 @@
     <script src="./javascript/classes/collectable-object.class.js"></script>
     <script src="./javascript/classes/coin.class.js"></script>
     <script src="./javascript/classes/bottle.class.js"></script>
+    <script src="./javascript/classes/heart.class.js"></script>
     <script src="./javascript/classes/status-bar.class.js"></script>
     <script src="./javascript/classes/status-bar-coin.class.js"></script>
     <script src="./javascript/classes/status-bar-bottle.class.js"></script>
     <script src="./javascript/classes/character.class.js"></script>
     <script src="./javascript/classes/chicken.class.js"></script>
+    <script src="./javascript/classes/chicken-small.class.js"></script>
     <script src="./javascript/classes/world.class.js"></script>
     <script src="./javascript/classes/cloud.class.js"></script>
     <script src="./javascript/classes/background-object.class.js"></script>
@@ -29,6 +31,11 @@
 <body onload="init()">
     <h1>EL POLLO LOCO</h1>
 
-    <canvas height= 480px; width="720px" id="canvas"></canvas>
+    <canvas height= 480px; width="720px" id="canvas">
+        <div class="coin-counter">
+            <img src="img/8_coin/coin_2.png">
+            <span>0</span>
+        </div>
+    </canvas>
 </body>
 </html>

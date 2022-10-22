@@ -1,14 +1,18 @@
 const level1 = new Level(
     [
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Endboss()
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new ChickenSmall(),
+        // new ChickenSmall(),
+        // new ChickenSmall(),
+        // new ChickenSmall(),
+        // new Endboss()
     ],
     [
         new Cloud()
@@ -50,19 +54,29 @@ const level1 = new Level(
         new BackgroundObject('../img/5_background/layers/1_first_layer/2.png', 719 * 3),
     ],
     [
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin
+        new Coin(350, 100, 'img/8_coin/coin_2.png'),
+        new Coin(450, 50, 'img/8_coin/coin_2.png'),
+        new Coin(550, 100, 'img/8_coin/coin_2.png'),
+        new Coin(650, 150, 'img/8_coin/coin_2.png'),
+        new Coin(250, 150, 'img/8_coin/coin_2.png'), // BREAK COIN STRING
+        new Coin(1350, 100, 'img/8_coin/coin_2.png'),
+        new Coin(1450, 50, 'img/8_coin/coin_2.png'),
+        new Coin(1550, 100, 'img/8_coin/coin_2.png'),
+        new Coin(1650, 150, 'img/8_coin/coin_2.png'),
+        new Coin(1250, 150, 'img/8_coin/coin_2.png'),
     ],
     [
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle(),
-        new Bottle()
+        new Bottle(150, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
+        new Bottle(180, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
+        new Bottle(600, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
+        new Bottle(630, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
+        new Bottle(1100, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
+        new Bottle(1130, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
+        new Bottle(1600, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
+        new Bottle(1630, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
+        new Bottle(2100, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
+        new Bottle(2130, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png')
+    ],
+    [
+        new Heart(1475, 150),
     ]);

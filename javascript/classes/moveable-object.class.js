@@ -60,13 +60,17 @@ isColliding(mo){
 
 collect(collectedObject){
     if(collectedObject == 'coin'){
-        if(this.collectedCoins < 5){
-            this.collectedCoins += 1;
+        if(this.collectedCoins < 100){
+            this.collectedCoins += 10;
     }}
     if(collectedObject == 'bottle'){
-        console.log('in der If drin');
         if(this.collectedBottles < 5){
             this.collectedBottles += 1;
+        }
+    }
+    if(collectedObject == 'heart'){
+        if(this.energy < 100){
+            this.energy + 50;
         }
     }
 }
