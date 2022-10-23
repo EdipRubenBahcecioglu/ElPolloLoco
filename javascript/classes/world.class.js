@@ -4,14 +4,14 @@ class World {
     ctx; // Innerhalb des Speilfelds legen wir in Zeile 22 fest, dass im 2D Format gespielt wird
     canvas; // = Spielfeld
     keyboard; // Spieltasten
-    camera_x  = 0;
+    camera_x = 0;
     statusBarHealth = new StatusBar();
     statusBarCoin = new StatusBarCoin();
     statusBarBottle = new StatusBarBottle();
     throwableObject = [];
 
 
-    constructor(canvas, keyboard){
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d'); // Mithilfe von getContext haben wir die Möglichkeit innerhlab des Canvas ein 2D Format darstellen zu lassen bzw. zu zeichnen
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -25,25 +25,27 @@ class World {
         this.throwBottle();
     }
 
-    setWorld(){
+    setWorld() {
         this.character.world = this; // This steht hier alleine d.h. dass die Variable world in der Char Klasse kann auf alle Variablen in der World Klasse zugreifen 
     }
 
-    throwBottle(){
-        setInterval(() =>{
-            if(this.character.collectedBottles > 0 && this.keyboard.attack){
+    throwBottle() {
+        setInterval(() => {
+            if (this.character.collectedBottles > 0 && this.keyboard.attack) {
                 let bottle = new ThrowableObject(this.character.x + 70, this.character.y + 100);
                 this.throwableObject.push(bottle);
-                this.character.collectedBottles --;
+                this.character.collectedBottles--;
                 this.statusBarBottle.setBottles(this.character.collectedBottles);
-        }}, 100)}
+            }
+        }, 100)
+    }
 
 
 
-    checkCollisions(){
+    checkCollisions() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy) =>{ // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
-                if(this.character.isColliding(enemy) && !this.character.isAboveGround()){
+            this.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
+                if (this.character.isColliding(enemy) && !this.character.isAboveGround()) {
                     this.character.hit();
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
@@ -51,24 +53,20 @@ class World {
         }, 200);
     }
 
-    checkCollisionsFromTop(){
+    checkCollisionsFromTop() {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
-                if(this.character.isColliding(enemy) && this.character.isAboveGround()){
-                    console.log('Von oben drauf gejumpt', 'vor der Änderung der Variable beträgt der Wert', this.character.jumpOnEnemy);
-                    // this.level.enemies[index];
-                    this.character.jumpOnEnemy = true;
-                    // console.log('Nachdem man auf Enemy gesprungen ist beträgt der Variablenwert', this.character.jumpOnEnemy);
-                    // level1.enemies.splice(index, 1);
+                if (this.character.isColliding(enemy) && this.character.isAboveGround()) {
+                    enemy.jumpOnEnemy = true;
                 }
-            })
+            });
         }, 10);
     }
 
-    checkCoinCollisions(){
+    checkCoinCollisions() {
         setInterval(() => {
             this.level.coin.forEach((coin, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
-                if(this.character.isColliding(coin)){
+                if (this.character.isColliding(coin)) {
                     this.character.collect('coin');
                     level1.coin.splice(index, 1);
                     this.statusBarCoin.setCoins(this.character.collectedCoins);
@@ -77,33 +75,35 @@ class World {
         }, 50);
     }
 
-    checkBottleGroundCollisions(){
+    checkBottleGroundCollisions() {
         setInterval(() => {
-            if(this.character.collectedBottles < 5){
-            this.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
-                if(this.character.isColliding(bottle)){
-                    this.character.collect('bottle');
-                    level1.bottle.splice(index, 1);
-                    this.statusBarBottle.setBottles(this.character.collectedBottles);
-                }
-            })
-        }}, 50);
+            if (this.character.collectedBottles < 5) {
+                this.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
+                    if (this.character.isColliding(bottle)) {
+                        this.character.collect('bottle');
+                        level1.bottle.splice(index, 1);
+                        this.statusBarBottle.setBottles(this.character.collectedBottles);
+                    }
+                })
+            }
+        }, 50);
     }
 
-    checkHeartCollisions(){
+    checkHeartCollisions() {
         setInterval(() => {
-            if(this.character.energyChar < 100){
-            this.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
-                if(this.character.isColliding(heart)){
-                    this.character.collect('heart');
-                    level1.heart.splice(index, 1);
-                    this.statusBarHealth.setPercentage(this.character.energyChar);
-                }
-            })
-        }}, 50);
+            if (this.character.energyChar < 100) {
+                this.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
+                    if (this.character.isColliding(heart)) {
+                        this.character.collect('heart');
+                        level1.heart.splice(index, 1);
+                        this.statusBarHealth.setPercentage(this.character.energyChar);
+                    }
+                })
+            }
+        }, 50);
     }
 
-    draw(){
+    draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObject);
@@ -118,42 +118,42 @@ class World {
         this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.bottle);
         this.addObjectsToMap(this.level.heart);
-        this.addObjectsToMap(this.throwableObject); 
+        this.addObjectsToMap(this.throwableObject);
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
-        requestAnimationFrame(function() { // Mithilfe dieser Funktion wird die draw Funktion, sobald die einmal geladen wurde, zich mal pro Sekunde ausgeführt
+        requestAnimationFrame(function () { // Mithilfe dieser Funktion wird die draw Funktion, sobald die einmal geladen wurde, zich mal pro Sekunde ausgeführt
             self.draw(); // Die Funktion requestAnimationFrame kennt das Programmierwort "this" nicht, daher müssen wir hier einen kleinen Umweg gehen und das Wort this in einer Variable festlegen
         });
     }
 
-    addObjectsToMap(objects){ // Object = Arrayinhalt aus Zeile 30 z.B. 
-        objects.forEach(object =>{ // For Each ist eine Art For Schleife // Die Funktion addObjectsToMap wird so oft ausgeführt bis jedes einzelne Element aus dem Array ausgelesen wurde
+    addObjectsToMap(objects) { // Object = Arrayinhalt aus Zeile 30 z.B. 
+        objects.forEach(object => { // For Each ist eine Art For Schleife // Die Funktion addObjectsToMap wird so oft ausgeführt bis jedes einzelne Element aus dem Array ausgelesen wurde
             this.addToMap(object); // Wir geben den Parameter (Inhalt vom Array) an die nächste Funktion weiter
         });
     }
 
-    addToMap(mo){ // mo = Movable Objekt // Parameter aus Zeile 44
-        if(mo.otherDirection){ // Wenn OtherDirection eine andere Richtung hat..
+    addToMap(mo) { // mo = Movable Objekt // Parameter aus Zeile 44
+        if (mo.otherDirection) { // Wenn OtherDirection eine andere Richtung hat..
             this.flipImage(mo); // Zeile 59
         }
 
         mo.draw(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
         mo.drawBorder(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
-        
-        if(mo.otherDirection){ // Ab Zeile 64 bis 66 wird die Spiegelung wieder zurückgesetzt 
+
+        if (mo.otherDirection) { // Ab Zeile 64 bis 66 wird die Spiegelung wieder zurückgesetzt 
             this.flipImageBack(mo); // Zeile 66
         }
-     } 
+    }
 
-    flipImage(mo){
+    flipImage(mo) {
         this.ctx.save(); // Dann soll der aktuelle Context gespeichert wernden..
         this.ctx.translate(mo.width, 0); // Coce ab hier bis Zeile 61 spiegeln wir das Bild // Bild wird spiegelverkehrt eingefügt
         this.ctx.scale(-1, 1); // Wenn wir das Bild drehen, steht das Bild vom Objekt auf der X Achse etwas anders, daher positioniern wir hier das Bild wieder da wo es war
         mo.x = mo.x * -1; // X Koordinate wird umgedreht // Siehe Kommentar Zeile 60
     }
 
-    flipImageBack(mo){
+    flipImageBack(mo) {
         mo.x = mo.x * -1; // X Koordinate wird umgedreht 
         this.ctx.restore(); // Die Spiegelung wird wieder zurückgesetzt
     }

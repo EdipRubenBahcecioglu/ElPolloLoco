@@ -37,6 +37,8 @@ class Chicken extends MoveableObject { // Die Classe Chicken übernimmt alle Sch
         setInterval(()=>{
             if (this.getJumped()){
                 this.playAnimation(this.IMAGE_DEAD);
+                this.speedX = 0;
+                this.speed = 0;
             }
         }, 10)
     }
