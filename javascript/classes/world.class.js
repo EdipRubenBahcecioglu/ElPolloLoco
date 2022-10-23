@@ -10,6 +10,7 @@ class World {
     statusBarBottle = new StatusBarBottle();
     throwableObject = [];
 
+
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d'); // Mithilfe von getContext haben wir die Möglichkeit innerhlab des Canvas ein 2D Format darstellen zu lassen bzw. zu zeichnen
         this.canvas = canvas;
@@ -20,6 +21,7 @@ class World {
         this.checkCoinCollisions();
         this.checkBottleGroundCollisions();
         this.checkHeartCollisions();
+        this.checkCollisionsFromTop();
         this.throwBottle();
     }
 
@@ -34,19 +36,33 @@ class World {
                 this.throwableObject.push(bottle);
                 this.character.collectedBottles --;
                 this.statusBarBottle.setBottles(this.character.collectedBottles);
-        }},100)}
+        }}, 100)}
 
 
 
     checkCollisions(){
         setInterval(() => {
             this.level.enemies.forEach((enemy) =>{ // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
-                if(this.character.isColliding(enemy)){
+                if(this.character.isColliding(enemy) && !this.character.isAboveGround()){
                     this.character.hit();
-                    this.statusBarHealth.setPercentage(this.character.energy); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
+                    this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
             })
-        }, 200); // Diese Funktion wird jede 0,2 Sekunde ausgefürt
+        }, 200);
+    }
+
+    checkCollisionsFromTop(){
+        setInterval(() => {
+            this.level.enemies.forEach((enemy, index) => {
+                if(this.character.isColliding(enemy) && this.character.isAboveGround()){
+                    console.log('Von oben drauf gejumpt', 'vor der Änderung der Variable beträgt der Wert', this.character.jumpOnEnemy);
+                    // this.level.enemies[index];
+                    this.character.jumpOnEnemy = true;
+                    // console.log('Nachdem man auf Enemy gesprungen ist beträgt der Variablenwert', this.character.jumpOnEnemy);
+                    // level1.enemies.splice(index, 1);
+                }
+            })
+        }, 10);
     }
 
     checkCoinCollisions(){
@@ -76,12 +92,12 @@ class World {
 
     checkHeartCollisions(){
         setInterval(() => {
-            if(this.character.energy < 100){
+            if(this.character.energyChar < 100){
             this.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                 if(this.character.isColliding(heart)){
                     this.character.collect('heart');
                     level1.heart.splice(index, 1);
-                    this.statusBarHealth.setPercentage(this.character.energy);
+                    this.statusBarHealth.setPercentage(this.character.energyChar);
                 }
             })
         }}, 50);

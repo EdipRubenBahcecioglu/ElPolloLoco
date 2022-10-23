@@ -15,8 +15,7 @@ class ThrowableObject extends MoveableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
-        'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
-        '',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
     constructor(x, y) {
@@ -35,7 +34,7 @@ class ThrowableObject extends MoveableObject {
         this.applyGravity();
         setInterval(() => {
             if(!this.objectHitGround()){
-                this.x += 8;
+                this.x += 10;
                 this.playAnimation(this.IMAGES_BOTTLE_THROW);
             } else if (this.objectHitGround() && this.playBottleSplashAnimation == false) {
                 this.playAnimation(this.IMAGES_BOTTLE_SPLASH);

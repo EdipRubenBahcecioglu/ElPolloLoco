@@ -3,10 +3,12 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     speedY = 0; // Wie schnell fällt unser Objekt nach unten/oben
     speedX = 0;
     acceleration = 2.5; // Wie schnell wird unser Obkejt beschleunigt z.B. wenn Char 1 sek in der Luft ist fällt er langsamer als wenn er 3 sek in der Luft ist
-    energy = 100; // Leben vom Objekt z.B. Char und Chicken
+    energyChar = 100; // Leben vom Objekt z.B. Char und Chicken
     lastHit = 0; // Zeitpunkt,
+    otherDirection = false;
     collectedCoins = 0;
     collectedBottles = 0;
+    jumpOnEnemy;
 
     offset = {
         top: 0,
@@ -54,7 +56,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     }
 
     jump() {
-        this.speedY = 30; // soll das Objekt in der Y Achse nach oben springen mit einer Anfangsgeschwindigkeit von 30 
+        this.speedY = 30; // soll das Objekt in der Y Achse nach oben springen mit einer Anfangsgeschwindigkeit von 30
     }
 
     // isColliding(z.B. Chicken), diese Funktion zeigt uns, ob ein Objekt mit einem anderen Objekt auf der Achse kolidiert 
@@ -65,9 +67,18 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; // Kollidierung von Unten nach Oben
     }
 
+    isCollidingFromTop(mo){
+        return this.y <  mo.y + mo.height; // Kollidierung von Oben nach Unten 170 + 250 - 30 (390) > 170
+            // this.x + this.width - this.offset.right > mo.x + mo.offset.left &&  // Kollidierung von Rechts nach Links 10 + 100 - 20 (100) > 400
+            // this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // Kollidierung von Links nach Rechts 10 + 40 (50) < 400 + 50 (450)
+            // this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; // Kollidierung von Unten nach Oben 170 + 110 (280) < 170 + 80 (250)
+    }
+
+    // 140 < 90
+
     collect(collectedObject) {
         if (collectedObject == 'coin') {
-            if (this.collectedCoins < 100) {
+            if (this.collectedCoins < 100) { 
                 this.collectedCoins += 10;
             }
         }
@@ -77,16 +88,16 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
             }
         }
         if (collectedObject == 'heart') {
-            if (this.energy < 100) {
-                this.energy += 25;
+            if (this.energyChar < 100) {
+                this.energyChar += 25;
             }
         }
     }
 
     hit() {
-        this.energy -= 5; // Wenn das Objekt mit etwas anderem kollidiert, wird vom Energy 5 Leben abgezogen
-        if (this.energy < 0) {
-            this.energy = 0;
+        this.energyChar -= 5; // Wenn das Objekt mit etwas anderem kollidiert, wird vom Energy 5 Leben abgezogen
+        if (this.energyChar < 0) {
+            this.energyChar = 0;
         } else {
             this.lastHit = new Date().getTime(); // Das ist der Zeitpunk in Milisek seit dem 1.1.1970, wir benutzen diesen Zeitpunk einfach nur um eine Rechengrundlage zu haben
         }
@@ -101,6 +112,14 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     }
 
     isDead() {
-        return this.energy == 0;
+        return this.energyChar == 0;
     }
+
+    getJumped(){
+        if(this.jumpOnEnemy){
+            console.log(this.jumpOnEnemy);
+            return true;
+        }
+    }
+
 }

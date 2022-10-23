@@ -5,7 +5,6 @@ class Character extends MoveableObject {
     x = 10;
     y = 170;
     speed = 10;
-    otherDirection = false;
 
     offset = {
         top: 110,
@@ -86,7 +85,7 @@ class Character extends MoveableObject {
                 this.jump();
             }
 
-        }, 1000 / 60); // 1000 / 60 = 60 FPS
+        }, 1000 / 60); // 1000 / 60 = 60 FPS //////// WAR 60
 
         setInterval(() => {
 
