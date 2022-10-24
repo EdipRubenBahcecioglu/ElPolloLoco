@@ -3,7 +3,7 @@ class ThrowableObject extends MoveableObject {
     playBottleSplashAnimation = false;
     bottleFlyDirection;
     bottleSplashed = false;
-    throwedBottles = [];
+    throwedBottles;
 
     IMAGES_BOTTLE_THROW = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -39,6 +39,7 @@ class ThrowableObject extends MoveableObject {
     }
 
     throw() {
+        console.log(this.throwedBottles);
         this.speedY = 30;
         this.applyGravity();
         setInterval(() => {
@@ -51,14 +52,10 @@ class ThrowableObject extends MoveableObject {
                 this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
                 this.speedY = 0;
                 this.acceleration = 0;
-                for(let b = 0; b < this.throwableObject.length; b++){
-                    let attackBottle = this.throwableObject[b];
-                }
-                setInterval(() => {
-                    // this.width = 0;
-                    // this.height = 0;
-                    this.throwableObject.splice(b, 1);
-                }, 600);
+                    setInterval(() => {
+                        // this.width = 0;
+                        // this.height = 0;
+                    }, 600);
                 this.playBottleSplashAnimation = true;
             }
         }, 25);
