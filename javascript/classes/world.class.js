@@ -40,8 +40,6 @@ class World {
         }, 100)
     }
 
-
-
     checkCollisions() {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
@@ -60,7 +58,7 @@ class World {
                     enemy.jumpOnEnemy = true;
                 }
             });
-        }, 10);
+        }, 1000 / 60);
     }
 
     checkCoinCollisions() {
