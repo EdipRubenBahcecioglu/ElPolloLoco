@@ -17,12 +17,17 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkAllCollisions();
+        this.throwBottle();
+    }
+
+    checkAllCollisions() {
         this.checkCollisions();
         this.checkCoinCollisions();
-        this.checkBottleGroundCollisions();
+        this.checkBottleCollisions();
         this.checkHeartCollisions();
         this.checkCollisionsFromTop();
-        this.throwBottle();
+        this.checkBottleHitEnemy();
     }
 
     setWorld() {
@@ -32,8 +37,15 @@ class World {
     throwBottle() {
         setInterval(() => {
             if (this.character.collectedBottles > 0 && this.keyboard.attack) {
-                let bottle = new ThrowableObject(this.character.x + 70, this.character.y + 100);
-                this.throwableObject.push(bottle);
+                if (this.character.otherDirection == false) {
+                    let bottle = new ThrowableObject(this.character.x + 70, this.character.y + 100);
+                    this.throwableObject.push(bottle);
+                    bottle.bottleFlyDirection = 'right';
+                } else {
+                    let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 100);
+                    bottle.bottleFlyDirection = 'left';
+                    this.throwableObject.push(bottle);
+                }
                 this.character.collectedBottles--;
                 this.statusBarBottle.setBottles(this.character.collectedBottles);
             }
@@ -43,7 +55,7 @@ class World {
     checkCollisions() {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
-                if (this.character.isColliding(enemy) && !this.character.isAboveGround()) {
+                if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isAttacked) {
                     this.character.hit();
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
@@ -54,8 +66,8 @@ class World {
     checkCollisionsFromTop() {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
-                if (this.character.isColliding(enemy) && this.character.isAboveGround()) {
-                    enemy.jumpOnEnemy = true;
+                if (this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY <= 0) {
+                    enemy.isAttacked = true;
                 }
             });
         }, 1000 / 60);
@@ -73,7 +85,7 @@ class World {
         }, 50);
     }
 
-    checkBottleGroundCollisions() {
+    checkBottleCollisions() {
         setInterval(() => {
             if (this.character.collectedBottles < 5) {
                 this.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
@@ -100,6 +112,25 @@ class World {
             }
         }, 50);
     }
+
+    checkBottleHitEnemy() {
+        setInterval(() => {
+            if(this.throwableObject.length > 0) {
+                this.level.enemies.forEach((enemie, index) => {
+                    for(let b = 0; b < this.throwableObject.length; b++){
+                        let throwBottle = this.throwableObject[b];
+                        // setInterval(() =>{
+                        //     this.throwableObject.splice(b, 1);
+                        // },600);
+                        if(throwBottle.isColliding(enemie)){
+                            enemie.isAttacked = true;
+                        }
+                    }
+                })
+            }
+        }, 25);
+    }
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe

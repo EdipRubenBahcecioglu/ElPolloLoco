@@ -8,7 +8,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     otherDirection = false;
     collectedCoins = 0;
     collectedBottles = 0;
-    jumpOnEnemy = false;
+    isAttacked = false;
 
     offset = {
         top: 0,
@@ -115,8 +115,8 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         return this.energyChar == 0;
     }
 
-    getJumped(){
-        if(this.jumpOnEnemy){
+    getAttacked(){
+        if(this.isAttacked){
             return true;
         }
     }

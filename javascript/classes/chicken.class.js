@@ -35,12 +35,16 @@ class Chicken extends MoveableObject { // Die Classe Chicken übernimmt alle Sch
         }, 200); // Bilder ändern sich jede 200 Milisekunden
 
         setInterval(()=>{
-            if (this.getJumped()){
+            if (this.getAttacked()){
                 this.playAnimation(this.IMAGE_DEAD);
                 this.speedX = 0;
                 this.speed = 0;
+                setInterval(() =>{
+                    this.width = 0;
+                    this.height = 0;
+                }, 1500);
             }
-        }, 10)
+        }, 1000 / 60) // Falls Chicken zuclen nach Tod dann hier schneller einstellen z.B. 10
     }
 
 
