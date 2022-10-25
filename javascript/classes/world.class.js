@@ -121,7 +121,7 @@ class World {
                         let throwBottle = this.throwableObject[b];
                         // setInterval(() =>{
                         //     this.throwableObject.splice(b, 1);
-                        // },600);
+                        // },1500);
                         if(throwBottle.isColliding(enemie)){
                             enemie.isAttacked = true;
                         }

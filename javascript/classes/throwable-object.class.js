@@ -30,12 +30,11 @@ class ThrowableObject extends MoveableObject {
         this.loadImages(this.IMAGES_BOTTLE_THROW);
         this.loadImages(this.IMAGES_BOTTLE_SPLASH);
         this.throw();
-        this.bottleIsAboveGroundAndThrowToRightSide();
-        this.bottleIsAboveGroundAndThrowToLeftSide();
-        this.bottleIsFlyingToRight();
-        this.bottleIsFlyingToLeft();
-        this.bottleHitsGround();
-        // this.bottleGettingSplashed();
+        // this.bottleIsAboveGroundAndThrowToRightSide();
+        // this.bottleIsAboveGroundAndThrowToLeftSide();
+        // this.bottleIsFlyingToRight();
+        // this.bottleIsFlyingToLeft();
+        // this.bottleHitsGround();
     }
 
     throw() {
@@ -48,17 +47,20 @@ class ThrowableObject extends MoveableObject {
             } else if (this.bottleIsAboveGroundAndThrowToLeftSide()){
                 this.bottleIsFlyingToLeft();
             } else if (this.bottleHitsGround()) {
-                // this.bottleGettingSplashed();
-                this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
-                this.speedY = 0;
-                this.acceleration = 0;
-                    setInterval(() => {
-                        // this.width = 0;
-                        // this.height = 0;
-                    }, 600);
+                this.bottleGettingSplashed();
                 this.playBottleSplashAnimation = true;
             }
         }, 25);
+    }
+
+    bottleGettingSplashed() {
+        this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
+        this.speedY = 0;
+        this.acceleration = 0;
+        setInterval(() => {
+            // this.width = 0;
+            // this.height = 0;
+        }, 600);
     }
 
     bottleIsAboveGroundAndThrowToRightSide(){
