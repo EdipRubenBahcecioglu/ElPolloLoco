@@ -31,25 +31,48 @@ class World {
     }
 
     setWorld() {
-        this.character.world = this; // This steht hier alleine d.h. dass die Variable world in der Char Klasse kann auf alle Variablen in der World Klasse zugreifen 
+        this.character.world = this; // This steht hier alleine d.h. dass die Variable world in der Char Klasse kann auf alle Variablen in der World Klasse zugreifen
     }
 
     throwBottle() {
         setInterval(() => {
-            if (this.character.collectedBottles > 0 && this.keyboard.attack) {
+            if (this.character.collectedBottles > 0 && this.keyboard.attack) { // && this.character.isAttacking == false/
+                // this.character.isAttacking = true;
                 if (this.character.otherDirection == false) {
-                    let bottle = new ThrowableObject(this.character.x + 70, this.character.y + 100);
-                    this.throwableObject.push(bottle);
-                    bottle.bottleFlyDirection = 'right';
+                    // this.character.isAttacking = true;
+                    // console.log(this.character.isAttacking);
+                    this.createNewThrowableObject(70, 100, 'right');
+                    this.updateBottleStatusBar();
                 } else {
-                    let bottle = new ThrowableObject(this.character.x - 30, this.character.y + 100);
-                    bottle.bottleFlyDirection = 'left';
-                    this.throwableObject.push(bottle);
+                    this.createNewThrowableObject(30, 100, 'left');
+                    this.updateBottleStatusBar();
                 }
-                this.character.collectedBottles--;
-                this.statusBarBottle.setBottles(this.character.collectedBottles);
             }
-        }, 100)
+        }, 100);
+    }
+
+    updateBottleStatusBar() {
+        this.character.collectedBottles--;
+        this.statusBarBottle.setBottles(this.character.collectedBottles);
+    }
+
+    createNewThrowableObject(bottleX, bottleY, throwDirection) {
+        if (throwDirection == 'right') {
+            let bottle = new ThrowableObject(this.character.x + bottleX, this.character.y + bottleY);
+            this.throwableObject.push(bottle);
+            bottle.bottleFlyDirection = 'right';
+            // setInterval(()=>{
+            //     if(bottle.objectHitGround()){
+            //         this.character.isAttacking = false;
+            //         // console.log(this.character.isAttacking);
+            //     }
+            // }, 50);
+        }
+        if (throwDirection == 'left') {
+            let bottle = new ThrowableObject(this.character.x - bottleX, this.character.y + bottleY);
+            bottle.bottleFlyDirection = 'left';
+            this.throwableObject.push(bottle);
+        }
     }
 
     checkCollisions() {
@@ -68,6 +91,7 @@ class World {
             this.level.enemies.forEach((enemy, index) => {
                 if (this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY <= 0) {
                     enemy.isAttacked = true;
+                    this.character.speedY += 25;
                 }
             });
         }, 1000 / 60);
@@ -115,22 +139,23 @@ class World {
 
     checkBottleHitEnemy() {
         setInterval(() => {
-            if(this.throwableObject.length > 0) {
-                this.level.enemies.forEach((enemie, index) => {
-                    for(let b = 0; b < this.throwableObject.length; b++){
-                        let throwBottle = this.throwableObject[b];
-                        // setInterval(() =>{
-                        //     this.throwableObject.splice(b, 1);
-                        // },1500);
-                        if(throwBottle.isColliding(enemie)){
+            if (this.throwableObject.length > 0) {
+                this.level.enemies.forEach((enemie) => {
+                    for (let b = 0; b < this.throwableObject.length; b++) {
+                        let throwedBottle = this.throwableObject[b];
+                        if (throwedBottle.isColliding(enemie)) {
                             enemie.isAttacked = true;
+                        }
+                        if (throwedBottle.bottleSplashed) {
+                            setTimeout((() => {
+                                this.throwableObject.splice(b, 1);
+                            }), 400);
                         }
                     }
                 })
             }
         }, 25);
     }
-
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe

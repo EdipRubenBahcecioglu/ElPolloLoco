@@ -1,18 +1,18 @@
 const level1 = new Level(
     [
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        // new ChickenSmall(),
-        // new ChickenSmall(),
-        // new ChickenSmall(),
-        // new ChickenSmall(),
-        // new Endboss()
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        new ChickenSmall(),
+        new ChickenSmall(),
+        new ChickenSmall(),
+        new ChickenSmall(),
+        new Endboss()
     ],
     [
         new Cloud()
@@ -58,7 +58,7 @@ const level1 = new Level(
         new Coin(450, 50, 'img/8_coin/coin_2.png'),
         new Coin(550, 100, 'img/8_coin/coin_2.png'),
         new Coin(650, 150, 'img/8_coin/coin_2.png'),
-        new Coin(250, 150, 'img/8_coin/coin_2.png'), // BREAK COIN STRING
+        new Coin(250, 150, 'img/8_coin/coin_2.png'),
         new Coin(1350, 100, 'img/8_coin/coin_2.png'),
         new Coin(1450, 50, 'img/8_coin/coin_2.png'),
         new Coin(1550, 100, 'img/8_coin/coin_2.png'),

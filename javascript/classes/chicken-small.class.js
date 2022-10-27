@@ -18,8 +18,9 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
 
 
     constructor(){ // Jede Classe hat ein Constructor. Innerhalb dieses Constructors werden die Sachen eingetragn, die sofort ausgeführt werden sollen
-        super().loadImage('../img/3_enemies_chicken/chicken_small/1_walk/1_w.png'); // Mit Super greifen wir auf die übergeordnete Classe zu und führen die Funktion loadImage aus und geben den Parameter mit
+        super().loadImage(); // Mit Super greifen wir auf die übergeordnete Classe zu und führen die Funktion loadImage aus und geben den Parameter mit
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGE_DEAD);
         this.speed = this.speed + Math.random() * 0.25; // Die Speedvariable aus der übergeordneten Klaasse ist hier bei jedem Chicken unterschiedlich also mindestens 0.15 + max 0.25 drauf = max Speed 0.40
         this.animate();
     }
@@ -32,5 +33,17 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
         setInterval(() =>{
             this.playAnimation(this.IMAGES_WALKING);
         }, 200); // Bilder ändern sich jede 200 Milisekunden
+
+        setInterval(()=>{
+            if (this.getAttacked()){
+                this.playAnimation(this.IMAGE_DEAD);
+                this.speedX = 0;
+                this.speed = 0;
+                setInterval(() =>{
+                    this.width = 0;
+                    this.height = 0;
+                }, 1500);
+            }
+        }, 1000 / 60) // Falls Chicken zuclen nach Tod dann hier schneller einstellen z.B. 10
     }
 }

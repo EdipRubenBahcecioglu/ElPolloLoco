@@ -9,6 +9,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     collectedCoins = 0;
     collectedBottles = 0;
     isAttacked = false;
+    isAttacking = false;
 
     offset = {
         top: 0,
@@ -30,12 +31,12 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         if (this instanceof ThrowableObject) {
             return true;
         } else {
-            return this.y < 170; // Unsere Bodenhöhe hat 160 px d.h. unser Objekt soll nicht weiter fallen als die Bodenhöhe // 160
+            return this.y <= 170; // Unsere Bodenhöhe hat 160 px d.h. unser Objekt soll nicht weiter fallen als die Bodenhöhe // 160
         }
     }
 
     objectHitGround(){
-        if(this.y > 350){
+        if(this.y > 340){ // 350 war vorher
             return true;
         }
     }
@@ -66,15 +67,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // Kollidierung von Links nach Rechts
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; // Kollidierung von Unten nach Oben
     }
-
-    isCollidingFromTop(mo){
-        return this.y <  mo.y + mo.height; // Kollidierung von Oben nach Unten 170 + 250 - 30 (390) > 170
-            // this.x + this.width - this.offset.right > mo.x + mo.offset.left &&  // Kollidierung von Rechts nach Links 10 + 100 - 20 (100) > 400
-            // this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // Kollidierung von Links nach Rechts 10 + 40 (50) < 400 + 50 (450)
-            // this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; // Kollidierung von Unten nach Oben 170 + 110 (280) < 170 + 80 (250)
-    }
-
-    // 140 < 90
 
     collect(collectedObject) {
         if (collectedObject == 'coin') {
