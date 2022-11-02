@@ -19,6 +19,7 @@ class World {
         this.setWorld();
         this.checkAllCollisions();
         this.throwBottle();
+        this.removeObject();
     }
 
     checkAllCollisions() {
@@ -61,12 +62,6 @@ class World {
             let bottle = new ThrowableObject(this.character.x + bottleX, this.character.y + bottleY);
             this.throwableObject.push(bottle);
             bottle.bottleFlyDirection = 'right';
-            // setInterval(()=>{
-            //     if(bottle.objectHitGround()){
-            //         this.character.isAttacking = false;
-            //         // console.log(this.character.isAttacking);
-            //     }
-            // }, 50);
         }
         if (throwDirection == 'left') {
             let bottle = new ThrowableObject(this.character.x - bottleX, this.character.y + bottleY);
@@ -92,6 +87,7 @@ class World {
                 if (this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY <= 0) {
                     enemy.isAttacked = true;
                     this.character.speedY += 25;
+                    this.removeObject(index, enemy, 'enemy');
                 }
             });
         }, 1000 / 60);
@@ -147,14 +143,29 @@ class World {
                             enemie.isAttacked = true;
                         }
                         if (throwedBottle.bottleSplashed) {
-                            setTimeout((() => {
-                                this.throwableObject.splice(b, 1);
-                            }), 400);
+                            this.removeObject(b, throwedBottle, 'bottle');
                         }
                     }
                 })
             }
-        }, 25);
+        }, 100);
+    }
+
+    removeObject(indexOfObject, object, array) {
+        if(array == 'bottle'){
+            setTimeout((()=>{
+                if(this.throwableObject[indexOfObject] === object){
+                    this.throwableObject.splice(indexOfObject, 1);
+                }
+            }), 300);
+        }
+        if(array == 'enemy'){
+            setTimeout((()=>{
+                if(this.level.enemies[indexOfObject] === object){
+                    this.level.enemies.splice(indexOfObject, 1);
+                }
+            }), 400);
+        } 
     }
 
     draw() {

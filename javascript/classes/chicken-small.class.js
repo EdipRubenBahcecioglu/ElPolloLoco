@@ -42,7 +42,7 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
                 setInterval(() =>{
                     this.width = 0;
                     this.height = 0;
-                }, 1500);
+                }, 1400);
             }
         }, 1000 / 60) // Falls Chicken zuclen nach Tod dann hier schneller einstellen z.B. 10
     }

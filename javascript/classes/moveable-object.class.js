@@ -38,7 +38,8 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     objectHitGround(){
         if(this.y > 340){ // 350 war vorher
             return true;
-        }
+        } 
+        return false;
     }
 
     moveRight() {
