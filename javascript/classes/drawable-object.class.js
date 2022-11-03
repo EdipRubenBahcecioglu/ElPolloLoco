@@ -31,15 +31,14 @@ class DrawableObject {
     }
 
     drawBorder(ctx) {
-        if (this instanceof Character || this instanceof ThrowableObject || this instanceof ChickenSmall || this instanceof Chicken) { // Instanceof bedeutet, dass nur ein Rahmen um Objekte gezeichnet wird, die entweder der Instance Charakter oder Chicken besitzen, andere Objekte wie z.B. Cloud(Wolke) wird kein Rahmen gezeichnet
-            ctx.beginPath(); // Ab hier und die nächsten 4 Zeilen, zeichen wir ein Viereck um ein Obkjekt
-            ctx.lineWidth = '3'; // Liniendicke
-            ctx.strokeStyle = 'blue'; // Linienfarbe
-            ctx.rect(this.x, this.y, this.width, this.height); // Linienposition
-            ctx.stroke();
-        }
+        // if () { // this instanceof Character// Instanceof bedeutet, dass nur ein Rahmen um Objekte gezeichnet wird, die entweder der Instance Charakter oder Chicken besitzen, andere Objekte wie z.B. Cloud(Wolke) wird kein Rahmen gezeichnet
+        //     ctx.beginPath(); // Ab hier und die nächsten 4 Zeilen, zeichen wir ein Viereck um ein Obkjekt
+        //     ctx.lineWidth = '3'; // Liniendicke
+        //     ctx.strokeStyle = 'blue'; // Linienfarbe
+        //     ctx.rect(this.x, this.y, this.width, this.height); // Linienposition
+        //     ctx.stroke();
+        // }
     }
-
 }
 
 

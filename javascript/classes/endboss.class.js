@@ -1,15 +1,15 @@
 class Endboss extends MoveableObject {
 
-    y = 35;
+    y = 50;
     height = 400;
     width = 250;
     x = 2600;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
-        'img/4_enemie_boss_chicken/1_walk/G1.png',
-        'img/4_enemie_boss_chicken/1_walk/G1.png',
-        'img/4_enemie_boss_chicken/1_walk/G1.png'
+        'img/4_enemie_boss_chicken/1_walk/G2.png',
+        'img/4_enemie_boss_chicken/1_walk/G3.png',
+        'img/4_enemie_boss_chicken/1_walk/G4.png'
     ];
 
     IMAGES_ALERT = [
@@ -48,7 +48,7 @@ class Endboss extends MoveableObject {
 
 
     constructor(){
-        super().loadImage(this.IMAGES_ALERT[0]);
+        super().loadImage();
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
@@ -58,9 +58,12 @@ class Endboss extends MoveableObject {
     }
 
     animate() {
-        this.moveLeft();
-        setInterval(() =>{ 
-            this.playAnimation(this.IMAGES_ALERT);
-        }, 200); // Bilder ändern sich jede 200 Milisekunden
+        setInterval(() =>{
+            this.moveLeft();
+        }, 1000 / 60); // Bilder ändern sich jede 200 Milisekunden
+
+        setInterval(() =>{
+            this.playAnimation(this.IMAGES_WALKING);
+        }, 230);
     }
 }

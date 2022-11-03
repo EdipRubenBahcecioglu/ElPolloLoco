@@ -29,6 +29,7 @@ class World {
         this.checkHeartCollisions();
         this.checkCollisionsFromTop();
         this.checkBottleHitEnemy();
+        // this.checkBottleHitGround();
     }
 
     setWorld() {
@@ -37,17 +38,15 @@ class World {
 
     throwBottle() {
         setInterval(() => {
-            if (this.character.collectedBottles > 0 && this.keyboard.attack) { // && this.character.isAttacking == false/
-                // this.character.isAttacking = true;
+            if (this.character.collectedBottles > 0 && this.keyboard.attack && this.character.isAttacking == false) {
                 if (this.character.otherDirection == false) {
-                    // this.character.isAttacking = true;
-                    // console.log(this.character.isAttacking);
                     this.createNewThrowableObject(70, 100, 'right');
                     this.updateBottleStatusBar();
                 } else {
                     this.createNewThrowableObject(30, 100, 'left');
                     this.updateBottleStatusBar();
                 }
+                this.character.isAttacking = true;
             }
         }, 100);
     }
@@ -87,6 +86,7 @@ class World {
                 if (this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY <= 0) {
                     enemy.isAttacked = true;
                     this.character.speedY += 25;
+                    this.character.y = 150;
                     this.removeObject(index, enemy, 'enemy');
                 }
             });
@@ -141,31 +141,43 @@ class World {
                         let throwedBottle = this.throwableObject[b];
                         if (throwedBottle.isColliding(enemie)) {
                             enemie.isAttacked = true;
-                        }
+                        } else
                         if (throwedBottle.bottleSplashed) {
                             this.removeObject(b, throwedBottle, 'bottle');
-                        }
+                            this.character.isAttacking = false;
+                        } // ######################################################## BAUSTELLEEEEEEEEEEEEEE
                     }
                 })
             }
-        }, 100);
+        }, 1000 / 60); // 100
     }
 
+    // checkBottleHitGround(){
+    //     setInterval(() =>{
+    //         for(let l = 0; l < this.throwableObject.length; l++){
+    //             let missedBottle = this.throwableObject[l];
+    //             if(missedBottle.bott()){
+    //                 this.removeObject(l, missedBottle, 'bottle');
+    //             }
+    //         }
+    //     }, 1000 / 60);
+    // }
+
     removeObject(indexOfObject, object, array) {
-        if(array == 'bottle'){
-            setTimeout((()=>{
-                if(this.throwableObject[indexOfObject] === object){
+        if (array == 'bottle') {
+            setTimeout((() => {
+                if (this.throwableObject[indexOfObject] === object) {
                     this.throwableObject.splice(indexOfObject, 1);
                 }
             }), 300);
         }
-        if(array == 'enemy'){
-            setTimeout((()=>{
-                if(this.level.enemies[indexOfObject] === object){
+        if (array == 'enemy') {
+            setTimeout((() => {
+                if (this.level.enemies[indexOfObject] === object) {
                     this.level.enemies.splice(indexOfObject, 1);
                 }
             }), 400);
-        } 
+        }
     }
 
     draw() {
@@ -178,12 +190,13 @@ class World {
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
         this.ctx.translate(this.camera_x, 0); // Die Koordinaten werden wieder freigegeben d.h. die nachfolgenden Objekte und Hintergründe ändern sich wenn der Char sich bewegt 
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.bottle);
+        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.bosses);
+        this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.heart);
         this.addObjectsToMap(this.throwableObject);
+        this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
