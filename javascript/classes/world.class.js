@@ -23,13 +23,15 @@ class World {
     }
 
     checkAllCollisions() {
-        this.checkCollisions();
+        this.checkEnemyCollisions();
+        this.checkBossCollisions();
         this.checkCoinCollisions();
         this.checkBottleCollisions();
         this.checkHeartCollisions();
         this.checkCollisionsFromTop();
         this.checkBottleHitEnemy();
-        // this.checkBottleHitGround();
+        this.checkBottleHitEndboss();
+        this.checkCharacterMiss();
     }
 
     setWorld() {
@@ -69,11 +71,33 @@ class World {
         }
     }
 
-    checkCollisions() {
+    checkCharacterMiss(){
+        setInterval(() =>{
+            for(let x = 0; x < this.throwableObject.length; x++){
+                const missedBottle = this.throwableObject[x];
+                if(missedBottle.objectHitGround()){
+                    this.removeObject(x, missedBottle, 'bottle');
+                }
+            }
+        }, 1000 / 60);
+    }
+
+    checkEnemyCollisions() {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isAttacked) {
-                    this.character.hit();
+                    this.character.hit('5');
+                    this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
+                }
+            })
+        }, 200);
+    }
+
+    checkBossCollisions() {
+        setInterval(() => {
+            this.level.bosses.forEach((endboss) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
+                if (this.character.isColliding(endboss)) {
+                    this.character.hit('10');
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
             })
@@ -88,6 +112,7 @@ class World {
                     this.character.speedY += 25;
                     this.character.y = 150;
                     this.removeObject(index, enemy, 'enemy');
+                    this.character.isAttacking = false;
                 }
             });
         }, 1000 / 60);
@@ -142,26 +167,42 @@ class World {
                         if (throwedBottle.isColliding(enemie)) {
                             enemie.isAttacked = true;
                         } else
-                        if (throwedBottle.bottleSplashed) {
-                            this.removeObject(b, throwedBottle, 'bottle');
-                            this.character.isAttacking = false;
-                        } // ######################################################## BAUSTELLEEEEEEEEEEEEEE
+                            if (throwedBottle.bottleSplashed) {
+                                this.removeObject(b, throwedBottle, 'bottle');
+                                this.character.isAttacking = false;
+                            }
                     }
                 })
             }
         }, 1000 / 60); // 100
     }
 
-    // checkBottleHitGround(){
-    //     setInterval(() =>{
-    //         for(let l = 0; l < this.throwableObject.length; l++){
-    //             let missedBottle = this.throwableObject[l];
-    //             if(missedBottle.bott()){
-    //                 this.removeObject(l, missedBottle, 'bottle');
-    //             }
-    //         }
-    //     }, 1000 / 60);
-    // }
+    checkBottleHitEndboss() {
+        setInterval(() => {
+            if (this.throwableObject.length > 0) {
+                this.level.bosses.forEach((boss) => {
+                    if(boss.bossHurt == false){
+                        for (let x = 0; x < this.throwableObject.length; x++) {
+                            const throwedBottle = this.throwableObject[x];
+                            if (throwedBottle.isColliding(boss)) {
+                                // console.log('Boss is hurt vor Wurf:', boss.bossHurt);
+                                boss.bossHurt = true;
+                                throwedBottle.bottleGettingSplashed();
+                                // console.log('Boss is hurt nach Hit:', boss.bossHurt);
+                            }
+                            if(throwedBottle.bottleSplashed == true){
+                                    setTimeout(()=>{
+                                        boss.bossHurt = false;
+                                    }, 200);
+                                    this.character.isAttacking = false;
+                                    // console.log('Boss is hurt nach Flasche geplatzt:', boss.bossHurt);
+                            }
+                        }
+                    }
+                })
+            }
+        }, 1000 / 60);
+    }
 
     removeObject(indexOfObject, object, array) {
         if (array == 'bottle') {

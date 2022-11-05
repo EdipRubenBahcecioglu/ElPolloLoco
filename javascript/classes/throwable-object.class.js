@@ -43,12 +43,12 @@ class ThrowableObject extends MoveableObject {
     throw() {
         this.speedY = 30;
         this.applyGravity();
-        setInterval(() => {
+        let bottleInterval = setInterval(() => {
             if (this.bottleIsAboveGroundAndThrowToRightSide()) {
                 this.bottleIsFlyingToRight();
             } else if (this.bottleIsAboveGroundAndThrowToLeftSide()){
                 this.bottleIsFlyingToLeft();
-            } else if (this.bottleHitsGround()) {
+            } else if (this.bottleHitsGround() && this.playBottleSplashAnimation == false) {
                 this.bottleGettingSplashed();
             }
         }, 25);
@@ -57,11 +57,8 @@ class ThrowableObject extends MoveableObject {
     bottleGettingSplashed() {
         this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
         this.speedY = 0;
+        this.x += 0;
         this.acceleration = 0;
-        setInterval(() => {
-            // this.width = 0;
-            // this.height = 0;
-        }, 600);
         this.playBottleSplashAnimation = true;
         this.bottleSplashed = true;
     }
@@ -85,6 +82,6 @@ class ThrowableObject extends MoveableObject {
     }
 
     bottleHitsGround(){
-        return this.objectHitGround() && this.playBottleSplashAnimation == false;
+        return this.objectHitGround();
     }
 }

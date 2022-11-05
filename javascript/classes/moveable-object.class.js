@@ -10,6 +10,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     collectedBottles = 0;
     isAttacked = false;
     isAttacking = false;
+    bossHurt = false;
 
     offset = {
         top: 0,
@@ -87,8 +88,8 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         }
     }
 
-    hit() {
-        this.energyChar -= 5; // Wenn das Objekt mit etwas anderem kollidiert, wird vom Energy 5 Leben abgezogen
+    hit(takenDamage) {
+        this.energyChar -= takenDamage; // Wenn das Objekt mit etwas anderem kollidiert, wird vom Energy 5 Leben abgezogen
         if (this.energyChar < 0) {
             this.energyChar = 0;
         } else {
