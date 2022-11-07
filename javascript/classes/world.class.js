@@ -71,12 +71,12 @@ class World {
         }
     }
 
-    checkCharacterMiss(){
-        setInterval(() =>{
-            for(let x = 0; x < this.throwableObject.length; x++){
+    checkCharacterMiss() {
+        setInterval(() => {
+            for (let x = 0; x < this.throwableObject.length; x++) {
                 const missedBottle = this.throwableObject[x];
-                if(missedBottle.objectHitGround()){
-                    this.removeObject(x, missedBottle, 'bottle');
+                if (missedBottle.objectHitGround()) {
+                    this.removeObject(x, missedBottle, 'bottle', 300);
                 }
             }
         }, 1000 / 60);
@@ -111,7 +111,7 @@ class World {
                     enemy.isAttacked = true;
                     this.character.speedY += 25;
                     this.character.y = 150;
-                    this.removeObject(index, enemy, 'enemy');
+                    this.removeObject(index, enemy, 'enemy', 400);
                     this.character.isAttacking = false;
                 }
             });
@@ -168,7 +168,7 @@ class World {
                             enemie.isAttacked = true;
                         } else
                             if (throwedBottle.bottleSplashed) {
-                                this.removeObject(b, throwedBottle, 'bottle');
+                                this.removeObject(b, throwedBottle, 'bottle', 300);
                                 this.character.isAttacking = false;
                             }
                     }
@@ -181,21 +181,19 @@ class World {
         setInterval(() => {
             if (this.throwableObject.length > 0) {
                 this.level.bosses.forEach((boss) => {
-                    if(boss.bossHurt == false){
+                    if (boss.bossHurt == false) {
                         for (let x = 0; x < this.throwableObject.length; x++) {
                             const throwedBottle = this.throwableObject[x];
                             if (throwedBottle.isColliding(boss)) {
-                                // console.log('Boss is hurt vor Wurf:', boss.bossHurt);
                                 boss.bossHurt = true;
                                 throwedBottle.bottleGettingSplashed();
-                                // console.log('Boss is hurt nach Hit:', boss.bossHurt);
+                                this.removeObject(x, throwedBottle, 'bottle', 75);
                             }
-                            if(throwedBottle.bottleSplashed == true){
-                                    setTimeout(()=>{
-                                        boss.bossHurt = false;
-                                    }, 200);
-                                    this.character.isAttacking = false;
-                                    // console.log('Boss is hurt nach Flasche geplatzt:', boss.bossHurt);
+                            if (throwedBottle.bottleSplashed == true) {
+                                setTimeout(() => {
+                                    boss.bossHurt = false;
+                                }, 350);
+                                this.character.isAttacking = false;
                             }
                         }
                     }
@@ -204,20 +202,20 @@ class World {
         }, 1000 / 60);
     }
 
-    removeObject(indexOfObject, object, array) {
+    removeObject(indexOfObject, object, array, timeoutTime) {
         if (array == 'bottle') {
             setTimeout((() => {
                 if (this.throwableObject[indexOfObject] === object) {
                     this.throwableObject.splice(indexOfObject, 1);
                 }
-            }), 300);
+            }), timeoutTime);
         }
         if (array == 'enemy') {
             setTimeout((() => {
                 if (this.level.enemies[indexOfObject] === object) {
                     this.level.enemies.splice(indexOfObject, 1);
                 }
-            }), 400);
+            }), timeoutTime);
         }
     }
 
