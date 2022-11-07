@@ -54,7 +54,7 @@ class Endboss extends MoveableObject {
     ]
 
 
-    constructor(){
+    constructor() {
         super().loadImage();
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
@@ -65,18 +65,35 @@ class Endboss extends MoveableObject {
     }
 
     animate() {
-        setInterval(() =>{
+        setInterval(() => {
             this.moveLeft();
         }, 1000 / 60); // Bilder ändern sich jede 200 Milisekunden
 
-        setInterval(() =>{
+        setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
         }, 230);
 
-        setInterval(()=>{
-            if(this.bossHurt){
+        setInterval(() => {
+            if (this.bossHurt) {
                 this.playAnimation(this.IMAGES_HURT);
             }
         }, 100);
+
+        setInterval(() => {
+            if (this.haveVision) {
+                this.playAnimation(this.IMAGES_ALERT);
+                this.speed = 0;
+                this.x -= 0;
+            } else {
+                this.speed = 0.15;
+                this.x -= 0.15;
+            }
+        }, 230);
+
+        setInterval(()=>{
+            if(this.isDead('boss')){
+                this.playAnimation(this.IMAGES_DEAD);
+            }
+        }, 150);
     }
 }

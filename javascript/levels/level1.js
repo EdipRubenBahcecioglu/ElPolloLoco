@@ -1,9 +1,9 @@
 const level1 = new Level(
     [
         // // // new Chicken(),
-        // // // new Chicken(),
-        // // // new Chicken(),
-        // // // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
+        // new Chicken(),
         // new Chicken(),
         // new Chicken(),
         // new Chicken(),
@@ -70,12 +70,16 @@ const level1 = new Level(
     [
         new Bottle(150, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
         new Bottle(180, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
+        new Bottle(450, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
         new Bottle(600, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
         new Bottle(630, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
+        new Bottle(900, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
         new Bottle(1100, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
         new Bottle(1130, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
+        new Bottle(1400, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
         new Bottle(1600, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
         new Bottle(1630, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
+        new Bottle(1900, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
         new Bottle(2100, 350, 'img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
         new Bottle(2130, 350, 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png')
     ],

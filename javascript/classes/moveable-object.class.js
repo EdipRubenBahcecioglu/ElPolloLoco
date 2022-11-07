@@ -4,6 +4,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     speedX = 0;
     acceleration = 2.5; // Wie schnell wird unser Obkejt beschleunigt z.B. wenn Char 1 sek in der Luft ist fällt er langsamer als wenn er 3 sek in der Luft ist
     energyChar = 100; // Leben vom Objekt z.B. Char und Chicken
+    energyBoss = 100;
     lastHit = 0; // Zeitpunkt,
     otherDirection = false;
     collectedCoins = 0;
@@ -11,6 +12,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     isAttacked = false;
     isAttacking = false;
     bossHurt = false;
+    haveVision = false;
 
     offset = {
         top: 0,
@@ -36,10 +38,10 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         }
     }
 
-    objectHitGround(){
-        if(this.y > 340){ // 350 war vorher
+    objectHitGround() {
+        if (this.y > 340) { // 350 war vorher
             return true;
-        } 
+        }
         return false;
     }
 
@@ -72,7 +74,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
 
     collect(collectedObject) {
         if (collectedObject == 'coin') {
-            if (this.collectedCoins < 100) { 
+            if (this.collectedCoins < 100) {
                 this.collectedCoins += 10;
             }
         }
@@ -88,12 +90,22 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         }
     }
 
-    hit(takenDamage) {
-        this.energyChar -= takenDamage; // Wenn das Objekt mit etwas anderem kollidiert, wird vom Energy 5 Leben abgezogen
-        if (this.energyChar < 0) {
-            this.energyChar = 0;
-        } else {
-            this.lastHit = new Date().getTime(); // Das ist der Zeitpunk in Milisek seit dem 1.1.1970, wir benutzen diesen Zeitpunk einfach nur um eine Rechengrundlage zu haben
+    hit(takenDamage, hittenObject) {
+        if (hittenObject = 'character') {
+            this.energyChar -= takenDamage; // Wenn das Objekt mit etwas anderem kollidiert, wird vom Energy 5 Leben abgezogen
+            if (this.energyChar < 0) {
+                this.energyChar = 0;
+            } else {
+                this.lastHit = new Date().getTime(); // Das ist der Zeitpunk in Milisek seit dem 1.1.1970, wir benutzen diesen Zeitpunk einfach nur um eine Rechengrundlage zu haben
+            }
+        }
+        if (hittenObject = 'boss') {
+            this.energyBoss -= takenDamage;
+            if (this.energyBoss < 0) {
+                this.energyBoss = 0;
+            } else {
+                this.lastHit = new Date().getTime();
+            }
         }
     }
 
@@ -105,12 +117,17 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         return timepassed < 1; // Jede Sekunde nachdem der Char von einem Objekt berührt wurde, hört die Imagehurt-Animation auf
     }
 
-    isDead() {
-        return this.energyChar == 0;
+    isDead(object) {
+        if(object = 'character'){
+            return this.energyChar == 0;
+        }
+        if(object = 'boss'){
+            return this.energyBoss == 0;
+        }
     }
 
-    getAttacked(){
-        if(this.isAttacked){
+    getAttacked() {
+        if (this.isAttacked) {
             return true;
         }
     }

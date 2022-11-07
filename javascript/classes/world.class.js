@@ -8,6 +8,7 @@ class World {
     statusBarHealth = new StatusBar();
     statusBarCoin = new StatusBarCoin();
     statusBarBottle = new StatusBarBottle();
+    statusBarEndboss = new StatusBarBoss(this.level.bosses[0].x, this.level.bosses[0].y);
     throwableObject = [];
 
 
@@ -20,6 +21,7 @@ class World {
         this.checkAllCollisions();
         this.throwBottle();
         this.removeObject();
+        this.checkCharacterinDangerZone();
     }
 
     checkAllCollisions() {
@@ -86,7 +88,7 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isAttacked) {
-                    this.character.hit('5');
+                    this.character.hit('5', 'character');
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
             })
@@ -97,7 +99,7 @@ class World {
         setInterval(() => {
             this.level.bosses.forEach((endboss) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if (this.character.isColliding(endboss)) {
-                    this.character.hit('10');
+                    this.character.hit('10', 'character');
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
             })
@@ -186,6 +188,8 @@ class World {
                             const throwedBottle = this.throwableObject[x];
                             if (throwedBottle.isColliding(boss)) {
                                 boss.bossHurt = true;
+                                boss.hit('10', 'boss');
+                                this.statusBarEndboss.setPercentage(boss.energyBoss, boss.x, boss.y);
                                 throwedBottle.bottleGettingSplashed();
                                 this.removeObject(x, throwedBottle, 'bottle', 75);
                             }
@@ -219,6 +223,19 @@ class World {
         }
     }
 
+    checkCharacterinDangerZone(){
+        setInterval(()=>{
+            let endboss = this.level.bosses[0];
+            if(endboss.x - this.character.x < 500){
+                endboss.haveVision = true;
+                this.statusBarEndboss.move = false;
+            } else{
+                endboss.haveVision = false;
+                this.statusBarEndboss.move = true;
+            }
+        }, 1000 / 60);
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe
         this.ctx.translate(this.camera_x, 0);
@@ -228,7 +245,8 @@ class World {
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
-        this.ctx.translate(this.camera_x, 0); // Die Koordinaten werden wieder freigegeben d.h. die nachfolgenden Objekte und Hintergründe ändern sich wenn der Char sich bewegt 
+        this.ctx.translate(this.camera_x, 0); // Die Koordinaten werden wieder freigegeben d.h. die nachfolgenden Objekte und Hintergründe ändern sich wenn der Char sich bewegt
+        this.addToMap(this.statusBarEndboss); 
         this.addObjectsToMap(this.level.bottle);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.bosses);
