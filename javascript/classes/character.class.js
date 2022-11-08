@@ -75,7 +75,10 @@ class Character extends MoveableObject {
         'img/2_character_pepe/1_idle/long_idle/I-18.png',
         'img/2_character_pepe/1_idle/long_idle/I-19.png',
         'img/2_character_pepe/1_idle/long_idle/I-20.png',
-    ]
+    ];
+
+    isMakingPause;
+    isSleeping;
 
     world; // In dieser Variable ist der Komplette Inhalt der World Classe enthalten
     //walking_sound = new Audio('audio/walking.mp3'); // SOUND FUCKT AB ########################
@@ -99,20 +102,29 @@ class Character extends MoveableObject {
             if (this.world.keyboard.right && this.x < this.world.level.level_end_x) { // Wenn Keyboard right == true ist, dann sollen die Bilder ausgetauscht werden (Zeile 41) und der Char sich bewegen // && this.x < this.world.level.level_end_x bedeutet, dass unser Char nur soweit nach rechts laufen kann bis die Variable level_end_x (hier 2200px) erreicht ist
                 this.moveRight();
                 this.otherDirection = false;
+                this.isMakingPause = false;
+                this.isSleeping = false;
+                this.lastMovement = new Date().getTime();
                 //this.walking_sound.play(); // Wenn der Char läuft wird der Sound aus Zeile 19 abgespielt // SOUND FUCKT AB ###############################
             }
 
             if (this.world.keyboard.left && this.x > 0) {  // && this.x > 0 bedeutet, dass der Char nur nach links gehen kann wenn er bereits vorher nach rechts gelaufen ist d.h. er kann nicht nach links außerhalb der map laufen
                 this.moveLeft();
                 this.otherDirection = true;
+                this.isMakingPause = false;
+                this.isSleeping = false;
+                this.lastMovement = new Date().getTime();
                 //this.walking_sound.play(); // Wenn der Char läuft wird der Sound aus Zeile 19 abgespielt // SOUND FUCKT AB ###############################
             }
             this.world.camera_x = -this.x + 100; // +100 bedeutet, dass unser Char immer 100px standardgemäß weiter rechts auf der x Achse positioniert wird
 
             if (this.world.keyboard.space && !this.isAboveGround()) { // Wenn Leerzeichentaste gedrückt wird und der char sich nicht(!) über dem Boden befindet...
                 this.jump();
+                this.isMakingPause = false;
+                this.isSleeping = false;
+                this.lastMovement = new Date().getTime();
             }
-
+            // !this.world.keyboard.left && !this.world.keyboard.right && !this.world.keyboard.space && !this.world.keyboard.attack
         }, 1000 / 60); // 1000 / 60 = 60 FPS //////// WAR 60
 
         setInterval(() => {
@@ -121,18 +133,32 @@ class Character extends MoveableObject {
                 this.playAnimation(this.IMAGES_DEAD); // .. werden die Bilder vom Tod nacheinander abgepsielt
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+                this.isSleeping = false;
             } else if (this.isAboveGround()) { // Wenn unser Char sich in der luft befindet, dann soll der Array aus Zeile 19 die verschiedenen Bilder abspielen
                 this.playAnimation(this.IMAGES_JUMPING);
-            } else if (!this.world.keyboard.left && !this.world.keyboard.right && !this.world.keyboard.space && !this.world.keyboard.attack) {
-                setTimeout(() => {
-                    this.playAnimation(this.IMAGES_LONG_SLEEP)
-                }, 3500); // BAUSTELLE
-            } else {
-                if (this.world.keyboard.right || this.world.keyboard.left) { // Wenn Keyboard right == true ist, dann sollen die Bilder ausgetauscht werden und der Char sich bewegen // ODER (||) Wenn Keyboardtaste left == true ist
-                    // LAUF ANIMATION
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
+            } else if (this.isMakingPause) {
+                this.playAnimation(this.IMAGES_SHORT_SLEEP);
+            } else if(this.isSleeping){
+                this.playAnimation(this.IMAGES_LONG_SLEEP);
+            } else if (this.world.keyboard.right || this.world.keyboard.left) { // Wenn Keyboard right == true ist, dann sollen die Bilder ausgetauscht werden und der Char sich bewegen // ODER (||) Wenn Keyboardtaste left == true ist
+                this.playAnimation(this.IMAGES_WALKING); // LAUF ANIMATION
             }
+            console.log(this.isSleepinggg());
         }, 150); // Bilder ändern sich jede 50 Milisekunden
+
+        setInterval(()=>{
+            if(!this.world.keyboard.left && !this.world.keyboard.right && !this.world.keyboard.space && !this.world.keyboard.attack){
+                setTimeout(()=>{
+                    this.isMakingPause = true;
+                }, 3000);
+            }
+
+            if(!this.world.keyboard.left && !this.world.keyboard.right && !this.world.keyboard.space && !this.world.keyboard.attack){
+                setTimeout(()=>{
+                    this.isMakingPause = false;
+                    this.isSleeping = true;
+                }, 6000);
+            }
+        }, 3000);
     }
 }

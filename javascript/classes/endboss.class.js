@@ -51,8 +51,7 @@ class Endboss extends MoveableObject {
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
         'img/4_enemie_boss_chicken/5_dead/G26.png'
-    ]
-
+    ];
 
     constructor() {
         super().loadImage();
@@ -65,21 +64,21 @@ class Endboss extends MoveableObject {
     }
 
     animate() {
-        setInterval(() => {
+        const moveBoss = setInterval(() => {
             this.moveLeft();
         }, 1000 / 60); // Bilder ändern sich jede 200 Milisekunden
 
-        setInterval(() => {
+        const moveBossAnimation = setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
         }, 230);
 
-        setInterval(() => {
+        const hurtBoss = setInterval(() => {
             if (this.bossHurt) {
                 this.playAnimation(this.IMAGES_HURT);
             }
         }, 100);
 
-        setInterval(() => {
+        const dangerZoneBoss = setInterval(() => {
             if (this.haveVision) {
                 this.playAnimation(this.IMAGES_ALERT);
                 this.speed = 0;
@@ -90,9 +89,10 @@ class Endboss extends MoveableObject {
             }
         }, 230);
 
-        setInterval(()=>{
+        const bossDead = setInterval(()=>{
             if(this.isDead('boss')){
                 this.playAnimation(this.IMAGES_DEAD);
+                clearInterval(moveBoss && moveBossAnimation && hurtBoss && dangerZoneBoss);
             }
         }, 150);
     }

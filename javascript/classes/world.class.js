@@ -188,7 +188,7 @@ class World {
                             const throwedBottle = this.throwableObject[x];
                             if (throwedBottle.isColliding(boss)) {
                                 boss.bossHurt = true;
-                                boss.hit('10', 'boss');
+                                boss.hit('50', 'boss'); /////// HIER MUSS 10 REIN!
                                 this.statusBarEndboss.setPercentage(boss.energyBoss, boss.x, boss.y);
                                 throwedBottle.bottleGettingSplashed();
                                 this.removeObject(x, throwedBottle, 'bottle', 75);
@@ -226,7 +226,7 @@ class World {
     checkCharacterinDangerZone(){
         setInterval(()=>{
             let endboss = this.level.bosses[0];
-            if(endboss.x - this.character.x < 500){
+            if(endboss.x - this.character.x < 500 || endboss.isDead()){
                 endboss.haveVision = true;
                 this.statusBarEndboss.move = false;
             } else{

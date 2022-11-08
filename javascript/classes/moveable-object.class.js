@@ -6,6 +6,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     energyChar = 100; // Leben vom Objekt z.B. Char und Chicken
     energyBoss = 100;
     lastHit = 0; // Zeitpunkt,
+    lastMovement = 0;
     otherDirection = false;
     collectedCoins = 0;
     collectedBottles = 0;
@@ -115,6 +116,12 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         timepassed = timepassed / 1000; // Differenz in Sekunden // Ergebnis hier ca 1660949864
         //console.log(timepassed);
         return timepassed < 1; // Jede Sekunde nachdem der Char von einem Objekt berührt wurde, hört die Imagehurt-Animation auf
+    }
+
+    isSleepinggg(){
+        let timepassed = new Date().getTime() - this.lastMovement;
+        timepassed = timepassed / 1000;
+        return timepassed < 1;
     }
 
     isDead(object) {
