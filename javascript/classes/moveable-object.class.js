@@ -118,10 +118,10 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         return timepassed < 1; // Jede Sekunde nachdem der Char von einem Objekt berührt wurde, hört die Imagehurt-Animation auf
     }
 
-    isSleepinggg(){
-        let timepassed = new Date().getTime() - this.lastMovement;
-        timepassed = timepassed / 1000;
-        return timepassed < 1;
+    isSleeping(minTimepassed, maxTimepassed){
+        let timepassed = new Date().getTime() - this.lastMovement; // Timepassed hier in Milisek.
+        timepassed = timepassed / 1000; // Timepassed hier in Sek
+        return timepassed >= minTimepassed && timepassed < maxTimepassed; // Wenn z.B. timepassed >= 2 Sek ist && timepassed < 4 Sek sind, dann wird true an die Funktion isSleeping returned
     }
 
     isDead(object) {

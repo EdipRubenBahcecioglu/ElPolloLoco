@@ -24,7 +24,7 @@ class StatusBarBoss extends MoveableObject {
     };
 
     setPercentage(percentage, bossXPosition, bossYPosition) { // Wir aktuallisieren die Variable percentage aus Zeile 25 die standardgemäß 100 ist
-        this.x = bossXPosition + 30;
+        this.x = bossXPosition;
         this.y = bossYPosition;
         this.percentage = percentage;
         let path = this.IMAGE_HEALTH[this.resolveImageIndex()]; // Unser Pfad der StatusBar wird uns aus der Funktion resolveImageIndex returned

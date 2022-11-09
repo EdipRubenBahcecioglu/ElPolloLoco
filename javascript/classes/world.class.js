@@ -46,9 +46,11 @@ class World {
                 if (this.character.otherDirection == false) {
                     this.createNewThrowableObject(70, 100, 'right');
                     this.updateBottleStatusBar();
+                    this.character.lastMovement = new Date().getTime();
                 } else {
                     this.createNewThrowableObject(30, 100, 'left');
                     this.updateBottleStatusBar();
+                    this.character.lastMovement = new Date().getTime();
                 }
                 this.character.isAttacking = true;
             }
