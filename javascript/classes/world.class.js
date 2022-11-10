@@ -228,7 +228,7 @@ class World {
     checkCharacterinDangerZone(){
         setInterval(()=>{
             let endboss = this.level.bosses[0];
-            if(endboss.x - this.character.x < 500 || endboss.isDead()){
+            if(endboss.x - this.character.x < 500 || endboss.isDead('boss')){
                 endboss.haveVision = true;
                 this.statusBarEndboss.move = false;
             } else{

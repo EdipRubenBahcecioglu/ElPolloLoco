@@ -103,9 +103,9 @@ class Endboss extends MoveableObject {
                 clearInterval(moveBoss && moveBossAnimation && hurtBoss && dangerZoneBoss);
                 setTimeout(()=>{
                     this.showDeadBossImg();
-                }, 300);
+                }, 250);
             }
-        }, 150);
+        }, 200);
     }
 
     showDeadBossImg(){
