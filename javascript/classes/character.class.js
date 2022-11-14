@@ -78,6 +78,7 @@ class Character extends MoveableObject {
     ];
 
     world; // In dieser Variable ist der Komplette Inhalt der World Classe enthalten
+    passedBoss;
     //walking_sound = new Audio('audio/walking.mp3'); // SOUND FUCKT AB ########################
 
 
@@ -110,6 +111,14 @@ class Character extends MoveableObject {
                 //this.walking_sound.play(); // Wenn der Char läuft wird der Sound aus Zeile 19 abgespielt // SOUND FUCKT AB ###############################
             }
             this.world.camera_x = -this.x + 100; // +100 bedeutet, dass unser Char immer 100px standardgemäß weiter rechts auf der x Achse positioniert wird
+
+            if(this.passedBoss == true){
+                this.world.camera_x = -this.x + 350;
+            }
+
+            if(this.passedBoss == false){
+                this.world.camera_x = -this.x + 100;
+            }
 
             if (this.world.keyboard.space && !this.isAboveGround()) { // Wenn Leerzeichentaste gedrückt wird und der char sich nicht(!) über dem Boden befindet...
                 this.jump();

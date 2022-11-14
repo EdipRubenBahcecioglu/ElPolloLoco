@@ -14,6 +14,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     isAttacking = false;
     bossHurt = false;
     haveVision = false;
+    wantToAttack = false;
 
     offset = {
         top: 0,

@@ -34,6 +34,7 @@ class World {
         this.checkBottleHitEnemy();
         this.checkBottleHitEndboss();
         this.checkCharacterMiss();
+        this.checkBossPassCharacter();
     }
 
     setWorld() {
@@ -190,7 +191,7 @@ class World {
                             const throwedBottle = this.throwableObject[x];
                             if (throwedBottle.isColliding(boss)) {
                                 boss.bossHurt = true;
-                                boss.hit('50', 'boss'); /////// HIER MUSS 10 REIN!
+                                boss.hit('10', 'boss');
                                 this.statusBarEndboss.setPercentage(boss.energyBoss, boss.x, boss.y);
                                 throwedBottle.bottleGettingSplashed();
                                 this.removeObject(x, throwedBottle, 'bottle', 75);
@@ -234,6 +235,19 @@ class World {
             } else{
                 endboss.haveVision = false;
                 this.statusBarEndboss.move = true;
+            }
+        }, 1000 / 60);
+    }
+
+    checkBossPassCharacter(){
+        setInterval(()=>{
+            let endboss = this.level.bosses[0];
+            if(endboss.x < this.character.x){
+                endboss.otherDirection = true;
+                this.character.passedBoss = true;
+            } else {
+                endboss.otherDirection = false;
+                this.character.passedBoss = false;
             }
         }, 1000 / 60);
     }

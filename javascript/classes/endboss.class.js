@@ -55,6 +55,7 @@ class Endboss extends MoveableObject {
 
     stopDeadAnimation = false;
     bossIntervals = [];
+    bossWillAttack;
 
     constructor() {
         super().loadImage();
@@ -81,6 +82,24 @@ class Endboss extends MoveableObject {
             this.bossIntervals.push(hurtBoss);
             if (this.bossHurt) {
                 this.playAnimation(this.IMAGES_HURT);
+                setTimeout(() => {
+                    this.bossWillAttack = true;
+                }, 150);
+            }
+        }, 100);
+
+        const bossAttack = setInterval(() => {
+            this.bossIntervals.push(bossAttack);
+            if (this.bossWillAttack) {
+                if (this.otherDirection == false) {
+                    this.moveLeft();
+                } else if (this.otherDirection = true) {
+                    clearInterval(moveBoss);
+                    this.moveRight();
+                }
+                this.speed = 3.50;
+                this.playAnimation(this.IMAGES_ATTACK) && this.playAnimation(this.IMAGES_WALKING);
+                this.haveVision = false;
             }
         }, 100);
 
@@ -96,20 +115,20 @@ class Endboss extends MoveableObject {
             }
         }, 230);
 
-        const bossDead = setInterval(()=>{
+        const bossDead = setInterval(() => {
             this.bossIntervals.push(bossDead);
-            if(this.isDead('boss')){
+            if (this.isDead('boss')) {
                 this.playAnimation(this.IMAGES_DEAD);
                 clearInterval(moveBoss && moveBossAnimation && hurtBoss && dangerZoneBoss);
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.showDeadBossImg();
                 }, 250);
             }
         }, 200);
     }
 
-    showDeadBossImg(){
-        this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length-1]);
-        for(let i = 1; i < this.bossIntervals.length; i++) clearInterval(this.bossIntervals[i]);
+    showDeadBossImg() {
+        this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+        for (let i = 1; i < this.bossIntervals.length; i++) clearInterval(this.bossIntervals[i]);
     }
 }
