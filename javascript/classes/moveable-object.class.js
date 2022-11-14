@@ -55,6 +55,18 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         this.x -= this.speed; // Wenn linke Pfeiltaste betätigt wurde, soll die Y Achse um die Speedvariable verringert werden
     }
 
+    sprintLeft() {
+        this.x -= 25.00; // Wenn linke Pfeiltaste betätigt wurde, soll die Y Achse um die Speedvariable verringert werden
+    }
+
+    sprintRight() {
+        this.x += 25.00; // Wenn Rechte Pfeiltaste betätigt wurde, soll die X Achse um die Speedvariable erhöht werden
+    }
+
+    leaveMap(){
+        this.y += 10.0;
+    }
+
     playAnimation(images) {
         let i = this.currentImage % images.length // % bedeutet -> i = 0, dann 1, dann 2, dann 3, dann 4, dann 5 und dann weil es keine weitern Bilder gibt, starten wir wieder bei 0 d.h. % ist eine verkürzte if Abfrage
         let path = images[i]; // path = erstes Bild aus dem Array aus Zeile 8

@@ -10,6 +10,14 @@ class World {
     statusBarBottle = new StatusBarBottle();
     statusBarEndboss = new StatusBarBoss(this.level.bosses[0].x, this.level.bosses[0].y);
     throwableObject = [];
+    coinCollectSound = new Audio('audio/coin_collect2.mp3');
+    bottleCollectSound = new Audio('audio/collect_bottle.mp3');
+    bottleThrowSound = new Audio('audio/bottle_throw.mp3');
+    bottleSplashSound = new Audio('audio/bottle_broke.mp3');
+    charHurtSound = new Audio('audio/char_hurt.mp3');
+    throwSuccesSound = new Audio('audio/arriba.mp3');
+    heartCollectSound = new Audio('audio/collect_heart.mp3');
+    enterDangerZoneSound = new Audio('audio/danger_zone.mp3');
 
 
     constructor(canvas, keyboard) {
@@ -46,14 +54,13 @@ class World {
             if (this.character.collectedBottles > 0 && this.keyboard.attack && this.character.isAttacking == false) {
                 if (this.character.otherDirection == false) {
                     this.createNewThrowableObject(70, 100, 'right');
-                    this.updateBottleStatusBar();
-                    this.character.lastMovement = new Date().getTime();
                 } else {
                     this.createNewThrowableObject(30, 100, 'left');
-                    this.updateBottleStatusBar();
-                    this.character.lastMovement = new Date().getTime();
                 }
+                this.bottleThrowSound.play();
                 this.character.isAttacking = true;
+                this.updateBottleStatusBar();
+                this.character.lastMovement = new Date().getTime();
             }
         }, 100);
     }
@@ -82,6 +89,7 @@ class World {
                 const missedBottle = this.throwableObject[x];
                 if (missedBottle.objectHitGround()) {
                     this.removeObject(x, missedBottle, 'bottle', 300);
+                    this.bottleSplashSound.play();
                 }
             }
         }, 1000 / 60);
@@ -91,6 +99,7 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isAttacked) {
+                    this.charHurtSound.play();
                     this.character.hit('5', 'character');
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
@@ -102,6 +111,7 @@ class World {
         setInterval(() => {
             this.level.bosses.forEach((endboss) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if (this.character.isColliding(endboss)) {
+                    this.charHurtSound.play();
                     this.character.hit('10', 'character');
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
@@ -113,6 +123,7 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
                 if (this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY <= 0) {
+                    this.throwSuccesSound.play();
                     enemy.isAttacked = true;
                     this.character.speedY += 25;
                     this.character.y = 150;
@@ -128,6 +139,7 @@ class World {
             this.level.coin.forEach((coin, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                 if (this.character.isColliding(coin)) {
                     this.character.collect('coin');
+                    this.coinCollectSound.play();
                     level1.coin.splice(index, 1);
                     this.statusBarCoin.setCoins(this.character.collectedCoins);
                 }
@@ -141,6 +153,7 @@ class World {
                 this.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                     if (this.character.isColliding(bottle)) {
                         this.character.collect('bottle');
+                        this.bottleCollectSound.play();
                         level1.bottle.splice(index, 1);
                         this.statusBarBottle.setBottles(this.character.collectedBottles);
                     }
@@ -154,6 +167,7 @@ class World {
             if (this.character.energyChar < 100) {
                 this.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                     if (this.character.isColliding(heart)) {
+                        this.heartCollectSound.play();
                         this.character.collect('heart');
                         level1.heart.splice(index, 1);
                         this.statusBarHealth.setPercentage(this.character.energyChar);
@@ -170,6 +184,7 @@ class World {
                     for (let b = 0; b < this.throwableObject.length; b++) {
                         let throwedBottle = this.throwableObject[b];
                         if (throwedBottle.isColliding(enemie)) {
+                            this.throwSuccesSound.play();
                             enemie.isAttacked = true;
                         } else
                             if (throwedBottle.bottleSplashed) {
@@ -190,6 +205,7 @@ class World {
                         for (let x = 0; x < this.throwableObject.length; x++) {
                             const throwedBottle = this.throwableObject[x];
                             if (throwedBottle.isColliding(boss)) {
+                                this.throwSuccesSound.play();
                                 boss.bossHurt = true;
                                 boss.hit('10', 'boss');
                                 this.statusBarEndboss.setPercentage(boss.energyBoss, boss.x, boss.y);
@@ -229,9 +245,10 @@ class World {
     checkCharacterinDangerZone(){
         setInterval(()=>{
             let endboss = this.level.bosses[0];
-            if(endboss.x - this.character.x < 500 || endboss.isDead('boss')){
+            if(endboss.x - this.character.x < 500 && endboss.bossWillAttack == false || endboss.isDead('boss')){
                 endboss.haveVision = true;
                 this.statusBarEndboss.move = false;
+                this.enterDangerZoneSound.play();
             } else{
                 endboss.haveVision = false;
                 this.statusBarEndboss.move = true;

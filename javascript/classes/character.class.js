@@ -79,7 +79,9 @@ class Character extends MoveableObject {
 
     world; // In dieser Variable ist der Komplette Inhalt der World Classe enthalten
     passedBoss;
-    //walking_sound = new Audio('audio/walking.mp3'); // SOUND FUCKT AB ########################
+    // walking_sound = new Audio('audio/walking.mp3');
+    charJumpSound = new Audio('audio/char_jump.mp3');
+    charSleepSound = new Audio('audio/char_sleep.mp3');
 
 
     constructor() {
@@ -96,24 +98,26 @@ class Character extends MoveableObject {
 
     animate() {
         setInterval(() => {
-            //this.walking_sound.pause(); // Sound aus Zeile 19 wird pausiert bevor er neu abgespielt wird, da sonst der Sound dauerhaft laufen würde // ################# SOUND FUCKT AB
+            // this.walking_sound.pause(); // Sound aus Zeile 19 wird pausiert bevor er neu abgespielt wird, da sonst der Sound dauerhaft laufen würde // ################# SOUND FUCKT AB
             if (this.world.keyboard.right && this.x < this.world.level.level_end_x) { // Wenn Keyboard right == true ist, dann sollen die Bilder ausgetauscht werden (Zeile 41) und der Char sich bewegen // && this.x < this.world.level.level_end_x bedeutet, dass unser Char nur soweit nach rechts laufen kann bis die Variable level_end_x (hier 2200px) erreicht ist
                 this.moveRight();
                 this.otherDirection = false;
                 this.lastMovement = new Date().getTime();
-                //this.walking_sound.play(); // Wenn der Char läuft wird der Sound aus Zeile 19 abgespielt // SOUND FUCKT AB ###############################
+                this.charSleepSound.pause();
+                // this.walking_sound.play(); // Wenn der Char läuft wird der Sound aus Zeile 19 abgespiel
             }
 
             if (this.world.keyboard.left && this.x > 0) {  // && this.x > 0 bedeutet, dass der Char nur nach links gehen kann wenn er bereits vorher nach rechts gelaufen ist d.h. er kann nicht nach links außerhalb der map laufen
                 this.moveLeft();
                 this.otherDirection = true;
                 this.lastMovement = new Date().getTime();
-                //this.walking_sound.play(); // Wenn der Char läuft wird der Sound aus Zeile 19 abgespielt // SOUND FUCKT AB ###############################
+                this.charSleepSound.pause();
+                // this.walking_sound.play(); // Wenn der Char läuft wird der Sound aus Zeile 19 abgespielt 
             }
             this.world.camera_x = -this.x + 100; // +100 bedeutet, dass unser Char immer 100px standardgemäß weiter rechts auf der x Achse positioniert wird
 
             if(this.passedBoss == true){
-                this.world.camera_x = -this.x + 350;
+                this.world.camera_x = -this.x + 400;
             }
 
             if(this.passedBoss == false){
@@ -121,7 +125,9 @@ class Character extends MoveableObject {
             }
 
             if (this.world.keyboard.space && !this.isAboveGround()) { // Wenn Leerzeichentaste gedrückt wird und der char sich nicht(!) über dem Boden befindet...
+                this.charJumpSound.play();
                 this.jump();
+                this.charSleepSound.pause();
                 this.lastMovement = new Date().getTime();
             }
         }, 1000 / 60); // 1000 / 60 = 60 FPS //////// WAR 60
@@ -130,12 +136,15 @@ class Character extends MoveableObject {
 
             if (this.isDead('character')) { // Wenn isDead in der moveObj = true ist dann ...
                 this.playAnimation(this.IMAGES_DEAD); // .. werden die Bilder vom Tod nacheinander abgepsielt
+                this.leaveMap();
+                this.world.charHurtSound.pause();
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) { // Wenn unser Char sich in der luft befindet, dann soll der Array aus Zeile 19 die verschiedenen Bilder abspielen
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.isSleeping('2', '4')) {
                 this.playAnimation(this.IMAGES_SHORT_SLEEP);
+                this.charSleepSound.play();
                 // console.log('PAUSE:',this.isMakingPause());
             } else if(this.isSleeping('4', '999999')){
                 this.playAnimation(this.IMAGES_LONG_SLEEP);

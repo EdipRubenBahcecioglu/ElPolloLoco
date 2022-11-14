@@ -55,7 +55,7 @@ class Endboss extends MoveableObject {
 
     stopDeadAnimation = false;
     bossIntervals = [];
-    bossWillAttack;
+    bossWillAttack = false;
 
     constructor() {
         super().loadImage();
@@ -69,42 +69,42 @@ class Endboss extends MoveableObject {
 
     animate() {
         const moveBoss = setInterval(() => {
-            this.bossIntervals.push(moveBoss);
-            this.moveLeft();
+            this.moveLeft('normal');
         }, 1000 / 60); // Bilder ändern sich jede 200 Milisekunden
+        this.bossIntervals.push(moveBoss);
 
         const moveBossAnimation = setInterval(() => {
-            this.bossIntervals.push(moveBossAnimation);
             this.playAnimation(this.IMAGES_WALKING);
         }, 230);
+        this.bossIntervals.push(moveBossAnimation);
 
         const hurtBoss = setInterval(() => {
             this.bossIntervals.push(hurtBoss);
+            this.haveVision == false;
             if (this.bossHurt) {
                 this.playAnimation(this.IMAGES_HURT);
-                setTimeout(() => {
+                setTimeout(()=>{
                     this.bossWillAttack = true;
                 }, 150);
             }
-        }, 100);
+        }, 1000 / 60);
 
         const bossAttack = setInterval(() => {
-            this.bossIntervals.push(bossAttack);
             if (this.bossWillAttack) {
+                this.haveVision == false;
                 if (this.otherDirection == false) {
-                    this.moveLeft();
-                } else if (this.otherDirection = true) {
-                    clearInterval(moveBoss);
-                    this.moveRight();
+                    this.sprintLeft();
                 }
-                this.speed = 3.50;
+                if (this.otherDirection == true) {
+                    this.sprintRight();
+                    clearInterval(this.bossIntervals[0]);
+                }
                 this.playAnimation(this.IMAGES_ATTACK) && this.playAnimation(this.IMAGES_WALKING);
-                this.haveVision = false;
             }
-        }, 100);
+        }, 150);
+        this.bossIntervals.push(bossAttack);
 
         const dangerZoneBoss = setInterval(() => {
-            this.bossIntervals.push(dangerZoneBoss);
             if (this.haveVision) {
                 this.playAnimation(this.IMAGES_ALERT);
                 this.speed = 0;
@@ -114,9 +114,9 @@ class Endboss extends MoveableObject {
                 this.x -= 0.15;
             }
         }, 230);
+        this.bossIntervals.push(dangerZoneBoss);
 
         const bossDead = setInterval(() => {
-            this.bossIntervals.push(bossDead);
             if (this.isDead('boss')) {
                 this.playAnimation(this.IMAGES_DEAD);
                 clearInterval(moveBoss && moveBossAnimation && hurtBoss && dangerZoneBoss);
@@ -125,6 +125,7 @@ class Endboss extends MoveableObject {
                 }, 250);
             }
         }, 200);
+        this.bossIntervals.push(bossDead);
     }
 
     showDeadBossImg() {
