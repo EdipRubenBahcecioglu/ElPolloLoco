@@ -4,6 +4,7 @@ class World {
     ctx; // Innerhalb des Speilfelds legen wir in Zeile 22 fest, dass im 2D Format gespielt wird
     canvas; // = Spielfeld
     keyboard; // Spieltasten
+    backgroundMusic;
     camera_x = 0;
     statusBarHealth = new StatusBar();
     statusBarCoin = new StatusBarCoin();
@@ -18,6 +19,7 @@ class World {
     throwSuccesSound = new Audio('audio/arriba.mp3');
     heartCollectSound = new Audio('audio/collect_heart.mp3');
     enterDangerZoneSound = new Audio('audio/danger_zone.mp3');
+    allAudioSounds = [];
 
 
     constructor(canvas, keyboard) {
@@ -30,6 +32,8 @@ class World {
         this.throwBottle();
         this.removeObject();
         this.checkCharacterinDangerZone();
+        this.stickStatusBarBossToEndboss();
+        this.pushAudiosToArray();
     }
 
     checkAllCollisions() {
@@ -47,6 +51,20 @@ class World {
 
     setWorld() {
         this.character.world = this; // This steht hier alleine d.h. dass die Variable world in der Char Klasse kann auf alle Variablen in der World Klasse zugreifen
+    }
+
+    pushAudiosToArray(){
+        this.allAudioSounds.push(this.coinCollectSound);
+        this.allAudioSounds.push(this.bottleCollectSound);
+        this.allAudioSounds.push(this.bottleThrowSound);
+        this.allAudioSounds.push(this.bottleSplashSound);
+        this.allAudioSounds.push(this.charHurtSound);
+        this.allAudioSounds.push(this.throwSuccesSound);
+        this.allAudioSounds.push(this.heartCollectSound);
+        this.allAudioSounds.push(this.enterDangerZoneSound);
+        this.allAudioSounds.push(this.character.charJumpSound);
+        this.allAudioSounds.push(this.character.charSleepSound);
+        this.allAudioSounds.push(this.backgroundMusic);
     }
 
     throwBottle() {
@@ -266,6 +284,14 @@ class World {
                 endboss.otherDirection = false;
                 this.character.passedBoss = false;
             }
+        }, 1000 / 60);
+    }
+
+    stickStatusBarBossToEndboss(){
+        let statusbarBoss = this.statusBarEndboss;
+        setInterval(()=>{
+            statusbarBoss.x = this.level.bosses[0].x;
+            statusbarBoss.y = this.level.bosses[0].y;
         }, 1000 / 60);
     }
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,13 +32,36 @@
     <script src="./javascript/classes/throwable-object.class.js"></script>
     <script src="./javascript/game.js"></script>
 </head>
-<body onload="init()">
+
+<body>
     <div class="game-headline">
         <h1>EL POLLO LOCO</h1>
     </div>
 
     <div class="gamefield">
-        <canvas height= 480px; width="720px" id="canvas"></canvas>
+        <canvas height=480px; width="720px" id="canvas"></canvas>
+        <div id="start-screen" class="start-screen"><img src="img/9_intro_outro_screens/start/startscreen_1.png"></div>
+        <div id="end-screen-lose" class="end-screen d-none"><img src="img/9_intro_outro_screens/game_over/oh no you lost!.png"></div>
+        <div id="end-screen-win" class="end-screen d-none"><img src="img/9_intro_outro_screens/game_over/game over.png"></div>
+        <div id="how-to-play" class="how-to-play d-none">
+            <div class="close-btn"><img onclick="closeContainer('how-to-play')" class="close-img" src="img/icons/close.png"></div>
+            <div><img src="img/icons/attack.png"><span>Attack</span></div>
+            <div><img src="img/icons/moveLeft.png"><span>Move Left</span></div>
+            <div><img src="img/icons/moveRight.png"><span>Move Right</span></div>
+            <div><img src="img/icons/space.png"><span>Jump</span></div>
+        </div>
+    </div>
+
+    <div class="main-hub">
+        <div class="hub">
+            <div class="start-game-btn"><button onclick="initLevel(); closeContainer('start-screen'); init()">Let me play!</button></div>
+            <div class="guide-mute">
+                <image id="volume-on" onclick="muteGame();" src="img/icons/volume-on.png"></image>
+                <image id="volume-mute" onclick="allowSound()" class="d-none" src="img/icons/volume-mute.png"></image>
+                <image onclick="openContainer('how-to-play')" src="img/icons/userGuide.png"></image>
+            </div>
+        </div>
     </div>
 </body>
+
 </html>
