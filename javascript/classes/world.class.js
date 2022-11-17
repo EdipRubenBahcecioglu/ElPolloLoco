@@ -4,7 +4,6 @@ class World {
     ctx; // Innerhalb des Speilfelds legen wir in Zeile 22 fest, dass im 2D Format gespielt wird
     canvas; // = Spielfeld
     keyboard; // Spieltasten
-    backgroundMusic;
     camera_x = 0;
     statusBarHealth = new StatusBar();
     statusBarCoin = new StatusBarCoin();
@@ -34,6 +33,7 @@ class World {
         this.checkCharacterinDangerZone();
         this.stickStatusBarBossToEndboss();
         this.pushAudiosToArray();
+        this.controllAudioVolume();
     }
 
     checkAllCollisions() {
@@ -64,23 +64,45 @@ class World {
         this.allAudioSounds.push(this.enterDangerZoneSound);
         this.allAudioSounds.push(this.character.charJumpSound);
         this.allAudioSounds.push(this.character.charSleepSound);
-        this.allAudioSounds.push(this.backgroundMusic);
+        // this.allAudioSounds.push(this.backgroundMusic);
+    }
+
+    controllAudioVolume(){
+        this.allAudioSounds.forEach((audio) =>{
+            audio.volume = 0.03;
+        })
     }
 
     throwBottle() {
         setInterval(() => {
-            if (this.character.collectedBottles > 0 && this.keyboard.attack && this.character.isAttacking == false) {
+            if (this.bottleIsThrowable()) {
                 if (this.character.otherDirection == false) {
                     this.createNewThrowableObject(70, 100, 'right');
                 } else {
                     this.createNewThrowableObject(30, 100, 'left');
                 }
-                this.bottleThrowSound.play();
-                this.character.isAttacking = true;
-                this.updateBottleStatusBar();
-                this.character.lastMovement = new Date().getTime();
+                this.updateThrowBottleVariablesAndSounds();
             }
         }, 100);
+    }
+
+    bottleIsThrowable(){
+        return this.character.collectedBottles > 0 && this.keyboard.attack && this.character.isAttacking == false
+    }
+
+    updateThrowBottleVariablesAndSounds(){
+        this.bottleThrowSound.play();
+        this.character.isAttacking = true;
+        this.updateBottleStatusBar();
+        this.character.lastMovement = new Date().getTime();
+    }
+
+    updateCharacterVariablesAndSounds(enemy){
+        this.throwSuccesSound.play();
+        enemy.isAttacked = true;
+        this.character.speedY += 25;
+        this.character.y = 150;
+        this.character.isAttacking = false;
     }
 
     updateBottleStatusBar() {
@@ -116,13 +138,17 @@ class World {
     checkEnemyCollisions() {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
-                if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isAttacked) {
+                if (this.characterCanBeHurt(enemy)) {
                     this.charHurtSound.play();
                     this.character.hit('5', 'character');
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
             })
         }, 200);
+    }
+
+    characterCanBeHurt(enemy){
+        return this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isAttacked;
     }
 
     checkBossCollisions() {
@@ -140,26 +166,23 @@ class World {
     checkCollisionsFromTop() {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
-                if (this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY <= 0) {
-                    this.throwSuccesSound.play();
-                    enemy.isAttacked = true;
-                    this.character.speedY += 25;
-                    this.character.y = 150;
+                if (this.characterJumpedOnEnemy(enemy)) {
+                    this.updateCharacterVariablesAndSounds(enemy);
                     this.removeObject(index, enemy, 'enemy', 400);
-                    this.character.isAttacking = false;
                 }
             });
         }, 1000 / 60);
+    }
+
+    characterJumpedOnEnemy(enemy){
+        return this.character.isColliding(enemy) && !enemy.isDead() && this.character.isAboveGround() && this.character.speedY <= 0
     }
 
     checkCoinCollisions() {
         setInterval(() => {
             this.level.coin.forEach((coin, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                 if (this.character.isColliding(coin)) {
-                    this.character.collect('coin');
-                    this.coinCollectSound.play();
-                    level1.coin.splice(index, 1);
-                    this.statusBarCoin.setCoins(this.character.collectedCoins);
+                    this.objectGettingCollected('coin' , index, level1.coin, this.coinCollectSound);
                 }
             })
         }, 50);
@@ -170,10 +193,7 @@ class World {
             if (this.character.collectedBottles < 5) {
                 this.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                     if (this.character.isColliding(bottle)) {
-                        this.character.collect('bottle');
-                        this.bottleCollectSound.play();
-                        level1.bottle.splice(index, 1);
-                        this.statusBarBottle.setBottles(this.character.collectedBottles);
+                        this.objectGettingCollected('bottle' , index, level1.bottle, this.bottleCollectSound);
                     }
                 })
             }
@@ -185,14 +205,24 @@ class World {
             if (this.character.energyChar < 100) {
                 this.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                     if (this.character.isColliding(heart)) {
-                        this.heartCollectSound.play();
-                        this.character.collect('heart');
-                        level1.heart.splice(index, 1);
-                        this.statusBarHealth.setPercentage(this.character.energyChar);
+                        this.objectGettingCollected('heart' , index, level1.heart, this.heartCollectSound);
                     }
                 })
             }
         }, 50);
+    }
+
+    objectGettingCollected(collectedObject, indexOfObject, objectInLevel, collectSound){
+        this.character.collect(collectedObject);
+        collectSound.play();
+        objectInLevel.splice(indexOfObject, 1);
+        if(collectedObject == 'coin'){
+            this.statusBarCoin.setCoins(this.character.collectedCoins);
+        } else if(collectedObject == 'bottle'){
+            this.statusBarBottle.setBottles(this.character.collectedBottles);
+        } else if(collectedObject == 'heart'){
+            this.statusBarHealth.setPercentage(this.character.energyChar);
+        }
     }
 
     checkBottleHitEnemy() {
@@ -245,25 +275,33 @@ class World {
 
     removeObject(indexOfObject, object, array, timeoutTime) {
         if (array == 'bottle') {
-            setTimeout((() => {
-                if (this.throwableObject[indexOfObject] === object) {
-                    this.throwableObject.splice(indexOfObject, 1);
-                }
-            }), timeoutTime);
+            this.removeBottleObject(indexOfObject, object, timeoutTime);
         }
         if (array == 'enemy') {
-            setTimeout((() => {
-                if (this.level.enemies[indexOfObject] === object) {
-                    this.level.enemies.splice(indexOfObject, 1);
-                }
-            }), timeoutTime);
+            this.removeEnemyObject(indexOfObject, object, timeoutTime);
         }
+    }
+
+    removeBottleObject(indexOfObject, object, timeoutTime){
+        setTimeout((() => {
+            if (this.throwableObject[indexOfObject] === object) {
+                this.throwableObject.splice(indexOfObject, 1);
+            }
+        }), timeoutTime);
+    }
+
+    removeEnemyObject(indexOfObject, object, timeoutTime){
+        setTimeout((() => {
+            if (this.level.enemies[indexOfObject] === object) {
+                this.level.enemies.splice(indexOfObject, 1);
+            }
+        }), timeoutTime);
     }
 
     checkCharacterinDangerZone(){
         setInterval(()=>{
             let endboss = this.level.bosses[0];
-            if(endboss.x - this.character.x < 500 && endboss.bossWillAttack == false || endboss.isDead('boss')){
+            if(this.characterIsInDangerZone(endboss)){
                 endboss.haveVision = true;
                 this.statusBarEndboss.move = false;
                 this.enterDangerZoneSound.play();
@@ -272,6 +310,10 @@ class World {
                 this.statusBarEndboss.move = true;
             }
         }, 1000 / 60);
+    }
+
+    characterIsInDangerZone(endboss){
+        return endboss.x - this.character.x < 500 && endboss.bossWillAttack == false || endboss.isDead('boss');
     }
 
     checkBossPassCharacter(){

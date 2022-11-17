@@ -6,12 +6,12 @@ class StatusBarBoss extends MoveableObject {
     move = false;
     
     IMAGE_HEALTH = [
-        'img/7_statusbars/2_statusbar_endboss/endboss_0.png',
-        'img/7_statusbars/2_statusbar_endboss/endboss_20.png',
-        'img/7_statusbars/2_statusbar_endboss/endboss_40.png',
-        'img/7_statusbars/2_statusbar_endboss/endboss_60.png',
-        'img/7_statusbars/2_statusbar_endboss/endboss_80.png',
-        'img/7_statusbars/2_statusbar_endboss/endboss_100.png'
+        './img/7_statusbars/2_statusbar_endboss/endboss_0.png',
+        './img/7_statusbars/2_statusbar_endboss/endboss_20.png',
+        './img/7_statusbars/2_statusbar_endboss/endboss_40.png',
+        './img/7_statusbars/2_statusbar_endboss/endboss_60.png',
+        './img/7_statusbars/2_statusbar_endboss/endboss_80.png',
+        './img/7_statusbars/2_statusbar_endboss/endboss_100.png'
     ];  
 
     percentage = 100; // Die Bar fängt bei 100 an
