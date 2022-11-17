@@ -225,7 +225,7 @@ class World {
         }
     }
 
-    checkBottleHitEnemy() {
+    checkBottleHitEnemy() { // CODE VERKÜRZEN
         setInterval(() => {
             if (this.throwableObject.length > 0) {
                 this.level.enemies.forEach((enemie) => {
@@ -245,7 +245,7 @@ class World {
         }, 1000 / 60); // 100
     }
 
-    checkBottleHitEndboss() {
+    checkBottleHitEndboss() { // CODE VERKÜRZEN
         setInterval(() => {
             if (this.throwableObject.length > 0) {
                 this.level.bosses.forEach((boss) => {
