@@ -90,3 +90,7 @@ async function initLevel() {
             new Heart(1475, 150),
         ]);
 }
+
+async function clearLevel(){
+    level1 = [];
+}

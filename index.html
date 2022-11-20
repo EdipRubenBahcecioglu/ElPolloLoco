@@ -8,7 +8,7 @@
     <title>El Pollo Loco</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./fonts/alconica/alconica.css">
-    <link rel="stylesheet" href="./fonts/joti/joti.css">
+    <link rel="stylesheet" href="fonts/joti/joti.css">
     <script src="./javascript/classes/drawable-object.class.js"></script>
     <script src="./javascript/classes/moveable-object.class.js"></script>
     <script src="./javascript/classes/coin.class.js"></script>
@@ -37,7 +37,7 @@
         <h1>EL POLLO LOCO</h1>
     </div>
 
-    <div class="gamefield">
+    <div id="gamefield" class="gamefield">
         <canvas height=480px; width="720px" id="canvas"></canvas>
         <div id="start-screen" class="start-screen"><img src="./img/9_intro_outro_screens/start/startscreen_1.png"></div>
         <div id="end-screen-lose" class="end-screen d-none"><img src="./img/9_intro_outro_screens/game_over/oh no you lost!.png"></div>
@@ -53,10 +53,12 @@
 
     <div class="main-hub">
         <div class="hub">
-            <div class="start-game-btn"><button onclick="initGame();">Let me play!</button></div>
+            <div id="button-container" class="start-game-btn"><button id="start-button" onclick="initGame('firstStart');">Let me play!</button><button class="d-none" id="restart-button" onclick="initGame('restart');">Restart Game</button></div>
             <div class="guide-mute">
                 <image id="volume-on" onclick="muteGame();" src="./img/icons/volume-on.png"></image>
-                <image id="volume-mute" onclick="allowSound()" class="d-none" src="./img/icons/volume-mute.png"></image>
+                <image id="volume-mute" onclick="entmuteGame()" class="d-none" src="./img/icons/volume-mute.png"></image>
+                <image id="fullsize" onclick="gameInFullsize()" src="./img/icons/fullsize.png"></image>
+                <button onclick="clearGame()">Test</button>
                 <image onclick="openContainer('how-to-play')" src="./img/icons/userGuide.png"></image>
             </div>
         </div>

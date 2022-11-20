@@ -82,6 +82,8 @@ class Character extends MoveableObject {
     // walking_sound = new Audio('audio/walking.mp3');
     charJumpSound = new Audio('audio/char_jump.mp3');
     charSleepSound = new Audio('audio/char_sleep.mp3');
+    charHurtSound = new Audio('audio/char_hurt.mp3');
+    enterDangerZoneSound = new Audio('audio/danger_zone.mp3');
 
 
     constructor() {
@@ -137,7 +139,7 @@ class Character extends MoveableObject {
             if (this.isDead('character')) { // Wenn isDead in der moveObj = true ist dann ...
                 this.playAnimation(this.IMAGES_DEAD); // .. werden die Bilder vom Tod nacheinander abgepsielt
                 this.leaveMap();
-                this.world.charHurtSound.pause();
+                this.charHurtSound.pause();
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) { // Wenn unser Char sich in der luft befindet, dann soll der Array aus Zeile 19 die verschiedenen Bilder abspielen

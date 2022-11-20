@@ -14,10 +14,11 @@ class World {
     bottleCollectSound = new Audio('audio/collect_bottle.mp3');
     bottleThrowSound = new Audio('audio/bottle_throw.mp3');
     bottleSplashSound = new Audio('audio/bottle_broke.mp3');
-    charHurtSound = new Audio('audio/char_hurt.mp3');
     throwSuccesSound = new Audio('audio/arriba.mp3');
     heartCollectSound = new Audio('audio/collect_heart.mp3');
-    enterDangerZoneSound = new Audio('audio/danger_zone.mp3');
+    backgroundMusic = new Audio('audio/bg_music.mp3');
+    gameWonSound = new Audio('audio/game_won_sound.mp3');
+    gameLoseSound = new Audio('audio/game_lose_sound.mp3');
     allAudioSounds = [];
 
 
@@ -53,24 +54,30 @@ class World {
         this.character.world = this; // This steht hier alleine d.h. dass die Variable world in der Char Klasse kann auf alle Variablen in der World Klasse zugreifen
     }
 
-    pushAudiosToArray(){
+    pushAudiosToArray() {
         this.allAudioSounds.push(this.coinCollectSound);
         this.allAudioSounds.push(this.bottleCollectSound);
         this.allAudioSounds.push(this.bottleThrowSound);
         this.allAudioSounds.push(this.bottleSplashSound);
-        this.allAudioSounds.push(this.charHurtSound);
+        this.allAudioSounds.push(this.character.charHurtSound);
         this.allAudioSounds.push(this.throwSuccesSound);
         this.allAudioSounds.push(this.heartCollectSound);
-        this.allAudioSounds.push(this.enterDangerZoneSound);
+        this.allAudioSounds.push(this.character.enterDangerZoneSound);
         this.allAudioSounds.push(this.character.charJumpSound);
         this.allAudioSounds.push(this.character.charSleepSound);
-        // this.allAudioSounds.push(this.backgroundMusic);
+        this.allAudioSounds.push(this.backgroundMusic);
+        this.allAudioSounds.push(this.gameLoseSound);
+        this.allAudioSounds.push(this.gameWonSound);
     }
 
-    controllAudioVolume(){
-        this.allAudioSounds.forEach((audio) =>{
+    controllAudioVolume() {
+        this.allAudioSounds.forEach((audio) => {
             audio.volume = 0.03;
         })
+    }
+
+    clearCharacter(){
+        this.character = [];
     }
 
     throwBottle() {
@@ -86,18 +93,18 @@ class World {
         }, 100);
     }
 
-    bottleIsThrowable(){
+    bottleIsThrowable() {
         return this.character.collectedBottles > 0 && this.keyboard.attack && this.character.isAttacking == false
     }
 
-    updateThrowBottleVariablesAndSounds(){
+    updateThrowBottleVariablesAndSounds() {
         this.bottleThrowSound.play();
         this.character.isAttacking = true;
         this.updateBottleStatusBar();
         this.character.lastMovement = new Date().getTime();
     }
 
-    updateCharacterVariablesAndSounds(enemy){
+    updateCharacterVariablesAndSounds(enemy) {
         this.throwSuccesSound.play();
         enemy.isAttacked = true;
         this.character.speedY += 25;
@@ -139,7 +146,7 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if (this.characterCanBeHurt(enemy)) {
-                    this.charHurtSound.play();
+                    this.character.charHurtSound.play();
                     this.character.hit('5', 'character');
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
@@ -147,7 +154,7 @@ class World {
         }, 200);
     }
 
-    characterCanBeHurt(enemy){
+    characterCanBeHurt(enemy) {
         return this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isAttacked;
     }
 
@@ -155,7 +162,7 @@ class World {
         setInterval(() => {
             this.level.bosses.forEach((endboss) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
                 if (this.character.isColliding(endboss)) {
-                    this.charHurtSound.play();
+                    this.character.charHurtSound.play();
                     this.character.hit('10', 'character');
                     this.statusBarHealth.setPercentage(this.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
                 }
@@ -174,7 +181,7 @@ class World {
         }, 1000 / 60);
     }
 
-    characterJumpedOnEnemy(enemy){
+    characterJumpedOnEnemy(enemy) {
         return this.character.isColliding(enemy) && !enemy.isDead() && this.character.isAboveGround() && this.character.speedY <= 0
     }
 
@@ -182,7 +189,7 @@ class World {
         setInterval(() => {
             this.level.coin.forEach((coin, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                 if (this.character.isColliding(coin)) {
-                    this.objectGettingCollected('coin' , index, level1.coin, this.coinCollectSound);
+                    this.objectGettingCollected('coin', index, level1.coin, this.coinCollectSound);
                 }
             })
         }, 50);
@@ -193,7 +200,7 @@ class World {
             if (this.character.collectedBottles < 5) {
                 this.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                     if (this.character.isColliding(bottle)) {
-                        this.objectGettingCollected('bottle' , index, level1.bottle, this.bottleCollectSound);
+                        this.objectGettingCollected('bottle', index, level1.bottle, this.bottleCollectSound);
                     }
                 })
             }
@@ -205,72 +212,85 @@ class World {
             if (this.character.energyChar < 100) {
                 this.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
                     if (this.character.isColliding(heart)) {
-                        this.objectGettingCollected('heart' , index, level1.heart, this.heartCollectSound);
+                        this.objectGettingCollected('heart', index, level1.heart, this.heartCollectSound);
                     }
                 })
             }
         }, 50);
     }
 
-    objectGettingCollected(collectedObject, indexOfObject, objectInLevel, collectSound){
+    objectGettingCollected(collectedObject, indexOfObject, objectInLevel, collectSound) {
         this.character.collect(collectedObject);
         collectSound.play();
         objectInLevel.splice(indexOfObject, 1);
-        if(collectedObject == 'coin'){
+        if (collectedObject == 'coin') {
             this.statusBarCoin.setCoins(this.character.collectedCoins);
-        } else if(collectedObject == 'bottle'){
+        } else if (collectedObject == 'bottle') {
             this.statusBarBottle.setBottles(this.character.collectedBottles);
-        } else if(collectedObject == 'heart'){
+        } else if (collectedObject == 'heart') {
             this.statusBarHealth.setPercentage(this.character.energyChar);
         }
     }
 
-    checkBottleHitEnemy() { // CODE VERKÜRZEN
+    checkBottleHitEnemy() {
         setInterval(() => {
-            if (this.throwableObject.length > 0) {
-                this.level.enemies.forEach((enemie) => {
-                    for (let b = 0; b < this.throwableObject.length; b++) {
-                        let throwedBottle = this.throwableObject[b];
-                        if (throwedBottle.isColliding(enemie)) {
-                            this.throwSuccesSound.play();
-                            enemie.isAttacked = true;
-                        } else
-                            if (throwedBottle.bottleSplashed) {
-                                this.removeObject(b, throwedBottle, 'bottle', 300);
-                                this.character.isAttacking = false;
-                            }
-                    }
-                })
-            }
+            this.level.enemies.forEach((enemy, index) => {
+                for (let b = 0; b < this.throwableObject.length; b++) {
+                    let throwedBottle = this.throwableObject[b];
+                    if (throwedBottle.isColliding(enemy)) {
+                        this.removeEnemyAndUpdateVariablesAndSound(index, enemy);
+                    } else
+                        if (throwedBottle.bottleSplashed) {
+                            this.removeBottleAndUpdateVariables(b, throwedBottle);
+                        }
+                }
+            })
         }, 1000 / 60); // 100
     }
 
-    checkBottleHitEndboss() { // CODE VERKÜRZEN
+    removeBottleAndUpdateVariables(indexOfBottle, throwedBottle) {
+        this.removeObject(indexOfBottle, throwedBottle, 'bottle', 300);
+        this.character.isAttacking = false;
+    }
+
+    removeEnemyAndUpdateVariablesAndSound(inexOfEnemy, enemy) {
+        this.removeObject(inexOfEnemy, enemy, 'enemy', 300);
+        this.throwSuccesSound.play();
+        enemy.isAttacked = true;
+    }
+
+    checkBottleHitEndboss() {
         setInterval(() => {
-            if (this.throwableObject.length > 0) {
-                this.level.bosses.forEach((boss) => {
-                    if (boss.bossHurt == false) {
-                        for (let x = 0; x < this.throwableObject.length; x++) {
-                            const throwedBottle = this.throwableObject[x];
-                            if (throwedBottle.isColliding(boss)) {
-                                this.throwSuccesSound.play();
-                                boss.bossHurt = true;
-                                boss.hit('10', 'boss');
-                                this.statusBarEndboss.setPercentage(boss.energyBoss, boss.x, boss.y);
-                                throwedBottle.bottleGettingSplashed();
-                                this.removeObject(x, throwedBottle, 'bottle', 75);
-                            }
-                            if (throwedBottle.bottleSplashed == true) {
-                                setTimeout(() => {
-                                    boss.bossHurt = false;
-                                }, 350);
-                                this.character.isAttacking = false;
-                            }
+            this.level.bosses.forEach((boss) => {
+                if (boss.bossHurt == false) {
+                    for (let x = 0; x < this.throwableObject.length; x++) {
+                        const throwedBottle = this.throwableObject[x];
+                        if (throwedBottle.isColliding(boss)) {
+                            this.bossGettingHurtAndUpdateVariables(x, boss, throwedBottle);
+                        }
+                        if (throwedBottle.bottleSplashed == true) {
+                            this.setAttackVariablesToDefault(boss);
                         }
                     }
-                })
-            }
+                }
+            })
         }, 1000 / 60);
+    }
+
+    setAttackVariablesToDefault(boss) {
+        setTimeout(() => {
+            boss.bossHurt = false;
+        }, 350);
+        this.character.isAttacking = false;
+    }
+
+    bossGettingHurtAndUpdateVariables(indexOfBottle, boss, throwedBottle) {
+        this.throwSuccesSound.play();
+        boss.bossHurt = true;
+        boss.hit('10', 'boss');
+        this.statusBarEndboss.setPercentage(boss.energyBoss, boss.x, boss.y);
+        throwedBottle.bottleGettingSplashed();
+        this.removeObject(indexOfBottle, throwedBottle, 'bottle', 75);
     }
 
     removeObject(indexOfObject, object, array, timeoutTime) {
@@ -282,7 +302,7 @@ class World {
         }
     }
 
-    removeBottleObject(indexOfObject, object, timeoutTime){
+    removeBottleObject(indexOfObject, object, timeoutTime) {
         setTimeout((() => {
             if (this.throwableObject[indexOfObject] === object) {
                 this.throwableObject.splice(indexOfObject, 1);
@@ -290,7 +310,7 @@ class World {
         }), timeoutTime);
     }
 
-    removeEnemyObject(indexOfObject, object, timeoutTime){
+    removeEnemyObject(indexOfObject, object, timeoutTime) {
         setTimeout((() => {
             if (this.level.enemies[indexOfObject] === object) {
                 this.level.enemies.splice(indexOfObject, 1);
@@ -298,28 +318,28 @@ class World {
         }), timeoutTime);
     }
 
-    checkCharacterinDangerZone(){
-        setInterval(()=>{
+    checkCharacterinDangerZone() {
+        setInterval(() => {
             let endboss = this.level.bosses[0];
-            if(this.characterIsInDangerZone(endboss)){
+            if (this.characterIsInDangerZone(endboss)) {
                 endboss.haveVision = true;
                 this.statusBarEndboss.move = false;
-                this.enterDangerZoneSound.play();
-            } else{
+                this.character.enterDangerZoneSound.play();
+            } else {
                 endboss.haveVision = false;
                 this.statusBarEndboss.move = true;
             }
         }, 1000 / 60);
     }
 
-    characterIsInDangerZone(endboss){
+    characterIsInDangerZone(endboss) {
         return endboss.x - this.character.x < 500 && endboss.bossWillAttack == false || endboss.isDead('boss');
     }
 
-    checkBossPassCharacter(){
-        setInterval(()=>{
+    checkBossPassCharacter() {
+        setInterval(() => {
             let endboss = this.level.bosses[0];
-            if(endboss.x < this.character.x){
+            if (endboss.x < this.character.x) {
                 endboss.otherDirection = true;
                 this.character.passedBoss = true;
             } else {
@@ -329,9 +349,9 @@ class World {
         }, 1000 / 60);
     }
 
-    stickStatusBarBossToEndboss(){
+    stickStatusBarBossToEndboss() {
         let statusbarBoss = this.statusBarEndboss;
-        setInterval(()=>{
+        setInterval(() => {
             statusbarBoss.x = this.level.bosses[0].x;
             statusbarBoss.y = this.level.bosses[0].y;
         }, 1000 / 60);
@@ -340,14 +360,35 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe
         this.ctx.translate(this.camera_x, 0);
+        this.drawMapBackground();
+        this.ctx.translate(-this.camera_x, 0); // Wir setzten die Koordinaten für die nachfolgende Zeile fest, d.h. diese bewegt sich beim Charmoven mit und ist nicht an den bewegendem Maphintergrund fixiert // Kurz gefasst ... fixierte Objekte
+        this.drawStickyBars();
+        this.ctx.translate(this.camera_x, 0); // Die Koordinaten werden wieder freigegeben d.h. die nachfolgenden Objekte und Hintergründe ändern sich wenn der Char sich bewegt
+        this.drawMoveableCollectableThrowableObjects();
+        this.ctx.translate(-this.camera_x, 0);
+        this.repeatDrawFunction();
+    }
+
+    repeatDrawFunction(){
+        let self = this;
+        requestAnimationFrame(function () { // Mithilfe dieser Funktion wird die draw Funktion, sobald die einmal geladen wurde, zich mal pro Sekunde ausgeführt
+            self.draw(); // Die Funktion requestAnimationFrame kennt das Programmierwort "this" nicht, daher müssen wir hier einen kleinen Umweg gehen und das Wort this in einer Variable festlegen
+        });
+    }
+
+    drawMapBackground(){
         this.addObjectsToMap(this.level.backgroundObject);
         this.addObjectsToMap(this.level.clouds); // Wir geben den Inhalt aus dem Array Zeile 13/14/15... an die Funktion weiter
-        this.ctx.translate(-this.camera_x, 0); // Wir setzten die Koordinaten für die nachfolgende Zeile fest, d.h. diese bewegt sich beim Charmoven mit und ist nicht an den bewegendem Maphintergrund fixiert // Kurz gefasst ... fixierte Objekte
+    }
+
+    drawStickyBars(){
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
-        this.ctx.translate(this.camera_x, 0); // Die Koordinaten werden wieder freigegeben d.h. die nachfolgenden Objekte und Hintergründe ändern sich wenn der Char sich bewegt
-        this.addToMap(this.statusBarEndboss); 
+    }
+
+    drawMoveableCollectableThrowableObjects(){
+        this.addToMap(this.statusBarEndboss);
         this.addObjectsToMap(this.level.bottle);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.bosses);
@@ -355,12 +396,6 @@ class World {
         this.addObjectsToMap(this.level.heart);
         this.addObjectsToMap(this.throwableObject);
         this.addToMap(this.character);
-        this.ctx.translate(-this.camera_x, 0);
-
-        let self = this;
-        requestAnimationFrame(function () { // Mithilfe dieser Funktion wird die draw Funktion, sobald die einmal geladen wurde, zich mal pro Sekunde ausgeführt
-            self.draw(); // Die Funktion requestAnimationFrame kennt das Programmierwort "this" nicht, daher müssen wir hier einen kleinen Umweg gehen und das Wort this in einer Variable festlegen
-        });
     }
 
     addObjectsToMap(objects) { // Object = Arrayinhalt aus Zeile 30 z.B. 
@@ -373,10 +408,8 @@ class World {
         if (mo.otherDirection) { // Wenn OtherDirection eine andere Richtung hat..
             this.flipImage(mo); // Zeile 59
         }
-
         mo.draw(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
         mo.drawBorder(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
-
         if (mo.otherDirection) { // Ab Zeile 64 bis 66 wird die Spiegelung wieder zurückgesetzt 
             this.flipImageBack(mo); // Zeile 66
         }

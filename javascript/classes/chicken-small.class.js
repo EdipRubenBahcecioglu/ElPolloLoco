@@ -39,10 +39,6 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
                 this.playAnimation(this.IMAGE_DEAD);
                 this.speedX = 0;
                 this.speed = 0;
-                setInterval(() =>{
-                    this.width = 0;
-                    this.height = 0;
-                }, 1400);
             }
         }, 1000 / 60) // Falls Chicken zuclen nach Tod dann hier schneller einstellen z.B. 10
     }
