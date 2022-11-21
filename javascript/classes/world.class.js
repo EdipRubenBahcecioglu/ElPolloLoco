@@ -19,7 +19,9 @@ class World {
     backgroundMusic = new Audio('audio/bg_music.mp3');
     gameWonSound = new Audio('audio/game_won_sound.mp3');
     gameLoseSound = new Audio('audio/game_lose_sound.mp3');
+    bonusBottlesSound = new Audio('audio/bonus_bottle_sound.mp3');
     allAudioSounds = [];
+    deadEnemys = 0;
 
 
     constructor(canvas, keyboard) {
@@ -35,6 +37,7 @@ class World {
         this.stickStatusBarBossToEndboss();
         this.pushAudiosToArray();
         this.controllAudioVolume();
+        this.checkBonusBottles();
     }
 
     checkAllCollisions() {
@@ -68,15 +71,16 @@ class World {
         this.allAudioSounds.push(this.backgroundMusic);
         this.allAudioSounds.push(this.gameLoseSound);
         this.allAudioSounds.push(this.gameWonSound);
+        this.allAudioSounds.push(this.bonusBottlesSound);
     }
 
     controllAudioVolume() {
         this.allAudioSounds.forEach((audio) => {
-            audio.volume = 0.03;
+            audio.volume = 0.10;
         })
     }
 
-    clearCharacter(){
+    clearCharacter() {
         this.character = [];
     }
 
@@ -176,6 +180,7 @@ class World {
                 if (this.characterJumpedOnEnemy(enemy)) {
                     this.updateCharacterVariablesAndSounds(enemy);
                     this.removeObject(index, enemy, 'enemy', 400);
+                    this.deadEnemys++;
                 }
             });
         }, 1000 / 60);
@@ -357,6 +362,20 @@ class World {
         }, 1000 / 60);
     }
 
+    checkBonusBottles() { // Audio Sound Einfügen
+        setInterval(() => {
+            if (this.level.enemies.length == 0 && this.character.reachedBonus == false) {
+                this.character.collectedBottles = this.character.collectedBottles + 3;
+                if(this.character.collectedBottles > 5){
+                    this.character.collectedBottles = 5;
+                    this.statusBarBottle.setBottles(this.character.collectedBottles);
+                }
+                this.character.reachedBonus = true;
+                this.bonusBottlesSound.play();
+            }
+        }, 1000 / 60);
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe
         this.ctx.translate(this.camera_x, 0);
@@ -369,25 +388,25 @@ class World {
         this.repeatDrawFunction();
     }
 
-    repeatDrawFunction(){
+    repeatDrawFunction() {
         let self = this;
         requestAnimationFrame(function () { // Mithilfe dieser Funktion wird die draw Funktion, sobald die einmal geladen wurde, zich mal pro Sekunde ausgeführt
             self.draw(); // Die Funktion requestAnimationFrame kennt das Programmierwort "this" nicht, daher müssen wir hier einen kleinen Umweg gehen und das Wort this in einer Variable festlegen
         });
     }
 
-    drawMapBackground(){
+    drawMapBackground() {
         this.addObjectsToMap(this.level.backgroundObject);
         this.addObjectsToMap(this.level.clouds); // Wir geben den Inhalt aus dem Array Zeile 13/14/15... an die Funktion weiter
     }
 
-    drawStickyBars(){
+    drawStickyBars() {
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
     }
 
-    drawMoveableCollectableThrowableObjects(){
+    drawMoveableCollectableThrowableObjects() {
         this.addToMap(this.statusBarEndboss);
         this.addObjectsToMap(this.level.bottle);
         this.addObjectsToMap(this.level.enemies);

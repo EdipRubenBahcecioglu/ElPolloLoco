@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="fonts/joti/joti.css">
     <script src="./javascript/classes/drawable-object.class.js"></script>
     <script src="./javascript/classes/moveable-object.class.js"></script>
+    <script src="./javascript/classes/keyboard.class.js"></script>
     <script src="./javascript/classes/coin.class.js"></script>
     <script src="./javascript/classes/bottle.class.js"></script>
     <script src="./javascript/classes/heart.class.js"></script>
@@ -23,7 +24,6 @@
     <script src="./javascript/classes/chicken-small.class.js"></script>
     <script src="./javascript/classes/cloud.class.js"></script>
     <script src="./javascript/classes/background-object.class.js"></script>
-    <script src="./javascript/classes/keyboard.class.js"></script>
     <script src="./javascript/classes/level.class.js"></script>
     <script src="./javascript/classes/endboss.class.js"></script>
     <script src="./javascript/levels/level1.js"></script>
@@ -38,7 +38,24 @@
     </div>
 
     <div id="gamefield" class="gamefield">
-        <canvas height=480px; width="720px" id="canvas"></canvas>
+        <canvas id="canvas" height=480px; width="720px" id="canvas"></canvas>
+        <div id="mobile-movement" class="mobile-movement" style="display: none;" style="z-index: 0;">
+            <image id="mobile-left" src="./img/mobile/mobile_left.png"></image>
+            <image id="mobile-right" src="./img/mobile/mobile_right.png"></image>
+        </div>
+        <div id="mobile-doge-attack" class="mobile-doge-attack" style="display: none;" style="z-index: 0;">
+            <image id="mobile-jump" src="./img/mobile/mobile_jump.png"></image>
+            <image id="mobile-throw" src="./img/mobile/mobile_throw.png"></image>
+        </div>
+        <div id="mobile-start-game" onclick="initGame('firstStart')" class="mobile-start-game" style="display:none;" style="z-index: 0;">
+            <img id="mobile-play" src="./img/mobile/mobile_start.png">
+            <!-- <img class="d-none" id="mobile-replay" src="./img/mobile/mobile_replay.png"> -->
+        </div>
+        <div id="mobile-guide-mute" class="mobile-guide-mute" style="display: none;", style="z-index: 0;">
+            <img id="volume-mute-mobile" class="d-none" onclick="entmuteGame()" src="./img/icons/volume-mute.png">
+            <img id="volume-on-mobile" onclick="muteGame()" src="./img/icons/volume-on.png">
+            <img onclick="openContainer('how-to-play-mobile')" src="./img/icons/userGuide.png">
+        </div>
         <div id="start-screen" class="start-screen"><img src="./img/9_intro_outro_screens/start/startscreen_1.png"></div>
         <div id="end-screen-lose" class="end-screen d-none"><img src="./img/9_intro_outro_screens/game_over/oh no you lost!.png"></div>
         <div id="end-screen-win" class="end-screen d-none"><img src="./img/9_intro_outro_screens/game_over/game over.png"></div>
@@ -49,6 +66,13 @@
             <div><img src="./img/icons/moveRight.png"><span>Move Right</span></div>
             <div><img src="./img/icons/space.png"><span>Jump</span></div>
         </div>
+        <div id="how-to-play-mobile" class="how-to-play d-none">
+            <div class="close-btn"><img onclick="closeContainer('how-to-play-mobile')" class="close-img" src="./img/icons/close.png"></div>
+            <div><img src="./img/mobile/mobile_throw.png"><span>Attack</span></div>
+            <div><img src="./img/mobile/mobile_left.png"><span>Move Left</span></div>
+            <div><img src="./img/mobile/mobile_right.png"><span>Move Right</span></div>
+            <div><img src="./img/mobile/mobile_jump.png"><span>Jump</span></div>
+        </div>
     </div>
 
     <div class="main-hub">
@@ -58,7 +82,6 @@
                 <image id="volume-on" onclick="muteGame();" src="./img/icons/volume-on.png"></image>
                 <image id="volume-mute" onclick="entmuteGame()" class="d-none" src="./img/icons/volume-mute.png"></image>
                 <image id="fullsize" onclick="gameInFullsize()" src="./img/icons/fullsize.png"></image>
-                <button onclick="clearGame()">Test</button>
                 <image onclick="openContainer('how-to-play')" src="./img/icons/userGuide.png"></image>
             </div>
         </div>

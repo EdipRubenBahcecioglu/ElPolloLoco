@@ -84,6 +84,7 @@ class Character extends MoveableObject {
     charSleepSound = new Audio('audio/char_sleep.mp3');
     charHurtSound = new Audio('audio/char_hurt.mp3');
     enterDangerZoneSound = new Audio('audio/danger_zone.mp3');
+    reachedBonus = false;
 
 
     constructor() {
