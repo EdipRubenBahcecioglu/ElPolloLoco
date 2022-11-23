@@ -1,5 +1,10 @@
 let level1;
 
+/**
+ * This function initializes our whole level 
+ * 
+ */
+
 async function initLevel() {
     level1 = new Level(
         [
@@ -12,9 +17,9 @@ async function initLevel() {
             new Chicken(),
             new Chicken(),
             new ChickenSmall(),
-            // new ChickenSmall(),
-            // new ChickenSmall(),
             new ChickenSmall(),
+            new ChickenSmall(),
+            // new ChickenSmall(),
         ],
         [
             new Endboss(),
@@ -90,6 +95,11 @@ async function initLevel() {
             new Heart(1475, 150),
         ]);
 }
+
+/**
+ * This function clears our whole level
+ * 
+ */
 
 async function clearLevel(){
     level1 = [];

@@ -15,11 +15,23 @@ class StatusBar extends DrawableObject {
 
     percentage = 100; // Die Bar fängt bei 100 an
 
+    /**
+     * Functions within the constructor are executed immediately
+     * The loadImages function loads the images of healtbar of characterlife
+     * 
+     */
+
     constructor() {
         super();
         this.loadImages(this.IMAGE_HEALTH);
         this.setPercentage(this.percentage);
     };
+
+    /**
+     * The function updates the characterlife statusbar based on the percentage.
+     * 
+     * @param {number} percentage - energy of character
+     */
 
     setPercentage(percentage) { // Wir aktuallisieren die Variable percentage aus Zeile 25 die standardgemäß 100 ist
         this.x = 40;
@@ -29,6 +41,11 @@ class StatusBar extends DrawableObject {
         this.img = this.imageCache[path];
     };
 
+    /**
+     * This function gives us the value of the life of the character again
+     * 
+     * @returns the index of image which is gonna be shown
+     */
 
     resolveImageIndex() { // WELCHES BILD DER LEBENSANZEIGE SOLL ANGEZEIGT WERDEN? WENN LEBEN BZW. PERCENTAGE XX DANN RETURN XX 
         if (this.percentage >= 100) {

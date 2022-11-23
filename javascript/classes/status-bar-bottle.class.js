@@ -15,11 +15,23 @@ class StatusBarBottle extends DrawableObject {
 
     collectedBottles = 0;
 
+    /**
+     * Functions within the constructor are executed immediately
+     * The loadImages function loads the images of healtbar of bottles
+     * 
+     */
+
     constructor() {
         super();
         this.loadImages(this.IMAGE_BOTTLES);
         this.setBottles(this.collectedBottles);
     };
+
+    /**
+     * The function updates the bottle statusbar based on the collected bottles.
+     * 
+     * @param {number} collectedBottles - amount of collected bottles 
+     */
 
     setBottles(collectedBottles){
         this.x = 40;
@@ -28,6 +40,12 @@ class StatusBarBottle extends DrawableObject {
         let path = this.IMAGE_BOTTLES[this.resolveImageIndexBottles()];
         this.img = this.imageCache[path];
     }
+
+    /**
+     * This function checks which imageindex of statusbar bottle is gonne show up
+     * 
+     * @returns the index of image which is gonna be shown
+     */
 
     resolveImageIndexBottles(){
         if (this.collectedBottles == 0){

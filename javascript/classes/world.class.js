@@ -23,6 +23,14 @@ class World {
     allAudioSounds = [];
     deadEnemys = 0;
 
+    /**
+     * Functions within the constructor are executed immediately
+     * The canvasobject is drawn in 2d
+     * 
+     * @param {object} canvas - canvasobject
+     * @param {object} keyboard - keyboardobject
+     */
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d'); // Mithilfe von getContext haben wir die Möglichkeit innerhlab des Canvas ein 2D Format darstellen zu lassen bzw. zu zeichnen
@@ -40,6 +48,11 @@ class World {
         this.checkBonusBottles();
     }
 
+    /**
+     * This function checks all collisions in the game
+     * 
+     */
+
     checkAllCollisions() {
         this.checkEnemyCollisions();
         this.checkBossCollisions();
@@ -53,9 +66,19 @@ class World {
         this.checkBossPassCharacter();
     }
 
+    /**
+     * This function lets the character have access to the whole world object 
+     * 
+     */
+
     setWorld() {
         this.character.world = this; // This steht hier alleine d.h. dass die Variable world in der Char Klasse kann auf alle Variablen in der World Klasse zugreifen
     }
+
+    /**
+     * This function push all available audios to an array
+     * 
+     */
 
     pushAudiosToArray() {
         this.allAudioSounds.push(this.coinCollectSound);
@@ -74,15 +97,30 @@ class World {
         this.allAudioSounds.push(this.bonusBottlesSound);
     }
 
+    /**
+     * This function contolls the audio volume of all audios 
+     * 
+     */
+
     controllAudioVolume() {
         this.allAudioSounds.forEach((audio) => {
             audio.volume = 0.10;
         })
     }
 
+    /**
+     * This function clears the character object
+     * 
+     */
+
     clearCharacter() {
         this.character = [];
     }
+
+    /**
+     * This function checks if bottle is throwable and creates an throwable object and set the throw direction
+     * 
+     */
 
     throwBottle() {
         setInterval(() => {
@@ -97,9 +135,20 @@ class World {
         }, 100);
     }
 
+    /**
+     * This function checks if an bottle is throwable
+     * 
+     * @returns true when an bottle is throwable
+     */
+
     bottleIsThrowable() {
         return this.character.collectedBottles > 0 && this.keyboard.attack && this.character.isAttacking == false
     }
+
+    /**
+     * This function plays sounds and update variables after a bottle throw
+     * 
+     */
 
     updateThrowBottleVariablesAndSounds() {
         this.bottleThrowSound.play();
@@ -107,6 +156,12 @@ class World {
         this.updateBottleStatusBar();
         this.character.lastMovement = new Date().getTime();
     }
+
+    /**
+     * This function plays sounds and update variables after a bottle hits an enemy
+     * 
+     * @param {object} enemy - enemyobject
+     */
 
     updateCharacterVariablesAndSounds(enemy) {
         this.throwSuccesSound.play();
@@ -116,10 +171,23 @@ class World {
         this.character.isAttacking = false;
     }
 
+    /**
+     * This function updates the collected bottle variable after a bottle is thrown. Also the bottle statusbar is getting updated.
+     * 
+     */
+
     updateBottleStatusBar() {
         this.character.collectedBottles--;
         this.statusBarBottle.setBottles(this.character.collectedBottles);
     }
+
+    /**
+     * This function creates an throwable object and checks the fly direction
+     * 
+     * @param {number} bottleX - bottle x coordinate 
+     * @param {number} bottleY - bottle y coordinate
+     * @param {string} throwDirection - right or left 
+     */
 
     createNewThrowableObject(bottleX, bottleY, throwDirection) {
         if (throwDirection == 'right') {
@@ -134,6 +202,11 @@ class World {
         }
     }
 
+    /**
+     * This function checks if the character missed an bottle and plays the suitable sound
+     * 
+     */
+
     checkCharacterMiss() {
         setInterval(() => {
             for (let x = 0; x < this.throwableObject.length; x++) {
@@ -145,6 +218,11 @@ class World {
             }
         }, 1000 / 60);
     }
+
+    /**
+     * This function checks if the character is coliding with an enemy and let the character take damage. Also the health statusbar is getting updated.
+     * 
+     */
 
     checkEnemyCollisions() {
         setInterval(() => {
@@ -158,9 +236,21 @@ class World {
         }, 200);
     }
 
+    /**
+     * This function checks if the character can be hurt 
+     * 
+     * @param {object} enemy - enemyobject 
+     * @returns true when character can be hurt 
+     */
+
     characterCanBeHurt(enemy) {
         return this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isAttacked;
     }
+
+    /**
+     * This function checks if the character is coliding with an boss and let the character take damage. Also the health statusbar is getting updated.
+     * 
+     */
 
     checkBossCollisions() {
         setInterval(() => {
@@ -174,6 +264,11 @@ class World {
         }, 200);
     }
 
+    /**
+     * This function checks if the character jumps on an enemy and plays the suitable sound.
+     * 
+     */
+
     checkCollisionsFromTop() {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
@@ -186,9 +281,21 @@ class World {
         }, 1000 / 60);
     }
 
+    /**
+     * This function checks if character is coliding with an enemy from top
+     * 
+     * @param {object} enemy - enemyobject 
+     * @returns true when collision from top is true
+     */
+
     characterJumpedOnEnemy(enemy) {
         return this.character.isColliding(enemy) && !enemy.isDead() && this.character.isAboveGround() && this.character.speedY <= 0
     }
+
+    /**
+     * This function checks if the character is coliding with an coin and collects them 
+     * 
+     */
 
     checkCoinCollisions() {
         setInterval(() => {
@@ -199,6 +306,11 @@ class World {
             })
         }, 50);
     }
+
+    /**
+     * This function checks if the character is coliding with an bottle and collects them but only when the character have less then 5 bottles
+     * 
+     */
 
     checkBottleCollisions() {
         setInterval(() => {
@@ -212,6 +324,11 @@ class World {
         }, 50);
     }
 
+    /**
+     * This function checks if the character is coliding with an heart and collects them but only when the character habe less then full life
+     * 
+     */
+
     checkHeartCollisions() {
         setInterval(() => {
             if (this.character.energyChar < 100) {
@@ -223,6 +340,15 @@ class World {
             }
         }, 50);
     }
+
+    /**
+     * This function collects objects and update the statusbar of object
+     * 
+     * @param {string} collectedObject - which object gets collected
+     * @param {number} indexOfObject - index of collected object
+     * @param {array} objectInLevel - object in level array
+     * @param {audio} collectSound - collect audio by collision 
+     */
 
     objectGettingCollected(collectedObject, indexOfObject, objectInLevel, collectSound) {
         this.character.collect(collectedObject);
@@ -236,6 +362,11 @@ class World {
             this.statusBarHealth.setPercentage(this.character.energyChar);
         }
     }
+
+    /**
+     * This function checks if thrown bottle hits enemy 
+     * 
+     */
 
     checkBottleHitEnemy() {
         setInterval(() => {
@@ -253,16 +384,35 @@ class World {
         }, 1000 / 60); // 100
     }
 
+    /**
+     * This function removes bottle after throw and update variables
+     * 
+     * @param {number} indexOfBottle - index of thrown bottle
+     * @param {object} throwedBottle - throwed bottle as object
+     */
+
     removeBottleAndUpdateVariables(indexOfBottle, throwedBottle) {
         this.removeObject(indexOfBottle, throwedBottle, 'bottle', 300);
         this.character.isAttacking = false;
     }
+
+    /**
+     * This function removes enemy after getting attacked and play suitable sound and update variables
+     * 
+     * @param {number} inexOfEnemy - index of hitten enemy 
+     * @param {object} enemy - hitten enemy as object
+     */
 
     removeEnemyAndUpdateVariablesAndSound(inexOfEnemy, enemy) {
         this.removeObject(inexOfEnemy, enemy, 'enemy', 300);
         this.throwSuccesSound.play();
         enemy.isAttacked = true;
     }
+
+    /**
+     * This function checks if thrown bottle hits endboss and update variables 
+     * 
+     */
 
     checkBottleHitEndboss() {
         setInterval(() => {
@@ -282,12 +432,26 @@ class World {
         }, 1000 / 60);
     }
 
+    /**
+     * This function set variables to default after boss getting attacked
+     * 
+     * @param {object} boss - endboss as object 
+     */
+
     setAttackVariablesToDefault(boss) {
         setTimeout(() => {
             boss.bossHurt = false;
         }, 350);
         this.character.isAttacking = false;
     }
+
+    /**
+     * This function lets the boss get damage und updates the statusbar of endboss. Also the suitable sound is playing and the thrown bottle is getting removed. 
+     * 
+     * @param {number} indexOfBottle - index of thrown bottle
+     * @param {object} boss - endboss as object
+     * @param {object} throwedBottle - thrown bottle as object
+     */
 
     bossGettingHurtAndUpdateVariables(indexOfBottle, boss, throwedBottle) {
         this.throwSuccesSound.play();
@@ -298,6 +462,15 @@ class World {
         this.removeObject(indexOfBottle, throwedBottle, 'bottle', 75);
     }
 
+    /**
+     * This function removes object from map after a timeout
+     * 
+     * @param {number} indexOfObject - index of object which is getting removed 
+     * @param {object} object - which object is getting removed
+     * @param {array} array - in which array is the object which is getting removed
+     * @param {number} timeoutTime - after how much seconds the object should be removed
+     */
+
     removeObject(indexOfObject, object, array, timeoutTime) {
         if (array == 'bottle') {
             this.removeBottleObject(indexOfObject, object, timeoutTime);
@@ -307,6 +480,14 @@ class World {
         }
     }
 
+    /**
+     * This function removes the bottle object from an array
+     * 
+     * @param {number} indexOfObject - index of object which is going to be removed
+     * @param {object} object - which object should be removed
+     * @param {number} timeoutTime - after how much seconds the object should be removed 
+     */
+
     removeBottleObject(indexOfObject, object, timeoutTime) {
         setTimeout((() => {
             if (this.throwableObject[indexOfObject] === object) {
@@ -315,6 +496,14 @@ class World {
         }), timeoutTime);
     }
 
+    /**
+     * This function removes the bottle object from an array
+     * 
+     * @param {number} indexOfObject - index of object which is going to be removed
+     * @param {object} object - which object should be removed
+     * @param {number} timeoutTime - after how much seconds the object should be removed   
+     */
+
     removeEnemyObject(indexOfObject, object, timeoutTime) {
         setTimeout((() => {
             if (this.level.enemies[indexOfObject] === object) {
@@ -322,6 +511,11 @@ class World {
             }
         }), timeoutTime);
     }
+
+    /**
+     * This function checks if the character is entering the danger Zone and plays the suitable sounds. Also variables are getting updated. 
+     * 
+     */
 
     checkCharacterinDangerZone() {
         setInterval(() => {
@@ -337,9 +531,21 @@ class World {
         }, 1000 / 60);
     }
 
+    /**
+     * This function checks if the distance between character and endboss is less than 500 on the x coordinate 
+     * 
+     * @param {*} endboss 
+     * @returns 
+     */
+
     characterIsInDangerZone(endboss) {
         return endboss.x - this.character.x < 500 && endboss.bossWillAttack == false || endboss.isDead('boss');
     }
+
+    /**
+     * This function checks if boss passed character and update variables
+     * 
+     */
 
     checkBossPassCharacter() {
         setInterval(() => {
@@ -354,6 +560,11 @@ class World {
         }, 1000 / 60);
     }
 
+    /**
+     * This function sticks the endboss statusbar to the endboss
+     * 
+     */
+
     stickStatusBarBossToEndboss() {
         let statusbarBoss = this.statusBarEndboss;
         setInterval(() => {
@@ -361,6 +572,11 @@ class World {
             statusbarBoss.y = this.level.bosses[0].y;
         }, 1000 / 60);
     }
+
+    /**
+     * This function checks if the character can get the bonus bottles after killing all normal enemys. Also the suitable sound is playing and variables getting updated. 
+     * 
+     */
 
     checkBonusBottles() { // Audio Sound Einfügen
         setInterval(() => {
@@ -376,6 +592,11 @@ class World {
         }, 1000 / 60);
     }
 
+    /**
+     * This function draws all object to map
+     * 
+     */
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe
         this.ctx.translate(this.camera_x, 0);
@@ -388,6 +609,11 @@ class World {
         this.repeatDrawFunction();
     }
 
+    /**
+     * This function repeats the draw function
+     * 
+     */
+
     repeatDrawFunction() {
         let self = this;
         requestAnimationFrame(function () { // Mithilfe dieser Funktion wird die draw Funktion, sobald die einmal geladen wurde, zich mal pro Sekunde ausgeführt
@@ -395,16 +621,31 @@ class World {
         });
     }
 
+    /**
+     * This function draws the background of map
+     * 
+     */
+
     drawMapBackground() {
         this.addObjectsToMap(this.level.backgroundObject);
         this.addObjectsToMap(this.level.clouds); // Wir geben den Inhalt aus dem Array Zeile 13/14/15... an die Funktion weiter
     }
+
+    /**
+     * This function draws all sticky elements
+     * 
+     */
 
     drawStickyBars() {
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
     }
+
+    /**
+     * This function draws all collectable, moveable and throwable objects
+     * 
+     */
 
     drawMoveableCollectableThrowableObjects() {
         this.addToMap(this.statusBarEndboss);
@@ -417,11 +658,23 @@ class World {
         this.addToMap(this.character);
     }
 
+    /**
+     * This function add objects to map
+     * 
+     * @param {object} objects - which element is getting to draw 
+     */
+
     addObjectsToMap(objects) { // Object = Arrayinhalt aus Zeile 30 z.B. 
         objects.forEach(object => { // For Each ist eine Art For Schleife // Die Funktion addObjectsToMap wird so oft ausgeführt bis jedes einzelne Element aus dem Array ausgelesen wurde
             this.addToMap(object); // Wir geben den Parameter (Inhalt vom Array) an die nächste Funktion weiter
         });
     }
+
+    /**
+     * This function checks if an object should be flipped to the other direction
+     * 
+     * @param {object} mo - moveable object  
+     */
 
     addToMap(mo) { // mo = Movable Objekt // Parameter aus Zeile 44
         if (mo.otherDirection) { // Wenn OtherDirection eine andere Richtung hat..
@@ -434,12 +687,24 @@ class World {
         }
     }
 
+    /**
+     * This function flips the object to the other direction 
+     * 
+     * @param {object} mo - moveable object 
+     */
+
     flipImage(mo) {
         this.ctx.save(); // Dann soll der aktuelle Context gespeichert wernden..
         this.ctx.translate(mo.width, 0); // Coce ab hier bis Zeile 61 spiegeln wir das Bild // Bild wird spiegelverkehrt eingefügt
         this.ctx.scale(-1, 1); // Wenn wir das Bild drehen, steht das Bild vom Objekt auf der X Achse etwas anders, daher positioniern wir hier das Bild wieder da wo es war
         mo.x = mo.x * -1; // X Koordinate wird umgedreht // Siehe Kommentar Zeile 60
     }
+
+    /**
+     * This function flips the object back to default
+     * 
+     * @param {object} mo - moveable object  
+     */
 
     flipImageBack(mo) {
         mo.x = mo.x * -1; // X Koordinate wird umgedreht 

@@ -15,15 +15,22 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
         './img/3_enemies_chicken/chicken_small/2_dead/dead.png',
     ];
  
-
+    /**
+     * Functions within the constructor are executed immediately
+     * 
+     */
 
     constructor(){ // Jede Classe hat ein Constructor. Innerhalb dieses Constructors werden die Sachen eingetragn, die sofort ausgeführt werden sollen
         super().loadImage(); // Mit Super greifen wir auf die übergeordnete Classe zu und führen die Funktion loadImage aus und geben den Parameter mit
-        this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGE_DEAD);
-        this.speed = this.speed + Math.random() * 0.25; // Die Speedvariable aus der übergeordneten Klaasse ist hier bei jedem Chicken unterschiedlich also mindestens 0.15 + max 0.25 drauf = max Speed 0.40
+        this.loadChickenSmallImages();
         this.animate();
+        this.setChickenSpeedRandomly();
     }
+
+   /**
+     * The animation function makes the chicken run to the left and checks if a chicken was attacked
+     * 
+     */
 
     animate() {
         setInterval(() =>{ // Mithilfe von setInterval können wir eine Funktion zich mal die Sekunde aufrufen
@@ -36,10 +43,38 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
 
         setInterval(()=>{
             if (this.getAttacked()){
-                this.playAnimation(this.IMAGE_DEAD);
-                this.speedX = 0;
-                this.speed = 0;
+                this.playChickenSmallDeadAnimation();
             }
         }, 1000 / 60) // Falls Chicken zuclen nach Tod dann hier schneller einstellen z.B. 10
+    }
+
+    /**
+     * This function loads all small chicken images
+     * 
+     */
+
+    loadChickenSmallImages(){
+        this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGE_DEAD);
+    }
+
+    /**
+     * This function sets the movementspeed of small chicken randomly
+     * 
+     */
+
+    setChickenSpeedRandomly(){
+        this.speed = this.speed + Math.random() * 0.25; // Die Speedvariable aus der übergeordneten Klaasse ist hier bei jedem Chicken unterschiedlich also mindestens 0.15 + max 0.25 drauf = max Speed 0.40
+    }
+
+    /**
+     * This function runs the dead animation if small chicken gets attacked
+     * 
+     */
+
+    playChickenSmallDeadAnimation(){
+        this.loadImage(this.IMAGE_DEAD[0]);
+        this.speedX = 0;
+        this.speed = 0;
     }
 }

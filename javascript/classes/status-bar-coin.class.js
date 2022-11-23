@@ -15,11 +15,23 @@ class StatusBarCoin extends DrawableObject {
 
     collectedCoins = 0;
 
+    /**
+     * Functions within the constructor are executed immediately
+     * The loadImages function loads the images of healtbar of coins
+     * 
+     */
+
     constructor() {
         super();
         this.loadImages(this.IMAGE_COINS);
         this.setCoins(this.collectedCoins);
     };
+
+    /**
+     * The function updates the coin statusbar based on the collected coins.
+     * 
+     * @param {number} collectedBottles - amount of collected coins 
+     */
 
     setCoins(collectedCoins){
         this.x = 40;
@@ -28,6 +40,12 @@ class StatusBarCoin extends DrawableObject {
         let path = this.IMAGE_COINS[this.resolveImageIndexCoins()];
         this.img = this.imageCache[path];
     }
+
+    /**
+     * This function checks which imageindex of statusbar coin is gonne show up
+     * 
+     * @returns the index of image which is gonna be shown
+     */
 
     resolveImageIndexCoins(){
         if (this.collectedCoins == 100) {

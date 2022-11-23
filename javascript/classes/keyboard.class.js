@@ -6,10 +6,20 @@ class Keyboard {
     space = false;
     attack = false;
 
+    /**
+     * Functions within the constructor are executed immediately
+     * 
+     */
+
     constructor() {
         this.bindKeypressEvent();
         this.bindKeyTouchEvent();
     }
+
+    /**
+     * This function checks which key was pressed 
+     * 
+     */
 
     bindKeypressEvent() {
         window.addEventListener("keydown", (event) => { // Mithilfe dieser Eventfunktion wird uns ausgeloggt, was für eine Taste der User gedrückt hat //
@@ -54,6 +64,11 @@ class Keyboard {
             }
         });
     }
+
+    /**
+     * This function checks which button was touched
+     * 
+     */
 
     bindKeyTouchEvent() {
         document.getElementById('mobile-left').addEventListener("touchstart", (event) => {

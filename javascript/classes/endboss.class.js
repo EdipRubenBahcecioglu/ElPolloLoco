@@ -5,6 +5,11 @@ class Endboss extends MoveableObject {
     width = 250;
     x = 2600;
 
+    /**
+     * Using offset we can define a collision between several objects much more precisely 
+     * 
+     */
+
     offset = {
         top: 45,
         bottom: 20,
@@ -57,19 +62,28 @@ class Endboss extends MoveableObject {
     bossIntervals = [];
     bossWillAttack = false;
 
+    /**
+     * Functions within the constructor are executed immediately
+     * 
+     */
+
     constructor() {
         super().loadImage();
+        this.loadImagesOfEndboss();
+        this.animate();
+    }
+
+    loadImagesOfEndboss(){
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.animate();
     }
 
     animate() {
         const moveBoss = setInterval(() => {
-            this.moveLeft('normal');
+            this.moveLeft();
         }, 1000 / 60); // Bilder ändern sich jede 200 Milisekunden
         this.bossIntervals.push(moveBoss);
 
@@ -82,6 +96,7 @@ class Endboss extends MoveableObject {
             this.bossIntervals.push(hurtBoss);
             this.haveVision == false;
             if (this.bossHurt) {
+                console.log(this.energyBoss);
                 this.playAnimation(this.IMAGES_HURT);
                 setTimeout(()=>{
                     this.bossWillAttack = true;
@@ -122,6 +137,7 @@ class Endboss extends MoveableObject {
                 clearInterval(moveBoss && moveBossAnimation && hurtBoss && dangerZoneBoss);
                 setTimeout(() => {
                     this.showDeadBossImg();
+                    this.speed = 0;
                 }, 250);
             }
         }, 200);

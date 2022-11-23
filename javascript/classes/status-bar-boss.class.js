@@ -16,12 +16,28 @@ class StatusBarBoss extends MoveableObject {
 
     percentage = 100; // Die Bar fängt bei 100 an
 
+    /**
+     * Functions within the constructor are executed immediately
+     * The loadImages function loads the images of healtbar of boss
+     * 
+     * @param {number} bossXPosition - x coordinate from the endboss 
+     * @param {number} bossYPosition - y coordinate from the endboss
+     */
+
     constructor(bossXPosition, bossYPosition) {
         super();
         this.loadImages(this.IMAGE_HEALTH);
         this.setPercentage(this.percentage, bossXPosition, bossYPosition);
-        this.stickBarToBoss();
     };
+
+    /**
+     * The function updates the endboss statusbar based on the percentage.
+     * The position of the endboss statusbar is based on the position of endboss
+     * 
+     * @param {number} percentage - energy of endboss
+     * @param {number} bossXPosition - x coordinate of endboss
+     * @param {number} bossYPosition - y coordinate of endboss
+     */
 
     setPercentage(percentage, bossXPosition, bossYPosition) { // Wir aktuallisieren die Variable percentage aus Zeile 25 die standardgemäß 100 ist
         this.x = bossXPosition;
@@ -31,6 +47,11 @@ class StatusBarBoss extends MoveableObject {
         this.img = this.imageCache[path];
     };
 
+    /**
+     * This function gives us the value of the life of the boss again
+     * 
+     * @returns the index of image which is gonna be shown
+     */
 
     resolveImageIndex() { // WELCHES BILD DER LEBENSANZEIGE SOLL ANGEZEIGT WERDEN? WENN LEBEN BZW. PERCENTAGE XX DANN RETURN XX 
         if (this.percentage >= 100) {
@@ -47,12 +68,4 @@ class StatusBarBoss extends MoveableObject {
             return 0
         }
     }
-    
-    stickBarToBoss(){
-        setInterval(() =>{
-            if(this.move == true){
-                this.moveLeft();
-            }
-        }, 1000 / 60); 
-    };
 }
