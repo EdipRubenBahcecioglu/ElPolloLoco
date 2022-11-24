@@ -8,10 +8,8 @@ let level1;
 async function initLevel() {
     level1 = new Level(
         [
-            // new Chicken(),
-            // new Chicken(),
-            // new Chicken(),
-            // new Chicken(),
+            new Chicken(),
+            new Chicken(),
             new Chicken(),
             new Chicken(),
             new Chicken(),
@@ -19,7 +17,7 @@ async function initLevel() {
             new ChickenSmall(),
             new ChickenSmall(),
             new ChickenSmall(),
-            // new ChickenSmall(),
+            new ChickenSmall(),
         ],
         [
             new Endboss(),
@@ -88,8 +86,6 @@ async function initLevel() {
             new Bottle(1600, 350, './img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
             new Bottle(1630, 350, './img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
             new Bottle(1900, 350, './img/6_salsa_bottle/2_salsa_bottle_on_ground.png'),
-            new Bottle(2100, 350, './img/6_salsa_bottle/1_salsa_bottle_on_ground.png'),
-            new Bottle(2130, 350, './img/6_salsa_bottle/2_salsa_bottle_on_ground.png')
         ],
         [
             new Heart(1475, 150),

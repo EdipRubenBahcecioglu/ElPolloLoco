@@ -40,7 +40,11 @@
     </div>
 
     <div id="gamefield" class="gamefield">
-        <canvas id="canvas" height=480px; width="720px" id="canvas"></canvas>
+        <div class="screens" height="480px"; width="720px">
+            <canvas id="canvas" height=480px; width="720px" id="canvas"></canvas>
+            <div id="end-screen-lose" class="end-screen d-none" height="480px;" width="720px"><img src="./img/9_intro_outro_screens/game_over/oh no you lost!.png"></div>
+            <div id="end-screen-win" class="end-screen d-none" height="480px"; width="720px"><img src="./img/9_intro_outro_screens/game_over/game over.png"></div>
+        </div>
         <div id="mobile-movement" class="mobile-movement" style="display: none;" style="z-index: 0;">
             <image id="mobile-left" src="./img/mobile/mobile_left.png"></image>
             <image id="mobile-right" src="./img/mobile/mobile_right.png"></image>
@@ -59,21 +63,33 @@
             <img onclick="openContainer('how-to-play-mobile')" src="./img/icons/userGuide.png">
         </div>
         <div id="start-screen" class="start-screen"><img src="./img/9_intro_outro_screens/start/startscreen_1.png"></div>
-        <div id="end-screen-lose" class="end-screen d-none"><img src="./img/9_intro_outro_screens/game_over/oh no you lost!.png"></div>
-        <div id="end-screen-win" class="end-screen d-none"><img src="./img/9_intro_outro_screens/game_over/game over.png"></div>
         <div id="how-to-play" class="how-to-play d-none">
             <div class="close-btn"><img onclick="closeContainer('how-to-play')" class="close-img" src="./img/icons/close.png"></div>
-            <div><img src="./img/icons/attack.png"><span>Attack</span></div>
-            <div><img src="./img/icons/moveLeft.png"><span>Move Left</span></div>
-            <div><img src="./img/icons/moveRight.png"><span>Move Right</span></div>
-            <div><img src="./img/icons/space.png"><span>Jump</span></div>
+            <div class="how-to-play-buttons">
+                <div class="how-to-play-keys"><img src="./img/icons/attack.png"><span>Attack</span></div>
+                <div class="how-to-play-keys"><img src="./img/icons/moveLeft.png"><span>Move Left</span></div>
+                <div class="how-to-play-keys"><img src="./img/icons/moveRight.png"><span>Move Right</span></div>
+                <div class="how-to-play-keys"><img src="./img/icons/space.png"><span>Jump</span></div>
+            </div>
+            <div class="game-tipp">
+                Choose your bottles wisely there aren't many of them. If you kill all the chickens you will get bonus bottles.<br>
+                <br>
+                But be careful the final boss is damn fast.
+            </div>
         </div>
         <div id="how-to-play-mobile" class="how-to-play d-none">
             <div class="close-btn"><img onclick="closeContainer('how-to-play-mobile')" class="close-img" src="./img/icons/close.png"></div>
-            <div><img src="./img/mobile/mobile_throw.png"><span>Attack</span></div>
-            <div><img src="./img/mobile/mobile_left.png"><span>Move Left</span></div>
-            <div><img src="./img/mobile/mobile_right.png"><span>Move Right</span></div>
-            <div><img src="./img/mobile/mobile_jump.png"><span>Jump</span></div>
+            <div class="how-to-play-buttons">
+                <div class="how-to-play-keys"><img src="./img/mobile/mobile_throw.png"><span>Attack</span></div>
+                <div class="how-to-play-keys"><img src="./img/mobile/mobile_left.png"><span>Move Left</span></div>
+                <div class="how-to-play-keys"><img src="./img/mobile/mobile_right.png"><span>Move Right</span></div>
+                <div class="how-to-play-keys"><img src="./img/mobile/mobile_jump.png"><span>Jump</span></div>
+            </div>
+            <div class="game-tipp">
+                Choose your bottles wisely there aren't many of them. If you kill all the chickens you will get bonus bottles.<br>
+                <br>
+                But be careful the final boss is damn fast.
+            </div>
         </div>
     </div>
 

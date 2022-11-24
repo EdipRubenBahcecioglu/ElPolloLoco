@@ -1,7 +1,7 @@
 class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt alle Schablonen der Classe MoveableObject
 
     y = 360;
-    x = 400 + Math.random() * 1800; // math.random ist immer zwischen 0 und 1 d.h. wir haben hier einen maximalen Zufallswert von 500 // Dadurch ist die x Achse immer zwischen 80 und 700
+    x = 300 + Math.random() * 1800; // math.random ist immer zwischen 0 und 1 d.h. wir haben hier einen maximalen Zufallswert von 500 // Dadurch ist die x Achse immer zwischen 80 und 700
     height = 50;
     width = 40;
 
