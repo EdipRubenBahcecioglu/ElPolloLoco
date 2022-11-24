@@ -94,7 +94,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      */
 
     sprintLeft() {
-        this.x -= 25.00; // Wenn linke Pfeiltaste betätigt wurde, soll die Y Achse um die Speedvariable verringert werden
+        this.x -= 40.00; // Wenn linke Pfeiltaste betätigt wurde, soll die Y Achse um die Speedvariable verringert werden
     }
 
     /**
@@ -103,7 +103,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      */
 
     sprintRight() {
-        this.x += 25.00; // Wenn Rechte Pfeiltaste betätigt wurde, soll die X Achse um die Speedvariable erhöht werden
+        this.x += 40.00; // Wenn Rechte Pfeiltaste betätigt wurde, soll die X Achse um die Speedvariable erhöht werden
     }
 
     /**

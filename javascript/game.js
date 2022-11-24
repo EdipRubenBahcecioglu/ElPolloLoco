@@ -2,6 +2,7 @@ let canvas; // = Spielfeld
 let ctx; // 
 let world;
 let repeatAudio = false;
+let worldWasSet = false;
 
 /**
  * This function initializes the game and closes certain containers. It also hides icons.
@@ -36,10 +37,11 @@ async function init(startOption) {
  * 
  */
 
-async function setWorld(){
+async function setWorld() {
     canvas = document.getElementById('canvas'); // Der Variable Canvas wird das HTML Element mit der jeweiligen ID zugewiesen // Canvas = Spielfeld 
     let keyboard = new Keyboard();
     world = new World(canvas, keyboard); // Wir legen eine neues Objekt (World) an und geben das HTML Element Canvas (Spielfeld) mit // Der Parameter Canvas wird dem Constructor aus der Klasse World weitergegebens
+    worldWasSet = true;
 }
 
 /**
@@ -57,7 +59,7 @@ async function clearGame() {
  * 
  */
 
-async function closeContainers(){
+async function closeContainers() {
     await closeContainer('start-screen');
     await closeContainer('end-screen-lose');
     await closeContainer('end-screen-win');
@@ -68,7 +70,7 @@ async function closeContainers(){
  * 
  */
 
-function removeIcons(){
+function removeIcons() {
     document.getElementById('mobile-movement').classList.add('z-index1');
     document.getElementById('mobile-doge-attack').classList.add('z-index1');
     document.getElementById('mobile-start-game').classList.add('z-index1');
@@ -159,7 +161,7 @@ function checkGameStatus() {
  * 
  */
 
-function gameIsWon(){
+function gameIsWon() {
     world.gameWonSound.play();
     showWinScreen();
     repeatAudio = true;
@@ -170,7 +172,7 @@ function gameIsWon(){
  * 
  */
 
-function gameIsLosed(){
+function gameIsLosed() {
     world.gameLoseSound.play();
     showLoseScreen();
     repeatAudio = true;
@@ -181,8 +183,8 @@ function gameIsLosed(){
  * 
  */
 
-function showStartScreen(){
-    setTimeout(()=>{
+function showStartScreen() {
+    setTimeout(() => {
         window.location.reload();
     }, 5000);
 }

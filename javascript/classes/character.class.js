@@ -129,6 +129,7 @@ class Character extends MoveableObject {
             if (this.userPressButtonLeft() && this.characterIsNotAtMapstart()) {  // && this.x > 0 bedeutet, dass der Char nur nach links gehen kann wenn er bereits vorher nach rechts gelaufen ist d.h. er kann nicht nach links außerhalb der map laufen
                 this.characterIsMovingLeft();
             }
+            this.characterPositionAtGamestart();
             if(this.characterPassedBoss()){
                 this.changeCameraPosition();
             }
@@ -138,7 +139,6 @@ class Character extends MoveableObject {
             if (this.userPressButtonSpaceAndCharIsOnGround()) { // Wenn Leerzeichentaste gedrückt wird und der char sich nicht(!) über dem Boden befindet...
                 this.characterIsJumping();
             }
-            this.characterPositionAtGamestart();
         }, 1000 / 60); // 1000 / 60 = 60 FPS //////// WAR 60
 
         /**
@@ -237,7 +237,7 @@ class Character extends MoveableObject {
      */
 
     characterPositionAtGamestart(){
-        return this.world.camera_x = -this.x + 100; // +100 bedeutet, dass unser Char immer 100px standardgemäß weiter rechts auf der x Achse positioniert wird
+        this.world.camera_x = -this.x + 100; // +100 bedeutet, dass unser Char immer 100px standardgemäß weiter rechts auf der x Achse positioniert wird
     }
 
     /**
@@ -257,7 +257,7 @@ class Character extends MoveableObject {
      */
 
     changeCameraPosition(){
-        return this.world.camera_x = -this.x + 400;
+        this.world.camera_x = -this.x + 400;
     }
 
     /**
@@ -277,7 +277,7 @@ class Character extends MoveableObject {
      */
 
     setCameraToDefault(){
-        return this.world.camera_x = -this.x + 100;
+        this.world.camera_x = -this.x + 100;
     }
 
     /**
