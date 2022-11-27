@@ -9,7 +9,6 @@ class Endboss extends MoveableObject {
      * Using offset we can define a collision between several objects much more precisely 
      * 
      */
-
     offset = {
         top: 45,
         bottom: 20,
@@ -66,7 +65,6 @@ class Endboss extends MoveableObject {
      * Functions within the constructor are executed immediately
      * 
      */
-
     constructor() {
         super().loadImage();
         this.loadImagesOfEndboss();
@@ -77,7 +75,6 @@ class Endboss extends MoveableObject {
      * This function loads all images of endboss chicken
      * 
      */
-
     loadImagesOfEndboss() {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
@@ -90,7 +87,6 @@ class Endboss extends MoveableObject {
      * This function runs all animation functions of endboss
      * 
      */
-
     animate() {
         this.chickenMoveLeft();
         this.playMoveAnimation();
@@ -104,7 +100,6 @@ class Endboss extends MoveableObject {
      * This function shows dead image of endboss and clears other animation intervalls
      * 
      */
-
     showDeadBossImg() {
         this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
         for (let i = 1; i < this.bossIntervals.length; i++) clearInterval(this.bossIntervals[i]);
@@ -114,7 +109,6 @@ class Endboss extends MoveableObject {
      * This function lets endboss move left
      * 
      */
-
     chickenMoveLeft() {
         const moveBoss = setInterval(() => {
             this.moveLeft();
@@ -126,7 +120,6 @@ class Endboss extends MoveableObject {
      * This function plays the move animation of endboss
      * 
      */
-
     playMoveAnimation() {
         const moveBossAnimation = setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
@@ -138,7 +131,6 @@ class Endboss extends MoveableObject {
      * This function plays the hurt animation of endboss after getting hurted. Also endboss gonna attack.
      * 
      */
-
     playHurtAnimation() {
         const hurtBoss = setInterval(() => {
             this.bossIntervals.push(hurtBoss);
@@ -156,7 +148,6 @@ class Endboss extends MoveableObject {
      * This functions lets the endboss hunt the character after getting hurt  
      * 
      */
-
     playSprintAnimation() {
         const bossAttack = setInterval(() => {
             if (this.bossWillAttack) {
@@ -178,7 +169,6 @@ class Endboss extends MoveableObject {
      * This function plays the endboss alert animation after character enters danger zone
      * 
      */
-
     playAlertAnimation(){
         const dangerZoneBoss = setInterval(() => {
             if (this.haveVision) {
@@ -197,7 +187,6 @@ class Endboss extends MoveableObject {
      * This function plays the dead animation of endboss when life is 0
      * 
      */
-
     playDeadAnimation(){
         const bossDead = setInterval(() => {
             if (this.isDead('boss')) {

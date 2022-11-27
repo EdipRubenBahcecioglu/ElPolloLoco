@@ -20,7 +20,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * Using offset we can define a collision between several objects much more precisely 
      * 
      */
-
     offset = {
         top: 0,
         bottom: 0,
@@ -33,7 +32,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      * 
      */
-
     applyGravity() { // Funktion wenn ein Objekt fällt z.B. beim Sprung
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) { // Wenn unser Objekt über dem Boden ist
@@ -48,7 +46,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      * @returns true when our object is above ground
      */
-
     isAboveGround() {
         if (this instanceof ThrowableObject) {
             return true;
@@ -62,7 +59,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      * @returns true when our object hits the ground
      */
-
     objectHitGround() {
         if (this.y > 340) { // 350 war vorher
             return true;
@@ -74,7 +70,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function lets the object move right
      * 
      */
-
     moveRight() {
         this.x += this.speed; // Wenn Rechte Pfeiltaste betätigt wurde, soll die X Achse um die Speedvariable erhöht werden
     }
@@ -83,7 +78,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function lets the object move left
      * 
      */
-
     moveLeft() {
         this.x -= this.speed; // Wenn linke Pfeiltaste betätigt wurde, soll die Y Achse um die Speedvariable verringert werden
     }
@@ -92,7 +86,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This funcion lets the object sprint left
      * 
      */
-
     sprintLeft() {
         this.x -= 50.00; // Wenn linke Pfeiltaste betätigt wurde, soll die Y Achse um die Speedvariable verringert werden
     }
@@ -101,7 +94,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function lets the object sprint right
      * 
      */
-
     sprintRight() {
         this.x += 50.00; // Wenn Rechte Pfeiltaste betätigt wurde, soll die X Achse um die Speedvariable erhöht werden
     }
@@ -110,7 +102,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function lets the object jump
      * 
      */
-
     jump() {
         this.speedY = 30; // soll das Objekt in der Y Achse nach oben springen mit einer Anfangsgeschwindigkeit von 30
     }
@@ -119,7 +110,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * If object died the y coordinate will rise and object will leave map from botside 
      * 
      */
-
     leaveMap() {
         this.y += 10.0;
     }
@@ -129,7 +119,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      * @param {array} images - array of image paths 
      */
-
     playAnimation(images) {
         let i = this.currentImage % images.length // % bedeutet -> i = 0, dann 1, dann 2, dann 3, dann 4, dann 5 und dann weil es keine weitern Bilder gibt, starten wir wieder bei 0 d.h. % ist eine verkürzte if Abfrage
         let path = images[i]; // path = erstes Bild aus dem Array aus Zeile 8
@@ -143,7 +132,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @param {object} mo - moveable object  
      * @returns true in case of collision
      */
-
     isColliding(mo) {     // isColliding(z.B. Chicken), diese Funktion zeigt uns, ob ein Objekt mit einem anderen Objekt auf der Achse kolidiert 
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&  // Kollidierung von Rechts nach Links
             this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && // Kollidierung von Oben nach Unten
@@ -156,7 +144,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      * @param {string} collectedObject - which object gets collected 
      */
-
     collect(collectedObject) {
         if (collectedObject == 'coin') {
             this.updateCoinStatusbar();
@@ -176,7 +163,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function updates the coin statusbar after picking up a coin
      * 
      */
-
     updateCoinStatusbar() {
         if (this.collectedCoins < 100) {
             this.collectedCoins += 10;
@@ -187,7 +173,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function updates the bottle statusbar after picking up a bottle
      * 
      */
-
     updateBottleStatusbar() {
         if (this.collectedBottles < 5) {
             this.collectedBottles += 1;
@@ -198,7 +183,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function updates the character health statusbar after picking up a hearth
      * 
      */
-
     updateCharEnergyStatusbar() {
         if (this.energyChar < 100) {
             this.energyChar += 25;
@@ -211,7 +195,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @param {number} takenDamage 
      * @param {string} hittenObject 
      */
-
     hit(takenDamage, hittenObject) {
         if (hittenObject == 'character') {
             this.characterGettingDamaged(takenDamage);
@@ -227,7 +210,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function reduce the energy of character by damage
      * 
      */
-
     characterGettingDamaged(takenDamage) {
         this.energyChar -= takenDamage;
         if (this.energyChar < 0) {
@@ -241,7 +223,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * This function reduce the energy of boss by damage
      * 
      */
-
     bossGettingDamaged(takenDamage) {
         this.energyBoss -= takenDamage;
         if (this.energyBoss < 0) {
@@ -256,7 +237,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      * @returns true if a collision has occurred in the past second
      */
-
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit; // Differenz in Milisek // Ergebnis hier ca 1660949840826
         timepassed = timepassed / 1000; // Differenz in Sekunden // Ergebnis hier ca 1660949864
@@ -270,7 +250,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @param {number} maxTimepassed - max timepassed in seconds
      * @returns true when the last movement ist between minTimepassed and maxTimepassed
      */
-
     isSleeping(minTimepassed, maxTimepassed) {
         let timepassed = new Date().getTime() - this.lastMovement; // Timepassed hier in Milisek.
         timepassed = timepassed / 1000; // Timepassed hier in Sek
@@ -283,7 +262,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @param {string} object - object which is dead 
      * @returns energy 0 of the object
      */
-
     isDead(object) {
         if (object == 'character') {
             return this.energyChar == 0;
@@ -298,7 +276,6 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      * @returns true if an object gets attacked
      */
-
     getAttacked() {
         if (this.isAttacked) {
             return true;

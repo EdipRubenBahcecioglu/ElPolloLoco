@@ -8,7 +8,6 @@ class Coin extends MoveableObject{
      * @param {number} y - y position of coin
      * @param {string} imagePathCoin - image path of coin  
      */
-
     constructor(x, y, imagePathCoin){
         super().loadImage(imagePathCoin);
         this.x = x;

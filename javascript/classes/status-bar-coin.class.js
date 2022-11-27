@@ -20,7 +20,6 @@ class StatusBarCoin extends DrawableObject {
      * The loadImages function loads the images of healtbar of coins
      * 
      */
-
     constructor() {
         super();
         this.loadImages(this.IMAGE_COINS);
@@ -32,7 +31,6 @@ class StatusBarCoin extends DrawableObject {
      * 
      * @param {number} collectedBottles - amount of collected coins 
      */
-
     setCoins(collectedCoins){
         this.x = 40;
         this.y = 45;
@@ -46,7 +44,6 @@ class StatusBarCoin extends DrawableObject {
      * 
      * @returns the index of image which is gonna be shown
      */
-
     resolveImageIndexCoins(){
         if (this.collectedCoins == 100) {
             return 5;

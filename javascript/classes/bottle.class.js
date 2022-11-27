@@ -9,7 +9,6 @@ class Bottle extends MoveableObject{
      * @param {number} y - y coordinate
      * @param {string} imgPathBottle - this is the path of the image what will be loaded
      */
-
     constructor(x, y, imgPathBottle){
         super().loadImage(imgPathBottle);
         this.x = x;

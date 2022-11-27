@@ -21,7 +21,6 @@ class Level {
      * @param {array} bottle - array with all bottles
      * @param {array} heart - array with all hearts
      */
-
     constructor(enemies, bosses, clouds, backgroundObject, coin, bottle, heart){
         this.enemies = enemies;
         this.clouds = clouds,

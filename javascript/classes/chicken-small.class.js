@@ -19,7 +19,6 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
      * Functions within the constructor are executed immediately
      * 
      */
-
     constructor(){ // Jede Classe hat ein Constructor. Innerhalb dieses Constructors werden die Sachen eingetragn, die sofort ausgeführt werden sollen
         super().loadImage(); // Mit Super greifen wir auf die übergeordnete Classe zu und führen die Funktion loadImage aus und geben den Parameter mit
         this.loadChickenSmallImages();
@@ -31,7 +30,6 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
      * The animation function makes the chicken run to the left and checks if a chicken was attacked
      * 
      */
-
     animate() {
         setInterval(() =>{ // Mithilfe von setInterval können wir eine Funktion zich mal die Sekunde aufrufen
             this.moveLeft();
@@ -52,7 +50,6 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
      * This function loads all small chicken images
      * 
      */
-
     loadChickenSmallImages(){
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGE_DEAD);
@@ -62,7 +59,6 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
      * This function sets the movementspeed of small chicken randomly
      * 
      */
-
     setChickenSpeedRandomly(){
         this.speed = this.speed + Math.random() * 0.25; // Die Speedvariable aus der übergeordneten Klaasse ist hier bei jedem Chicken unterschiedlich also mindestens 0.15 + max 0.25 drauf = max Speed 0.40
     }
@@ -71,10 +67,13 @@ class ChickenSmall extends MoveableObject { // Die Classe Chicken übernimmt all
      * This function runs the dead animation if small chicken gets attacked
      * 
      */
-
     playChickenSmallDeadAnimation(){
         this.loadImage(this.IMAGE_DEAD[0]);
         this.speedX = 0;
         this.speed = 0;
+        setTimeout(()=>{
+            this.height = 0;
+            this.width = 0;
+        }, 300);
     }
 }

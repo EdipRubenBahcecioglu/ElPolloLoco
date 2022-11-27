@@ -10,7 +10,6 @@ class Keyboard {
      * Functions within the constructor are executed immediately
      * 
      */
-
     constructor() {
         this.bindKeypressEvent();
         this.bindKeyTouchEvent();
@@ -20,7 +19,6 @@ class Keyboard {
      * This function checks which key was pressed 
      * 
      */
-
     bindKeypressEvent() {
         window.addEventListener("keydown", (event) => { // Mithilfe dieser Eventfunktion wird uns ausgeloggt, was für eine Taste der User gedrückt hat //
             if (event.keyCode == '38') { // 38 = Pfeilhochtaste // Wenn Event mit dem Keycode 38 gedrückt wurde...
@@ -69,7 +67,6 @@ class Keyboard {
      * This function checks which button was touched
      * 
      */
-
     bindKeyTouchEvent() {
         document.getElementById('mobile-left').addEventListener("touchstart", (event) => {
             event.preventDefault();

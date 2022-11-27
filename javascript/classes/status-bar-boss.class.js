@@ -23,7 +23,6 @@ class StatusBarBoss extends MoveableObject {
      * @param {number} bossXPosition - x coordinate from the endboss 
      * @param {number} bossYPosition - y coordinate from the endboss
      */
-
     constructor(bossXPosition, bossYPosition) {
         super();
         this.loadImages(this.IMAGE_HEALTH);
@@ -38,7 +37,6 @@ class StatusBarBoss extends MoveableObject {
      * @param {number} bossXPosition - x coordinate of endboss
      * @param {number} bossYPosition - y coordinate of endboss
      */
-
     setPercentage(percentage, bossXPosition, bossYPosition) { // Wir aktuallisieren die Variable percentage aus Zeile 25 die standardgemäß 100 ist
         this.x = bossXPosition;
         this.y = bossYPosition;
@@ -52,7 +50,6 @@ class StatusBarBoss extends MoveableObject {
      * 
      * @returns the index of image which is gonna be shown
      */
-
     resolveImageIndex() { // WELCHES BILD DER LEBENSANZEIGE SOLL ANGEZEIGT WERDEN? WENN LEBEN BZW. PERCENTAGE XX DANN RETURN XX 
         if (this.percentage >= 100) {
             return 5;

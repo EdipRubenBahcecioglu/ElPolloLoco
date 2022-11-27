@@ -30,8 +30,6 @@ class World {
      * @param {object} canvas - canvasobject
      * @param {object} keyboard - keyboardobject
      */
-
-
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d'); // Mithilfe von getContext haben wir die Möglichkeit innerhlab des Canvas ein 2D Format darstellen zu lassen bzw. zu zeichnen
         this.canvas = canvas;
@@ -49,7 +47,6 @@ class World {
      * This function lets the character have access to the whole world object 
      * 
      */
-
     setWorld() {
         this.character.world = this; // This steht hier alleine d.h. dass die Variable world in der Char Klasse kann auf alle Variablen in der World Klasse zugreifen
     }
@@ -58,7 +55,6 @@ class World {
      * This function push all available audios to an array
      * 
      */
-
     pushAudiosToArray() {
         this.allAudioSounds.push(this.coinCollectSound);
         this.allAudioSounds.push(this.bottleCollectSound);
@@ -80,7 +76,6 @@ class World {
      * This function contolls the audio volume of all audios 
      * 
      */
-
     controllAudioVolume() {
         this.allAudioSounds.forEach((audio) => {
             audio.volume = 0.10;
@@ -91,7 +86,6 @@ class World {
      * This function clears the character object
      * 
      */
-
     clearCharacter() {
         this.character = [];
     }
@@ -100,7 +94,6 @@ class World {
      * This function checks if bottle is throwable and creates an throwable object and set the throw direction
      * 
      */
-
     throwBottle() {
         setInterval(() => {
             if (this.bottleIsThrowable()) {
@@ -119,7 +112,6 @@ class World {
      * 
      * @returns true when an bottle is throwable
      */
-
     bottleIsThrowable() {
         return this.character.collectedBottles > 0 && this.keyboard.attack && this.character.isAttacking == false
     }
@@ -128,7 +120,6 @@ class World {
      * This function plays sounds and update variables after a bottle throw
      * 
      */
-
     updateThrowBottleVariablesAndSounds() {
         this.bottleThrowSound.play();
         this.character.isAttacking = true;
@@ -140,7 +131,6 @@ class World {
      * This function updates the collected bottle variable after a bottle is thrown. Also the bottle statusbar is getting updated.
      * 
      */
-
     updateBottleStatusBar() {
         this.character.collectedBottles--;
         this.statusBarBottle.setBottles(this.character.collectedBottles);
@@ -153,7 +143,6 @@ class World {
      * @param {number} bottleY - bottle y coordinate
      * @param {string} throwDirection - right or left 
      */
-
     createNewThrowableObject(bottleX, bottleY, throwDirection) {
         if (throwDirection == 'right') {
             let bottle = new ThrowableObject(this.character.x + bottleX, this.character.y + bottleY);
@@ -171,7 +160,6 @@ class World {
      * This function sticks the endboss statusbar to the endboss
      * 
      */
-
     stickStatusBarBossToEndboss() {
         let statusbarBoss = this.statusBarEndboss;
         setInterval(() => {
@@ -184,18 +172,19 @@ class World {
      * This function checks if the character can get the bonus bottles after killing all normal enemys. Also the suitable sound is playing and variables getting updated. 
      * 
      */
-
     checkBonusBottles() { // Audio Sound Einfügen
         setInterval(() => {
-            if (this.level.enemies.length == 0 && this.character.reachedBonus == false) {
-                this.character.collectedBottles = this.character.collectedBottles + 3;
-                if(this.character.collectedBottles > 5){
-                    this.character.collectedBottles = 5;
-                    this.statusBarBottle.setBottles(this.character.collectedBottles);
+            this.level.enemies.forEach((enemy)=>{
+                if (enemy.isAttacked == true && this.character.reachedBonus == false) {
+                    this.character.collectedBottles = this.character.collectedBottles + 3;
+                    if(this.character.collectedBottles > 5){
+                        this.character.collectedBottles = 5;
+                        this.statusBarBottle.setBottles(this.character.collectedBottles);
+                    }
+                    this.character.reachedBonus = true;
+                    this.bonusBottlesSound.play();
                 }
-                this.character.reachedBonus = true;
-                this.bonusBottlesSound.play();
-            }
+            })
         }, 1000 / 60);
     }
 
@@ -203,7 +192,6 @@ class World {
      * This function draws all object to map
      * 
      */
-
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe
         this.ctx.translate(this.camera_x, 0);
@@ -220,7 +208,6 @@ class World {
      * This function repeats the draw function
      * 
      */
-
     repeatDrawFunction() {
         let self = this;
         requestAnimationFrame(function () { // Mithilfe dieser Funktion wird die draw Funktion, sobald die einmal geladen wurde, zich mal pro Sekunde ausgeführt
@@ -232,7 +219,6 @@ class World {
      * This function draws the background of map
      * 
      */
-
     drawMapBackground() {
         this.addObjectsToMap(this.level.backgroundObject);
         this.addObjectsToMap(this.level.clouds); // Wir geben den Inhalt aus dem Array Zeile 13/14/15... an die Funktion weiter
@@ -242,7 +228,6 @@ class World {
      * This function draws all sticky elements
      * 
      */
-
     drawStickyBars() {
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarCoin);
@@ -253,7 +238,6 @@ class World {
      * This function draws all collectable, moveable and throwable objects
      * 
      */
-
     drawMoveableCollectableThrowableObjects() {
         this.addToMap(this.statusBarEndboss);
         this.addObjectsToMap(this.level.bottle);
@@ -270,7 +254,6 @@ class World {
      * 
      * @param {object} objects - which element is getting to draw 
      */
-
     addObjectsToMap(objects) { // Object = Arrayinhalt aus Zeile 30 z.B. 
         objects.forEach(object => { // For Each ist eine Art For Schleife // Die Funktion addObjectsToMap wird so oft ausgeführt bis jedes einzelne Element aus dem Array ausgelesen wurde
             this.addToMap(object); // Wir geben den Parameter (Inhalt vom Array) an die nächste Funktion weiter
@@ -282,7 +265,6 @@ class World {
      * 
      * @param {object} mo - moveable object  
      */
-
     addToMap(mo) { // mo = Movable Objekt // Parameter aus Zeile 44
         if (mo.otherDirection) { // Wenn OtherDirection eine andere Richtung hat..
             this.flipImage(mo); // Zeile 59
@@ -299,7 +281,6 @@ class World {
      * 
      * @param {object} mo - moveable object 
      */
-
     flipImage(mo) {
         this.ctx.save(); // Dann soll der aktuelle Context gespeichert wernden..
         this.ctx.translate(mo.width, 0); // Coce ab hier bis Zeile 61 spiegeln wir das Bild // Bild wird spiegelverkehrt eingefügt
@@ -312,7 +293,6 @@ class World {
      * 
      * @param {object} mo - moveable object  
      */
-
     flipImageBack(mo) {
         mo.x = mo.x * -1; // X Koordinate wird umgedreht 
         this.ctx.restore(); // Die Spiegelung wird wieder zurückgesetzt

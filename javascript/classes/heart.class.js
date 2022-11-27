@@ -7,7 +7,6 @@ class Heart extends MoveableObject{
      * @param {number} x 
      * @param {number} y 
      */
-
     constructor(x, y){
         super().loadImage('img/heart/heart.png');
         this.x = x;

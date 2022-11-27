@@ -2,7 +2,6 @@
  * TThis function checks if our world is fully loaded and then executes intervals
  * 
  */
-
 const worldSetCheck = setInterval(() => {
     if (worldWasSet == true) {
         checkAllCollisions();
@@ -14,7 +13,6 @@ const worldSetCheck = setInterval(() => {
  * This function checks all collisions in the game
  * 
  */
-
 function checkAllCollisions() {
     checkEnemyCollisions();
     checkBossCollisions();
@@ -33,7 +31,6 @@ function checkAllCollisions() {
  * This function checks if the character missed an bottle and plays the suitable sound
  * 
  */
-
 function checkCharacterMiss() {
     setInterval(() => {
         for (let x = 0; x < world.throwableObject.length; x++) {
@@ -50,7 +47,6 @@ function checkCharacterMiss() {
  * This function checks if the character is coliding with an enemy and let the character take damage. Also the health statusbar is getting updated.
  * 
  */
-
 function checkEnemyCollisions() {
     setInterval(() => {
         world.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
@@ -69,7 +65,6 @@ function checkEnemyCollisions() {
  * @param {object} enemy - enemyobject 
  * @returns true when character can be hurt 
  */
-
 function characterCanBeHurt(enemy) {
     return world.character.isColliding(enemy) && !world.character.isAboveGround() && !enemy.isAttacked;
 }
@@ -78,7 +73,6 @@ function characterCanBeHurt(enemy) {
  * This function checks if the character is coliding with an boss and let the character take damage. Also the health statusbar is getting updated.
  * 
  */
-
 function checkBossCollisions() {
     setInterval(() => {
         world.level.bosses.forEach((endboss) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
@@ -95,13 +89,13 @@ function checkBossCollisions() {
  * This function checks if the character jumps on an enemy and plays the suitable sound.
  * 
  */
-
 function checkCollisionsFromTop() {
     setInterval(() => {
         world.level.enemies.forEach((enemy, index) => {
-            if (characterJumpedOnEnemy(enemy)) {
+            if (characterJumpedOnEnemy(enemy) && enemy.isAttacked == false) {
                 updateCharacterVariablesAndSounds(enemy);
-                removeObject(index, enemy, 'enemy', 400);
+                removeEnemyAndUpdateVariablesAndSound(index, enemy);
+                console.log('Index vom Chicken:', index, 'enemy ist', enemy);
                 world.deadEnemys++;
             }
         });
@@ -114,16 +108,71 @@ function checkCollisionsFromTop() {
  * @param {object} enemy - enemyobject 
  * @returns true when collision from top is true
  */
+ function characterJumpedOnEnemy(enemy) {
+    return world.character.isColliding(enemy) && world.character.isAboveGround() && world.character.speedY <= 0
+}
 
-function characterJumpedOnEnemy(enemy) {
-    return world.character.isColliding(enemy) && !enemy.isDead() && world.character.isAboveGround() && world.character.speedY <= 0
+/**
+ * This function removes bottle after throw and update variables
+ * 
+ * @param {number} indexOfBottle - index of thrown bottle
+ * @param {object} throwedBottle - throwed bottle as object
+ */
+ function removeBottleAndUpdateVariables(indexOfBottle, throwedBottle) {
+    removeObject(indexOfBottle, throwedBottle, 'bottle', 300);
+    world.character.isAttacking = false;
+}
+
+/**
+ * This function removes enemy after getting attacked and play suitable sound and update variables
+ * 
+ * @param {number} inexOfEnemy - index of hitten enemy 
+ * @param {object} enemy - hitten enemy as object
+ */
+function removeEnemyAndUpdateVariablesAndSound(indexOfEnemy, enemy) {
+    removeObject(indexOfEnemy, enemy, 'enemy', 300);
+    world.throwSuccesSound.play();
+    setTimeout(()=>{
+        enemy.isAttacked = true;
+    }, 50);
+}
+
+/**
+ * This function plays sounds and update variables after a bottle hits an enemy
+ * 
+ * @param {object} enemy - enemyobject
+ */
+ function updateCharacterVariablesAndSounds(enemy) {
+    world.throwSuccesSound.play();
+    world.character.speedY += 25;
+    world.character.y = 150;
+    world.character.isAttacking = false;
+}
+
+/**
+ * This function checks if thrown bottle hits enemy 
+ * 
+ */
+function checkBottleHitEnemy() {
+    setInterval(() => {
+        world.level.enemies.forEach((enemy, index) => {
+            for (let b = 0; b < world.throwableObject.length; b++) {
+                let throwedBottle = world.throwableObject[b];
+                if (throwedBottle.isColliding(enemy)) {
+                    removeEnemyAndUpdateVariablesAndSound(index, enemy);
+                } else
+                    if (throwedBottle.bottleSplashed) {
+                        removeBottleAndUpdateVariables(b, throwedBottle);
+                    }
+            }
+        })
+    }, 1000 / 60);
 }
 
 /**
  * This function checks if the character is coliding with an coin and collects them 
  * 
  */
-
 function checkCoinCollisions() {
     setInterval(() => {
         world.level.coin.forEach((coin, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
@@ -138,7 +187,6 @@ function checkCoinCollisions() {
  * This function checks if the character is coliding with an bottle and collects them but only when the character have less then 5 bottles
  * 
  */
-
 function checkBottleCollisions() {
     setInterval(() => {
         if (world.character.collectedBottles < 5) {
@@ -155,7 +203,6 @@ function checkBottleCollisions() {
  * This function checks if the character is coliding with an heart and collects them but only when the character habe less then full life
  * 
  */
-
 function checkHeartCollisions() {
     setInterval(() => {
         if (world.character.energyChar < 100) {
@@ -176,7 +223,6 @@ function checkHeartCollisions() {
  * @param {array} objectInLevel - object in level array
  * @param {audio} collectSound - collect audio by collision 
  */
-
 function objectGettingCollected(collectedObject, indexOfObject, objectInLevel, collectSound) {
     world.character.collect(collectedObject);
     collectSound.play();
@@ -191,56 +237,9 @@ function objectGettingCollected(collectedObject, indexOfObject, objectInLevel, c
 }
 
 /**
- * This function checks if thrown bottle hits enemy 
- * 
- */
-
-function checkBottleHitEnemy() {
-    setInterval(() => {
-        world.level.enemies.forEach((enemy, index) => {
-            for (let b = 0; b < world.throwableObject.length; b++) {
-                let throwedBottle = world.throwableObject[b];
-                if (throwedBottle.isColliding(enemy)) {
-                    removeEnemyAndUpdateVariablesAndSound(index, enemy);
-                } else
-                    if (throwedBottle.bottleSplashed) {
-                        removeBottleAndUpdateVariables(b, throwedBottle);
-                    }
-            }
-        })
-    }, 1000 / 60); // 100
-}
-
-/**
- * This function removes bottle after throw and update variables
- * 
- * @param {number} indexOfBottle - index of thrown bottle
- * @param {object} throwedBottle - throwed bottle as object
- */
-
-function removeBottleAndUpdateVariables(indexOfBottle, throwedBottle) {
-    removeObject(indexOfBottle, throwedBottle, 'bottle', 300);
-    world.character.isAttacking = false;
-}
-
-/**
- * This function removes enemy after getting attacked and play suitable sound and update variables
- * 
- * @param {number} inexOfEnemy - index of hitten enemy 
- * @param {object} enemy - hitten enemy as object
- */
-
-function removeEnemyAndUpdateVariablesAndSound(inexOfEnemy, enemy) {
-    removeObject(inexOfEnemy, enemy, 'enemy', 300);
-    world.throwSuccesSound.play();
-    enemy.isAttacked = true;
-}
-
-/**
  * This function checks if thrown bottle hits endboss and update variables 
  * 
  */
-
 function checkBottleHitEndboss() {
     setInterval(() => {
         world.level.bosses.forEach((boss) => {
@@ -264,7 +263,6 @@ function checkBottleHitEndboss() {
  * 
  * @param {object} boss - endboss as object 
  */
-
 function setAttackVariablesToDefault(boss) {
     setTimeout(() => {
         boss.bossHurt = false;
@@ -279,7 +277,6 @@ function setAttackVariablesToDefault(boss) {
  * @param {object} boss - endboss as object
  * @param {object} throwedBottle - thrown bottle as object
  */
-
 function bossGettingHurtAndUpdateVariables(indexOfBottle, boss, throwedBottle) {
     world.throwSuccesSound.play();
     boss.bossHurt = true;
@@ -297,7 +294,6 @@ function bossGettingHurtAndUpdateVariables(indexOfBottle, boss, throwedBottle) {
  * @param {array} array - in which array is the object which is getting removed
  * @param {number} timeoutTime - after how much seconds the object should be removed
  */
-
 function removeObject(indexOfObject, object, array, timeoutTime) {
     if (array == 'bottle') {
         removeBottleObject(indexOfObject, object, timeoutTime);
@@ -314,7 +310,6 @@ function removeObject(indexOfObject, object, array, timeoutTime) {
  * @param {object} object - which object should be removed
  * @param {number} timeoutTime - after how much seconds the object should be removed 
  */
-
 function removeBottleObject(indexOfObject, object, timeoutTime) {
     setTimeout((() => {
         if (world.throwableObject[indexOfObject] === object) {
@@ -330,7 +325,6 @@ function removeBottleObject(indexOfObject, object, timeoutTime) {
  * @param {object} object - which object should be removed
  * @param {number} timeoutTime - after how much seconds the object should be removed   
  */
-
 function removeEnemyObject(indexOfObject, object, timeoutTime) {
     setTimeout((() => {
         if (world.level.enemies[indexOfObject] === object) {
@@ -343,7 +337,6 @@ function removeEnemyObject(indexOfObject, object, timeoutTime) {
  * This function checks if the character is entering the danger Zone and plays the suitable sounds. Also variables are getting updated. 
  * 
  */
-
 function checkCharacterinDangerZone() {
     setInterval(() => {
         let endboss = world.level.bosses[0];
@@ -364,7 +357,6 @@ function checkCharacterinDangerZone() {
  * @param {*} endboss 
  * @returns 
  */
-
 function characterIsInDangerZone(endboss) {
     return endboss.x - world.character.x < 500 && endboss.bossWillAttack == false || endboss.isDead('boss');
 }
@@ -373,7 +365,6 @@ function characterIsInDangerZone(endboss) {
  * This function checks if boss passed character and update variables
  * 
  */
-
 function checkBossPassCharacter() {
     setInterval(() => {
         let endboss = world.level.bosses[0];
@@ -385,18 +376,4 @@ function checkBossPassCharacter() {
             world.character.passedBoss = false;
         }
     }, 1000 / 60);
-}
-
-/**
- * This function plays sounds and update variables after a bottle hits an enemy
- * 
- * @param {object} enemy - enemyobject
- */
-
-function updateCharacterVariablesAndSounds(enemy) {
-    world.throwSuccesSound.play();
-    enemy.isAttacked = true;
-    world.character.speedY += 25;
-    world.character.y = 150;
-    world.character.isAttacking = false;
 }

@@ -9,7 +9,6 @@ class ThrowableObject extends MoveableObject {
      * Using offset we can define a collision between several objects much more precisely 
      * 
      */
-
     offset = {
         top: 15,
         bottom: 15,
@@ -41,7 +40,6 @@ class ThrowableObject extends MoveableObject {
      * @param {number} x - x coordinate of bottle
      * @param {number} y - y coordinate of bottle
      */
-
     constructor(x, y) {
         super().loadImage('./img/6_salsa_bottle/salsa_bottle.png'); // Bottle Bild fürs schmeißen
         this.x = x;
@@ -56,7 +54,6 @@ class ThrowableObject extends MoveableObject {
      * This function loads all bottle images
      * 
      */
-
     loadBottleImages(){
         this.loadImages(this.IMAGES_BOTTLE_THROW);
         this.loadImages(this.IMAGES_BOTTLE_SPLASH);
@@ -66,7 +63,6 @@ class ThrowableObject extends MoveableObject {
      * This function lets you throw a bottle
      * 
      */
-
     throw() {
         this.speedY = 30;
         this.applyGravity();
@@ -85,7 +81,6 @@ class ThrowableObject extends MoveableObject {
      * This function checks if a bottle getting splashed and updates variales
      * 
      */
-
     bottleGettingSplashed() {
         this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
         this.speedY = 0;
@@ -100,7 +95,6 @@ class ThrowableObject extends MoveableObject {
      * 
      * @returns true if bottle is above ground and the fly direction is right
      */
-
     bottleIsAboveGroundAndThrowToRightSide(){
         return !this.objectHitGround() && this.bottleFlyDirection == 'right';
     }
@@ -110,7 +104,6 @@ class ThrowableObject extends MoveableObject {
      * 
      * @returns true if bottle is above ground and the fly direction is left
      */
-
     bottleIsAboveGroundAndThrowToLeftSide(){
         return !this.objectHitGround() && this.bottleFlyDirection == 'left';
     }
@@ -119,7 +112,6 @@ class ThrowableObject extends MoveableObject {
      * This function throws a bottle to the rightside and plays the throw animation
      * 
      */
-
     bottleIsFlyingToRight() {
         this.x += 10;
         this.playAnimation(this.IMAGES_BOTTLE_THROW);
@@ -129,7 +121,6 @@ class ThrowableObject extends MoveableObject {
      * This function throws a bottle to the leftsside and plays the throw animation
      * 
      */
-
     bottleIsFlyingToLeft(){
         this.x -= 10;
         this.playAnimation(this.IMAGES_BOTTLE_THROW);
@@ -140,7 +131,6 @@ class ThrowableObject extends MoveableObject {
      * 
      * @returns true if bottle hits ground
      */
-
     bottleHitsGround(){
         return this.objectHitGround();
     }

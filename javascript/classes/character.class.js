@@ -120,7 +120,7 @@ class Character extends MoveableObject {
      * The animation function checks which keyboard key was pressed and executes the character movement accordingly
      * 
      */
-
+    /*#################################################CLEAN CODING !!!!!!!!!!!##############################################################*/
     animate() {
         setInterval(() => {
             if (this.userPressButtonRight() && this.characterIsNotAtMapend()) { // Wenn Keyboard right == true ist, dann sollen die Bilder ausgetauscht werden (Zeile 41) und der Char sich bewegen // && this.x < this.world.level.level_end_x bedeutet, dass unser Char nur soweit nach rechts laufen kann bis die Variable level_end_x (hier 2200px) erreicht ist
@@ -130,11 +130,16 @@ class Character extends MoveableObject {
                 this.characterIsMovingLeft();
             }
             this.characterPositionAtGamestart();
-            if(this.characterPassedBoss()){
-                this.changeCameraPosition();
+            if(this.characterPassedBoss() && !this.world.character.isDead()){
+                    // this.changeCameraPosition();
+                    // this.world.camera_x = -this.world.character.x + 400;
+                    for(let i = 100; i < 400; i + 30){
+                        this.world.camera_x = -this.world.character.x + i;
+                    }
+                    
             }
             if(this.bossPassedCharacter()){
-                this.setCameraToDefault();
+                    this.setCameraToDefault();
             }
             if (this.userPressButtonSpaceAndCharIsOnGround()) { // Wenn Leerzeichentaste gedrückt wird und der char sich nicht(!) über dem Boden befindet...
                 this.characterIsJumping();
@@ -150,14 +155,15 @@ class Character extends MoveableObject {
 
             if (this.isDead('character')) { // Wenn isDead in der moveObj = true ist dann ...
                 this.characterIsDead();
+                this.resetBossAggro();
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) { // Wenn unser Char sich in der luft befindet, dann soll der Array aus Zeile 19 die verschiedenen Bilder abspielen
                 this.playAnimation(this.IMAGES_JUMPING);
-            } else if (this.isSleeping('2', '4')) {
+            } else if (this.isSleeping('0.5', '1.5')) {
                 this.playAnimation(this.IMAGES_SHORT_SLEEP);
                 this.charSleepSound.play();
-            } else if(this.isSleeping('4', '999999')){
+            } else if(this.isSleeping('1.5', '999999')){
                 this.playAnimation(this.IMAGES_LONG_SLEEP);
             } else if (this.world.keyboard.right || this.world.keyboard.left) { // Wenn Keyboard right == true ist, dann sollen die Bilder ausgetauscht werden und der Char sich bewegen // ODER (||) Wenn Keyboardtaste left == true ist
                 this.playAnimation(this.IMAGES_WALKING); // LAUF ANIMATION
@@ -311,5 +317,9 @@ class Character extends MoveableObject {
         this.playAnimation(this.IMAGES_DEAD); // .. werden die Bilder vom Tod nacheinander abgepsielt
         this.leaveMap();
         this.charHurtSound.pause();
+    }
+
+    resetBossAggro(){
+        this.world.level.bosses[0].bossWillAttack = false;
     }
 }
