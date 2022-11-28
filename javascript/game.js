@@ -1,5 +1,5 @@
-let canvas; // = Spielfeld
-let ctx; // 
+let canvas; 
+let ctx;
 let world;
 let repeatAudio = false;
 let worldWasSet = false;
@@ -35,9 +35,9 @@ async function init(startOption) {
  * 
  */
 async function setWorld() {
-    canvas = document.getElementById('canvas'); // Der Variable Canvas wird das HTML Element mit der jeweiligen ID zugewiesen // Canvas = Spielfeld 
+    canvas = document.getElementById('canvas'); 
     let keyboard = new Keyboard();
-    world = new World(canvas, keyboard); // Wir legen eine neues Objekt (World) an und geben das HTML Element Canvas (Spielfeld) mit // Der Parameter Canvas wird dem Constructor aus der Klasse World weitergegebens
+    world = new World(canvas, keyboard); 
     worldWasSet = true;
 }
 

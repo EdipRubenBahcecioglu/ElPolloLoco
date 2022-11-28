@@ -198,17 +198,22 @@ canvas {
 }
 
 .mobile-turn-alert{
-    height: 100vh;
-    width: 100vw;
     display: flex;
-    justify-content: center;
-    align-items: center;
     position: absolute;
-    top: -155px;
+    top: 260px;
     z-index: 3;
     font-size: 35px;
     text-align: center;
     display: none;
+}
+
+.main-mobile-alert{
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /*SMARTPHONES*/
@@ -270,7 +275,7 @@ canvas {
     }
 }
 
-@media only screen and (max-width:900px){
+@media only screen and (max-width:900px) and (min-height: 481px){
     .mobile-turn-alert{
         display: flex !important;
     }

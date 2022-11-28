@@ -41,7 +41,7 @@ class ThrowableObject extends MoveableObject {
      * @param {number} y - y coordinate of bottle
      */
     constructor(x, y) {
-        super().loadImage('./img/6_salsa_bottle/salsa_bottle.png'); // Bottle Bild fürs schmeißen
+        super().loadImage('./img/6_salsa_bottle/salsa_bottle.png'); 
         this.x = x;
         this.y = y;
         this.width = 60;

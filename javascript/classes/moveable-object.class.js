@@ -1,11 +1,11 @@
-class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns verrät welche Felder bzw. Variablen enthalen sein sollen
+class MoveableObject extends DrawableObject { 
     speed = 0.15;
-    speedY = 0; // Wie schnell fällt unser Objekt nach unten/oben
+    speedY = 0; 
     speedX = 0;
-    acceleration = 2.5; // Wie schnell wird unser Obkejt beschleunigt z.B. wenn Char 1 sek in der Luft ist fällt er langsamer als wenn er 3 sek in der Luft ist
-    energyChar = 100; // Leben vom Objekt z.B. Char und Chicken
+    acceleration = 2.5; 
+    energyChar = 100; 
     energyBoss = 100;
-    lastHit = 0; // Zeitpunkt,
+    lastHit = 0; 
     lastMovement = 0;
     otherDirection = false;
     collectedCoins = 0;
@@ -32,10 +32,10 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      * 
      */
-    applyGravity() { // Funktion wenn ein Objekt fällt z.B. beim Sprung
+    applyGravity() { 
         setInterval(() => {
-            if (this.isAboveGround() || this.speedY > 0) { // Wenn unser Objekt über dem Boden ist
-                this.y -= this.speedY; //... dann soll die Y Achse verringert werden
+            if (this.isAboveGround() || this.speedY > 0) { 
+                this.y -= this.speedY; 
                 this.speedY -= this.acceleration;
             }
         }, 1000 / 25);
@@ -50,7 +50,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
         if (this instanceof ThrowableObject) {
             return true;
         } else {
-            return this.y <= 170; // Unsere Bodenhöhe hat 160 px d.h. unser Objekt soll nicht weiter fallen als die Bodenhöhe // 160
+            return this.y <= 170; 
         }
     }
 
@@ -60,7 +60,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @returns true when our object hits the ground
      */
     objectHitGround() {
-        if (this.y > 340) { // 350 war vorher
+        if (this.y > 340) { 
             return true;
         }
         return false;
@@ -71,7 +71,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      */
     moveRight() {
-        this.x += this.speed; // Wenn Rechte Pfeiltaste betätigt wurde, soll die X Achse um die Speedvariable erhöht werden
+        this.x += this.speed; 
     }
 
     /**
@@ -79,7 +79,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      */
     moveLeft() {
-        this.x -= this.speed; // Wenn linke Pfeiltaste betätigt wurde, soll die Y Achse um die Speedvariable verringert werden
+        this.x -= this.speed; 
     }
 
     /**
@@ -87,7 +87,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      */
     sprintLeft() {
-        this.x -= 50.00; // Wenn linke Pfeiltaste betätigt wurde, soll die Y Achse um die Speedvariable verringert werden
+        this.x -= 50.00; 
     }
 
     /**
@@ -95,7 +95,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      */
     sprintRight() {
-        this.x += 50.00; // Wenn Rechte Pfeiltaste betätigt wurde, soll die X Achse um die Speedvariable erhöht werden
+        this.x += 50.00; 
     }
 
     /**
@@ -103,7 +103,7 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * 
      */
     jump() {
-        this.speedY = 30; // soll das Objekt in der Y Achse nach oben springen mit einer Anfangsgeschwindigkeit von 30
+        this.speedY = 30; 
     }
 
     /**
@@ -120,10 +120,10 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @param {array} images - array of image paths 
      */
     playAnimation(images) {
-        let i = this.currentImage % images.length // % bedeutet -> i = 0, dann 1, dann 2, dann 3, dann 4, dann 5 und dann weil es keine weitern Bilder gibt, starten wir wieder bei 0 d.h. % ist eine verkürzte if Abfrage
-        let path = images[i]; // path = erstes Bild aus dem Array aus Zeile 8
-        this.img = this.imageCache[path]; // Das Bild aus der übergeordneten Klasse wird mit dem geladenem Bild aus Zeile 28 ersetzt
-        this.currentImage++; // Anschließend wird das nächste Bild geladen, indem mann die Variable currentImage um 1 erhöht
+        let i = this.currentImage % images.length 
+        let path = images[i]; 
+        this.img = this.imageCache[path]; 
+        this.currentImage++; 
     }
 
     /**
@@ -132,11 +132,11 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @param {object} mo - moveable object  
      * @returns true in case of collision
      */
-    isColliding(mo) {     // isColliding(z.B. Chicken), diese Funktion zeigt uns, ob ein Objekt mit einem anderen Objekt auf der Achse kolidiert 
-        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&  // Kollidierung von Rechts nach Links
-            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && // Kollidierung von Oben nach Unten
-            this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // Kollidierung von Links nach Rechts
-            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; // Kollidierung von Unten nach Oben
+    isColliding(mo) {     
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&  
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && 
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right && 
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; 
     }
 
     /**
@@ -147,15 +147,12 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     collect(collectedObject) {
         if (collectedObject == 'coin') {
             this.updateCoinStatusbar();
-            // this.updateStatusbarVariables(this.collectedCoins, 100, 10);
         }
         if (collectedObject == 'bottle') {
             this.updateBottleStatusbar();
-            // this.updateStatusbarVariables(this.collectedBottles, 5, 1);
         }
         if (collectedObject == 'heart') {
             this.updateCharEnergyStatusbar();
-            // this.updateStatusbarVariables(this.energyChar, 100, 25);
         }
     }
 
@@ -198,11 +195,9 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
     hit(takenDamage, hittenObject) {
         if (hittenObject == 'character') {
             this.characterGettingDamaged(takenDamage);
-            // this.objectGettingDamaged(takenDamage, this.energyChar);
         }
         if (hittenObject == 'boss') {
             this.bossGettingDamaged(takenDamage);
-            // this.objectGettingDamaged(takenDamage, this.energyBoss);
         }
     }
 
@@ -238,9 +233,9 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @returns true if a collision has occurred in the past second
      */
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit; // Differenz in Milisek // Ergebnis hier ca 1660949840826
-        timepassed = timepassed / 1000; // Differenz in Sekunden // Ergebnis hier ca 1660949864
-        return timepassed < 1; // Jede Sekunde nachdem der Char von einem Objekt berührt wurde, hört die Imagehurt-Animation auf
+        let timepassed = new Date().getTime() - this.lastHit; 
+        timepassed = timepassed / 1000; 
+        return timepassed < 1;
     }
 
     /**
@@ -251,9 +246,9 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
      * @returns true when the last movement ist between minTimepassed and maxTimepassed
      */
     isSleeping(minTimepassed, maxTimepassed) {
-        let timepassed = new Date().getTime() - this.lastMovement; // Timepassed hier in Milisek.
-        timepassed = timepassed / 1000; // Timepassed hier in Sek
-        return timepassed >= minTimepassed && timepassed < maxTimepassed; // Wenn z.B. timepassed >= 2 Sek ist && timepassed < 4 Sek sind, dann wird true an die Funktion isSleeping returned
+        let timepassed = new Date().getTime() - this.lastMovement; 
+        timepassed = timepassed / 1000; 
+        return timepassed >= minTimepassed && timepassed < maxTimepassed;
     }
 
     /**
@@ -281,34 +276,4 @@ class MoveableObject extends DrawableObject { // Class = Eine Schablone, die uns
             return true;
         }
     }
-
-    // /**                                                                                  LEIDER NICHT FUNKTIONIERT (Zeile 163)
-    // * This function changes the variables as soon as the character collects objects
-    // * 
-    // * @param {string} collectedObjekt - One of the three variables that influence the status bars  
-    // * @param {number} maxAmount - max amount of the statusbar
-    // * @param {number} riseAmount -  statusbar rise amount if something getting collected
-    // */
-
-    // updateStatusbarVariables(collectedObjekt, maxAmount, riseAmount) {
-    //     if (collectedObjekt < maxAmount) {
-    //         collectedObjekt + riseAmount;
-    //     }
-    // }
-
-    // /** ////                                                                              LEIDER NICHT FUNKTIONIERT (Zeile 218)
-    // * This function reduces the life of an object by the Damage
-    // * 
-    // * @param {number} takenDamage - how much damge the object gonna get 
-    // * @param {string} energyOfobject - which object gets damaged
-    // */
-
-    // objectGettingDamaged(takenDamage, energyOfobject) {
-    //     energyOfobject -= takenDamage; // Wenn das Objekt mit etwas anderem kollidiert, wird vom Energy 5 Leben abgezogen
-    //     if (energyOfobject < 0) {
-    //         energyOfobject = 0;
-    //     } else {
-    //         this.lastHit = new Date().getTime(); // Das ist der Zeitpunk in Milisek seit dem 1.1.1970, wir benutzen diesen Zeitpunk einfach nur um eine Rechengrundlage zu haben
-    //     }
-    // }
 }

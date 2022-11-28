@@ -20,9 +20,9 @@ class Keyboard {
      * 
      */
     bindKeypressEvent() {
-        window.addEventListener("keydown", (event) => { // Mithilfe dieser Eventfunktion wird uns ausgeloggt, was für eine Taste der User gedrückt hat //
-            if (event.keyCode == '38') { // 38 = Pfeilhochtaste // Wenn Event mit dem Keycode 38 gedrückt wurde...
-                this.up = true; // ... soll die Variable UP auf true geändert werden
+        window.addEventListener("keydown", (event) => { 
+            if (event.keyCode == '38') { 
+                this.up = true; 
             }
             else if (event.keyCode == '40') {
                 this.down = true;
@@ -41,9 +41,9 @@ class Keyboard {
             }
         });
 
-        window.addEventListener("keyup", (event) => { // Mithilfe dieser Eventfunktion wird uns ausgeloggt, was für eine Taste der User gedrückt hat //
-            if (event.keyCode == '38') { // 38 = Pfeilhochtaste // Wenn Event mit dem Keycode 38 losgelassen wurde...
-                this.up = false; // ... soll die Variable UP auf false geändert werden
+        window.addEventListener("keyup", (event) => { 
+            if (event.keyCode == '38') { 
+                this.up = false; 
             }
             else if (event.keyCode == '40') {
                 this.down = false;

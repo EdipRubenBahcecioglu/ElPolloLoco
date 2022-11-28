@@ -14,7 +14,7 @@ class StatusBarBoss extends MoveableObject {
         './img/7_statusbars/2_statusbar_endboss/endboss_100.png'
     ];  
 
-    percentage = 100; // Die Bar fängt bei 100 an
+    percentage = 100; 
 
     /**
      * Functions within the constructor are executed immediately
@@ -37,11 +37,11 @@ class StatusBarBoss extends MoveableObject {
      * @param {number} bossXPosition - x coordinate of endboss
      * @param {number} bossYPosition - y coordinate of endboss
      */
-    setPercentage(percentage, bossXPosition, bossYPosition) { // Wir aktuallisieren die Variable percentage aus Zeile 25 die standardgemäß 100 ist
+    setPercentage(percentage, bossXPosition, bossYPosition) { 
         this.x = bossXPosition;
         this.y = bossYPosition;
         this.percentage = percentage;
-        let path = this.IMAGE_HEALTH[this.resolveImageIndex()]; // Unser Pfad der StatusBar wird uns aus der Funktion resolveImageIndex returned
+        let path = this.IMAGE_HEALTH[this.resolveImageIndex()]; 
         this.img = this.imageCache[path];
     };
 
@@ -50,7 +50,7 @@ class StatusBarBoss extends MoveableObject {
      * 
      * @returns the index of image which is gonna be shown
      */
-    resolveImageIndex() { // WELCHES BILD DER LEBENSANZEIGE SOLL ANGEZEIGT WERDEN? WENN LEBEN BZW. PERCENTAGE XX DANN RETURN XX 
+    resolveImageIndex() { 
         if (this.percentage >= 100) {
             return 5;
         } else if (this.percentage > 80) {

@@ -112,7 +112,7 @@ class Endboss extends MoveableObject {
     chickenMoveLeft() {
         const moveBoss = setInterval(() => {
             this.moveLeft();
-        }, 1000 / 60); // Bilder ändern sich jede 200 Milisekunden
+        }, 1000 / 60);
         this.bossIntervals.push(moveBoss);
     }
 

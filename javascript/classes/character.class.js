@@ -81,7 +81,7 @@ class Character extends MoveableObject {
         './img/2_character_pepe/1_idle/long_idle/I-20.png',
     ];
 
-    world; // In dieser Variable ist der Komplette Inhalt der World Classe enthalten
+    world;
     passedBoss;
     charJumpSound = new Audio('audio/char_jump.mp3');
     charSleepSound = new Audio('audio/char_sleep.mp3');
@@ -94,7 +94,7 @@ class Character extends MoveableObject {
      * 
      */
     constructor() {
-        super().loadImage('./img/2_character_pepe/2_walk/W-21.png'); // Super kann 1x im Constructor verwendet werden, dannach nur noch this. (Wie Zeile 10)
+        super().loadImage('./img/2_character_pepe/2_walk/W-21.png'); 
         this.loadImagesOfCharacter();
         this.applyGravity();
         this.animateByKeypress();
@@ -124,10 +124,8 @@ class Character extends MoveableObject {
             this.charMovementByKeypressRight();
             this.charMovementByKeypressLeft();
             this.characterPositionAtGamestart();
-            // this.changeCameraPositionInBossfight();
-            // this.changeCameraPositionToDefaultAfterBossfight();
             this.charMovementByKeypressSpace();
-        }, 1000 / 60); // 1000 / 60 = 60 FPS //////// WAR 60
+        }, 1000 / 60);
     }
 
     /**
@@ -136,17 +134,17 @@ class Character extends MoveableObject {
      */
     imageAnimateMovement() {
         setInterval(() => {
-            if (this.isAboveGround()) { // Wenn unser Char sich in der luft befindet, dann soll der Array aus Zeile 19 die verschiedenen Bilder abspielen
+            if (this.isAboveGround()) { 
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.isSleeping('0.35', '1.2')) {
                 this.playAnimation(this.IMAGES_SHORT_SLEEP);
                 this.charSleepSound.play();
             } else if (this.isSleeping('1.2', '999999')) {
                 this.playAnimation(this.IMAGES_LONG_SLEEP);
-            } else if (this.world.keyboard.right || this.world.keyboard.left) { // Wenn Keyboard right == true ist, dann sollen die Bilder ausgetauscht werden und der Char sich bewegen // ODER (||) Wenn Keyboardtaste left == true ist
-                this.playAnimation(this.IMAGES_WALKING); // LAUF ANIMATION
+            } else if (this.world.keyboard.right || this.world.keyboard.left) { 
+                this.playAnimation(this.IMAGES_WALKING); 
             }
-        }, 150); // Bilder ändern sich jede 50 Milisekunden
+        }, 150); 
     }
 
     /**
@@ -155,7 +153,7 @@ class Character extends MoveableObject {
      */
     imageAnimateDanger() {
         setInterval(() => {
-            if (this.isDead('character')) { // Wenn isDead in der moveObj = true ist dann ...
+            if (this.isDead('character')) { 
                 this.letCharacterDieAndResetBossAggro();
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
@@ -168,7 +166,7 @@ class Character extends MoveableObject {
      * 
      */
     charMovementByKeypressRight() {
-        if (this.userPressButtonRight() && this.characterIsNotAtMapend()) { // Wenn Keyboard right == true ist, dann sollen die Bilder ausgetauscht werden (Zeile 41) und der Char sich bewegen // && this.x < this.world.level.level_end_x bedeutet, dass unser Char nur soweit nach rechts laufen kann bis die Variable level_end_x (hier 2200px) erreicht ist
+        if (this.userPressButtonRight() && this.characterIsNotAtMapend()) { 
             this.characterIsMovingRight();
         }
     }
@@ -178,7 +176,7 @@ class Character extends MoveableObject {
      * 
      */
     charMovementByKeypressLeft() {
-        if (this.userPressButtonLeft() && this.characterIsNotAtMapstart()) {  // && this.x > 0 bedeutet, dass der Char nur nach links gehen kann wenn er bereits vorher nach rechts gelaufen ist d.h. er kann nicht nach links außerhalb der map laufen
+        if (this.userPressButtonLeft() && this.characterIsNotAtMapstart()) {  
             this.characterIsMovingLeft();
         }
     }
@@ -188,28 +186,8 @@ class Character extends MoveableObject {
      * 
      */
     charMovementByKeypressSpace() {
-        if (this.userPressButtonSpaceAndCharIsOnGround()) { // Wenn Leerzeichentaste gedrückt wird und der char sich nicht(!) über dem Boden befindet...
+        if (this.userPressButtonSpaceAndCharIsOnGround()) { 
             this.characterIsJumping();
-        }
-    }
-
-    /**
-     * This Function checks if the character is in a bossfight and changes the camerafocus
-     * 
-     */
-    changeCameraPositionInBossfight() {
-        if (this.characterPassedBoss() && !this.world.character.isDead()) {
-            this.changeCameraPosition();
-        }
-    }
-
-    /**
-     * This Function checks if the character leaves the bossfight and changes the camerafocus to default
-     * 
-     */
-    changeCameraPositionToDefaultAfterBossfight() {
-        if (this.bossPassedCharacter()) {
-            this.setCameraToDefault();
         }
     }
 
@@ -278,7 +256,7 @@ class Character extends MoveableObject {
      * @returns the X coordinate of the camerafocus 
      */
     characterPositionAtGamestart() {
-        this.world.camera_x = -this.x + 100; // +100 bedeutet, dass unser Char immer 100px standardgemäß weiter rechts auf der x Achse positioniert wird
+        this.world.camera_x = -this.x + 100; 
     }
 
     /**
@@ -343,7 +321,7 @@ class Character extends MoveableObject {
      * 
      */
     letCharacterDieAndResetBossAggro() {
-        this.playAnimation(this.IMAGES_DEAD); // .. werden die Bilder vom Tod nacheinander abgepsielt
+        this.playAnimation(this.IMAGES_DEAD); 
         this.leaveMap();
         this.charHurtSound.pause();
         this.world.level.bosses[0].bossWillAttack = false;

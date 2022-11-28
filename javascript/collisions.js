@@ -51,11 +51,11 @@ function checkCharacterMiss() {
  */
 function checkEnemyCollisions() {
     setInterval(() => {
-        world.level.enemies.forEach((enemy) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
+        world.level.enemies.forEach((enemy) => { 
             if (characterCanBeHurt(enemy)) {
                 world.character.charHurtSound.play();
                 world.character.hit('5', 'character');
-                world.statusBarHealth.setPercentage(world.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
+                world.statusBarHealth.setPercentage(world.character.energyChar); 
             }
         })
     }, 200);
@@ -77,11 +77,11 @@ function characterCanBeHurt(enemy) {
  */
 function checkBossCollisions() {
     setInterval(() => {
-        world.level.bosses.forEach((endboss) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
+        world.level.bosses.forEach((endboss) => { 
             if (world.character.isColliding(endboss) && endboss.energyBoss > 0) {
                 world.character.charHurtSound.play();
                 world.character.hit('10', 'character');
-                world.statusBarHealth.setPercentage(world.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
+                world.statusBarHealth.setPercentage(world.character.energyChar); 
             }
         })
     }, 200);
@@ -175,7 +175,7 @@ function checkBottleHitEnemy() {
  */
 function checkCoinCollisions() {
     setInterval(() => {
-        world.level.coin.forEach((coin, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
+        world.level.coin.forEach((coin, index) => {  
             if (world.character.isColliding(coin)) {
                 objectGettingCollected('coin', index, level1.coin, world.coinCollectSound);
             }
@@ -190,7 +190,7 @@ function checkCoinCollisions() {
 function checkBottleCollisions() {
     setInterval(() => {
         if (world.character.collectedBottles < 5) {
-            world.level.bottle.forEach((bottle, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
+            world.level.bottle.forEach((bottle, index) => {  
                 if (world.character.isColliding(bottle)) {
                     objectGettingCollected('bottle', index, level1.bottle, world.bottleCollectSound);
                 }
@@ -206,7 +206,7 @@ function checkBottleCollisions() {
 function checkHeartCollisions() {
     setInterval(() => {
         if (world.character.energyChar < 100) {
-            world.level.heart.forEach((heart, index) => {  // Bei einer for Each Abfrage kann man auch ohne for Schleife dem Objekt, hier Coin, einen Index zuweisen lassen, damit arbeiten wir in der If Abfrage weiter
+            world.level.heart.forEach((heart, index) => {  
                 if (world.character.isColliding(heart)) {
                     objectGettingCollected('heart', index, level1.heart, world.heartCollectSound);
                 }

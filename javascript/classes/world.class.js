@@ -1,9 +1,9 @@
 class World {
     character = new Character();
     level = level1;
-    ctx; // Innerhalb des Speilfelds legen wir in Zeile 22 fest, dass im 2D Format gespielt wird
-    canvas; // = Spielfeld
-    keyboard; // Spieltasten
+    ctx; 
+    canvas; 
+    keyboard; 
     camera_x = 0;
     statusBarHealth = new StatusBar();
     statusBarCoin = new StatusBarCoin();
@@ -31,7 +31,7 @@ class World {
      * @param {object} keyboard - keyboardobject
      */
     constructor(canvas, keyboard) {
-        this.ctx = canvas.getContext('2d'); // Mithilfe von getContext haben wir die Möglichkeit innerhlab des Canvas ein 2D Format darstellen zu lassen bzw. zu zeichnen
+        this.ctx = canvas.getContext('2d'); 
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.draw();
@@ -48,7 +48,7 @@ class World {
      * 
      */
     setWorld() {
-        this.character.world = this; // This steht hier alleine d.h. dass die Variable world in der Char Klasse kann auf alle Variablen in der World Klasse zugreifen
+        this.character.world = this; 
     }
 
     /**
@@ -190,12 +190,12 @@ class World {
      * 
      */
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Diese Funktion löscht Quasi den Inhalt des Canvas bevor er neu in Zeile 18 gezeichnet wird // Erste Parameter = X Achse, Zweite Parameter = Y Achse, Dritte Parameter Spielfeldbreite, Vierte Parameter = Spielfeldhöhe
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); 
         this.ctx.translate(this.camera_x, 0);
         this.drawMapBackground();
-        this.ctx.translate(-this.camera_x, 0); // Wir setzten die Koordinaten für die nachfolgende Zeile fest, d.h. diese bewegt sich beim Charmoven mit und ist nicht an den bewegendem Maphintergrund fixiert // Kurz gefasst ... fixierte Objekte
+        this.ctx.translate(-this.camera_x, 0); 
         this.drawStickyBars();
-        this.ctx.translate(this.camera_x, 0); // Die Koordinaten werden wieder freigegeben d.h. die nachfolgenden Objekte und Hintergründe ändern sich wenn der Char sich bewegt
+        this.ctx.translate(this.camera_x, 0); 
         this.drawMoveableCollectableThrowableObjects();
         this.ctx.translate(-this.camera_x, 0);
         this.repeatDrawFunction();
@@ -207,8 +207,8 @@ class World {
      */
     repeatDrawFunction() {
         let self = this;
-        requestAnimationFrame(function () { // Mithilfe dieser Funktion wird die draw Funktion, sobald die einmal geladen wurde, zich mal pro Sekunde ausgeführt
-            self.draw(); // Die Funktion requestAnimationFrame kennt das Programmierwort "this" nicht, daher müssen wir hier einen kleinen Umweg gehen und das Wort this in einer Variable festlegen
+        requestAnimationFrame(function () { 
+            self.draw(); 
         });
     }
 
@@ -218,7 +218,7 @@ class World {
      */
     drawMapBackground() {
         this.addObjectsToMap(this.level.backgroundObject);
-        this.addObjectsToMap(this.level.clouds); // Wir geben den Inhalt aus dem Array Zeile 13/14/15... an die Funktion weiter
+        this.addObjectsToMap(this.level.clouds); 
     }
 
     /**
@@ -251,9 +251,9 @@ class World {
      * 
      * @param {object} objects - which element is getting to draw 
      */
-    addObjectsToMap(objects) { // Object = Arrayinhalt aus Zeile 30 z.B. 
-        objects.forEach(object => { // For Each ist eine Art For Schleife // Die Funktion addObjectsToMap wird so oft ausgeführt bis jedes einzelne Element aus dem Array ausgelesen wurde
-            this.addToMap(object); // Wir geben den Parameter (Inhalt vom Array) an die nächste Funktion weiter
+    addObjectsToMap(objects) { 
+        objects.forEach(object => { 
+            this.addToMap(object); 
         });
     }
 
@@ -262,14 +262,14 @@ class World {
      * 
      * @param {object} mo - moveable object  
      */
-    addToMap(mo) { // mo = Movable Objekt // Parameter aus Zeile 44
-        if (mo.otherDirection) { // Wenn OtherDirection eine andere Richtung hat..
-            this.flipImage(mo); // Zeile 59
+    addToMap(mo) { 
+        if (mo.otherDirection) { 
+            this.flipImage(mo); 
         }
-        mo.draw(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
-        mo.drawBorder(this.ctx); // Funktion in der Klasse moveableObkekt wird ausgeführt und wir geben unser Spielfeld rein als Parameter
-        if (mo.otherDirection) { // Ab Zeile 64 bis 66 wird die Spiegelung wieder zurückgesetzt 
-            this.flipImageBack(mo); // Zeile 66
+        mo.draw(this.ctx); 
+        mo.drawBorder(this.ctx); 
+        if (mo.otherDirection) { 
+            this.flipImageBack(mo); 
         }
     }
 
@@ -279,10 +279,10 @@ class World {
      * @param {object} mo - moveable object 
      */
     flipImage(mo) {
-        this.ctx.save(); // Dann soll der aktuelle Context gespeichert wernden..
-        this.ctx.translate(mo.width, 0); // Coce ab hier bis Zeile 61 spiegeln wir das Bild // Bild wird spiegelverkehrt eingefügt
-        this.ctx.scale(-1, 1); // Wenn wir das Bild drehen, steht das Bild vom Objekt auf der X Achse etwas anders, daher positioniern wir hier das Bild wieder da wo es war
-        mo.x = mo.x * -1; // X Koordinate wird umgedreht // Siehe Kommentar Zeile 60
+        this.ctx.save(); 
+        this.ctx.translate(mo.width, 0); 
+        this.ctx.scale(-1, 1); 
+        mo.x = mo.x * -1; 
     }
 
     /**
@@ -291,7 +291,7 @@ class World {
      * @param {object} mo - moveable object  
      */
     flipImageBack(mo) {
-        mo.x = mo.x * -1; // X Koordinate wird umgedreht 
-        this.ctx.restore(); // Die Spiegelung wird wieder zurückgesetzt
+        mo.x = mo.x * -1; 
+        this.ctx.restore(); 
     }
 }

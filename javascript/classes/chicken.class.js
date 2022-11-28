@@ -1,7 +1,7 @@
-class Chicken extends MoveableObject { // Die Classe Chicken übernimmt alle Schablonen der Classe MoveableObject
+class Chicken extends MoveableObject { 
 
     y = 335;
-    x = 300 + Math.random() * 1800; // math.random ist immer zwischen 0 und 1 d.h. wir haben hier einen maximalen Zufallswert von 500 // Dadurch ist die x Achse immer zwischen 80 und 700
+    x = 300 + Math.random() * 1800; 
     height = 80;
     width = 50;
 
@@ -19,8 +19,8 @@ class Chicken extends MoveableObject { // Die Classe Chicken übernimmt alle Sch
      * Functions within the constructor are executed immediately
      * 
      */
-    constructor(){ // Jede Classe hat ein Constructor. Innerhalb dieses Constructors werden die Sachen eingetragn, die sofort ausgeführt werden sollen
-        super().loadImage(); // Mit Super greifen wir auf die übergeordnete Classe zu und führen die Funktion loadImage aus und geben den Parameter mit
+    constructor(){ 
+        super().loadImage(); 
         this.loadImagesOfChicken();
         this.animate();
         this.setChickenSpeedRandomly();
@@ -31,19 +31,19 @@ class Chicken extends MoveableObject { // Die Classe Chicken übernimmt alle Sch
      * 
      */
     animate() {
-        setInterval(() =>{ // Mithilfe von setInterval können wir eine Funktion zich mal die Sekunde aufrufen
+        setInterval(() =>{ 
             this.moveLeft();
-        }, 1000 / 60); // 1000: 60 = 60 FPS
+        }, 1000 / 60); 
 
         setInterval(() =>{
             this.playAnimation(this.IMAGES_WALKING);
-        }, 200); // Bilder ändern sich jede 200 Milisekunden
+        }, 200); 
 
         setInterval(()=>{
             if (this.getAttacked()){
                 this.playChickenDeadAnimation();
             }
-        }, 1000 / 60) // Falls Chicken zuclen nach Tod dann hier schneller einstellen z.B. 10
+        }, 1000 / 60) 
     }
 
     
@@ -61,7 +61,7 @@ class Chicken extends MoveableObject { // Die Classe Chicken übernimmt alle Sch
      * 
      */
     setChickenSpeedRandomly(){
-        this.speed = this.speed + Math.random() * 0.25; // Die Speedvariable aus der übergeordneten Klaasse ist hier bei jedem Chicken unterschiedlich also mindestens 0.15 + max 0.25 drauf = max Speed 0.40
+        this.speed = this.speed + Math.random() * 0.25; 
     }
 
     /**
