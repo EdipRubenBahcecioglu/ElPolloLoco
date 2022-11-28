@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./fonts/alconica/alconica.css">
     <link rel="stylesheet" href="fonts/joti/joti.css">
+
+    <style>
+        @font-face {
+            font-family: 'joti';
+            src: url('fonts/joti/jotittf.ttf');
+        }
+    </style>
     <script src="./javascript/classes/drawable-object.class.js"></script>
     <script src="./javascript/classes/moveable-object.class.js"></script>
     <script src="./javascript/classes/keyboard.class.js"></script>
@@ -40,11 +47,12 @@
     </div>
 
     <div id="gamefield" class="gamefield">
-        <div class="screens" height="480px"; width="720px">
+        <div id="canvas-parent" class="screens" height="480px" ; width="720px">
             <canvas id="canvas" height=480px; width="720px" id="canvas"></canvas>
             <div id="end-screen-lose" class="end-screen d-none" height="480px;" width="720px"><img src="./img/9_intro_outro_screens/game_over/oh no you lost!.png"></div>
-            <div id="end-screen-win" class="end-screen d-none" height="480px"; width="720px"><img src="./img/9_intro_outro_screens/game_over/game over.png"></div>
+            <div id="end-screen-win" class="end-screen d-none" height="480px" ; width="720px"><img src="./img/9_intro_outro_screens/game_over/game over.png"></div>
         </div>
+        <div id="mobile-turn-alert" class="mobile-turn-alert">Please turn your Mobiledevice Señor!</div>
         <div id="mobile-movement" class="mobile-movement" style="display: none;" style="z-index: 0;">
             <image id="mobile-left" src="./img/mobile/mobile_left.png"></image>
             <image id="mobile-right" src="./img/mobile/mobile_right.png"></image>
@@ -53,18 +61,21 @@
             <image id="mobile-jump" src="./img/mobile/mobile_jump.png"></image>
             <image id="mobile-throw" src="./img/mobile/mobile_throw.png"></image>
         </div>
-        <div id="mobile-start-game" onclick="initGame('firstStart')" class="mobile-start-game" style="display:none;" style="z-index: 0;">
+        <div id="mobile-start-game" onclick="initGame('firstStart')" class="mobile-start-game" style="display:none;"
+            style="z-index: 0;">
             <img id="mobile-play" src="./img/mobile/mobile_start.png">
             <!-- <img class="d-none" id="mobile-replay" src="./img/mobile/mobile_replay.png"> -->
         </div>
-        <div id="mobile-guide-mute" class="mobile-guide-mute" style="display: none;", style="z-index: 0;">
+        <div id="mobile-guide-mute" class="mobile-guide-mute" style="display: none;" , style="z-index: 0;">
             <img id="volume-mute-mobile" class="d-none" onclick="entmuteGame()" src="./img/icons/volume-mute.png">
             <img id="volume-on-mobile" onclick="muteGame()" src="./img/icons/volume-on.png">
             <img onclick="openContainer('how-to-play-mobile')" src="./img/icons/userGuide.png">
         </div>
-        <div id="start-screen" class="start-screen"><img src="./img/9_intro_outro_screens/start/startscreen_1.png"></div>
+        <div id="start-screen" class="start-screen"><img src="./img/9_intro_outro_screens/start/startscreen_1.png">
+        </div>
         <div id="how-to-play" class="how-to-play d-none">
-            <div class="close-btn"><img onclick="closeContainer('how-to-play')" class="close-img" src="./img/icons/close.png"></div>
+            <div class="close-btn"><img onclick="closeContainer('how-to-play')" class="close-img"
+                    src="./img/icons/close.png"></div>
             <div class="how-to-play-buttons">
                 <div class="how-to-play-keys"><img src="./img/icons/attack.png"><span>Attack</span></div>
                 <div class="how-to-play-keys"><img src="./img/icons/moveLeft.png"><span>Move Left</span></div>
@@ -72,13 +83,16 @@
                 <div class="how-to-play-keys"><img src="./img/icons/space.png"><span>Jump</span></div>
             </div>
             <div class="game-tipp">
-                Choose your bottles wisely there aren't many of them. If you kill all the chickens you will get bonus bottles.<br>
+                Choose your bottles wisely there aren't many of them. If you kill all the chickens you will get bonus
+                bottles.<br>
                 <br>
-                But be careful the final boss is damn fast.
+                But be careful the final boss is damn fast. No matter which direction you run, the boss will still chase
+                you!
             </div>
         </div>
         <div id="how-to-play-mobile" class="how-to-play d-none">
-            <div class="close-btn"><img onclick="closeContainer('how-to-play-mobile')" class="close-img" src="./img/icons/close.png"></div>
+            <div class="close-btn"><img onclick="closeContainer('how-to-play-mobile')" class="close-img"
+                    src="./img/icons/close.png"></div>
             <div class="how-to-play-buttons">
                 <div class="how-to-play-keys"><img src="./img/mobile/mobile_throw.png"><span>Attack</span></div>
                 <div class="how-to-play-keys"><img src="./img/mobile/mobile_left.png"><span>Move Left</span></div>
@@ -86,19 +100,24 @@
                 <div class="how-to-play-keys"><img src="./img/mobile/mobile_jump.png"><span>Jump</span></div>
             </div>
             <div class="game-tipp">
-                Choose your bottles wisely there aren't many of them. If you kill all the chickens you will get bonus bottles.<br>
+                Choose your bottles wisely there aren't many of them. If you kill all the chickens you will get bonus
+                bottles.<br>
                 <br>
-                But be careful the final boss is damn fast.
+                But be careful the final boss is damn fast. No matter which direction you run, the boss will still chase
+                you!
             </div>
         </div>
     </div>
 
     <div class="main-hub">
         <div class="hub">
-            <div id="button-container" class="start-game-btn"><button id="start-button" onclick="initGame('firstStart');">Let me play!</button><button class="d-none" id="restart-button" onclick="initGame('restart');">Restart Game</button></div>
+            <div id="button-container" class="start-game-btn"><button id="start-button"
+                    onclick="initGame('firstStart');">Let me play!</button><button class="d-none" id="restart-button"
+                    onclick="initGame('restart');">Restart Game</button></div>
             <div class="guide-mute">
                 <image id="volume-on" onclick="muteGame();" src="./img/icons/volume-on.png"></image>
-                <image id="volume-mute" onclick="entmuteGame()" class="d-none" src="./img/icons/volume-mute.png"></image>
+                <image id="volume-mute" onclick="entmuteGame()" class="d-none" src="./img/icons/volume-mute.png">
+                </image>
                 <image id="fullsize" onclick="gameInFullsize()" src="./img/icons/fullsize.png"></image>
                 <image onclick="openContainer('how-to-play')" src="./img/icons/userGuide.png"></image>
             </div>

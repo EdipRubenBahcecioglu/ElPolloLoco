@@ -40,7 +40,7 @@ class World {
         this.stickStatusBarBossToEndboss();
         this.pushAudiosToArray();
         this.controllAudioVolume();
-        this.checkBonusBottles();
+        this.checkBossPassCharacter();
     }
 
     /**
@@ -157,6 +157,23 @@ class World {
     }
 
     /**
+    * This function checks if boss passed character and update variables
+    * 
+    */
+    checkBossPassCharacter() {
+        setInterval(() => {
+            let endboss = this.level.bosses[0];
+            if (endboss.x < this.character.x) {
+                endboss.otherDirection = true;
+                this.character.passedBoss = true;
+        } else {
+                endboss.otherDirection = false;
+                this.character.passedBoss = false;
+            }
+        }, 1000 / 60);
+    }
+
+    /**
      * This function sticks the endboss statusbar to the endboss
      * 
      */
@@ -165,26 +182,6 @@ class World {
         setInterval(() => {
             statusbarBoss.x = this.level.bosses[0].x;
             statusbarBoss.y = this.level.bosses[0].y;
-        }, 1000 / 60);
-    }
-
-    /**
-     * This function checks if the character can get the bonus bottles after killing all normal enemys. Also the suitable sound is playing and variables getting updated. 
-     * 
-     */
-    checkBonusBottles() { // Audio Sound Einfügen
-        setInterval(() => {
-            this.level.enemies.forEach((enemy)=>{
-                if (enemy.isAttacked == true && this.character.reachedBonus == false) {
-                    this.character.collectedBottles = this.character.collectedBottles + 3;
-                    if(this.character.collectedBottles > 5){
-                        this.character.collectedBottles = 5;
-                        this.statusBarBottle.setBottles(this.character.collectedBottles);
-                    }
-                    this.character.reachedBonus = true;
-                    this.bonusBottlesSound.play();
-                }
-            })
         }, 1000 / 60);
     }
 

@@ -5,8 +5,13 @@ body {
     background-repeat: no-repeat;
     overflow: hidden;
     background-size: cover;
-    font-family: 'Joti One';
+    font-family: 'joti', Arial, Helvetica, sans-serif;
     font-style: normal;
+}
+
+.fullscreen{
+    height: 100vh !important;
+    width: 100vw !important;
 }
 
 .d-none {
@@ -181,7 +186,7 @@ canvas {
     font-size: 18px;
     cursor: pointer;
     background: #fcd96d;
-    font-family: 'Joti One';
+    font-family: 'joti';
     font-style: normal;
     transition: all 225ms ease-in-out;
 }
@@ -190,6 +195,20 @@ canvas {
     border: 2px solid black;
     font-weight: bold;
     font-size: 20px;
+}
+
+.mobile-turn-alert{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -155px;
+    z-index: 3;
+    font-size: 35px;
+    text-align: center;
+    display: none;
 }
 
 /*SMARTPHONES*/
@@ -244,6 +263,17 @@ canvas {
         width: 35px !important;
         padding-right: 8px !important;
     }
+
+    .mobile-turn-alert{
+        display: flex !important;
+        font-size: 25px;
+    }
+}
+
+@media only screen and (max-width:900px){
+    .mobile-turn-alert{
+        display: flex !important;
+    }
 }
 
 @media only screen and (max-width: 370px){
@@ -279,6 +309,11 @@ canvas {
         height: 25px !important;
         width: 25px !important;
         padding-right: 8px !important;
+    }
+
+    .mobile-turn-alert{
+        display: flex !important;
+        font-size: 20px;
     }
 }
 

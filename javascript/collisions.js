@@ -1,3 +1,5 @@
+deadEnemys = 0;
+
 /**
  * TThis function checks if our world is fully loaded and then executes intervals
  * 
@@ -23,8 +25,8 @@ function checkAllCollisions() {
     checkBottleHitEnemy();
     checkBottleHitEndboss();
     checkCharacterMiss();
-    checkBossPassCharacter();
     checkCharacterinDangerZone();
+    checkBonusBottles();
 }
 
 /**
@@ -76,7 +78,7 @@ function characterCanBeHurt(enemy) {
 function checkBossCollisions() {
     setInterval(() => {
         world.level.bosses.forEach((endboss) => { // Für jedes Element aus dem Arrayinhalt Enemy aus level1.js wird geprüft...
-            if (world.character.isColliding(endboss)) {
+            if (world.character.isColliding(endboss) && endboss.energyBoss > 0) {
                 world.character.charHurtSound.play();
                 world.character.hit('10', 'character');
                 world.statusBarHealth.setPercentage(world.character.energyChar); // Wenn under Char gehittet wird, dann aktualisieren wir die Statusbar, indem wir dem Lebensparameter an die Funktion setPercentage aus der Klasse Statusbar übergeben
@@ -95,8 +97,6 @@ function checkCollisionsFromTop() {
             if (characterJumpedOnEnemy(enemy) && enemy.isAttacked == false) {
                 updateCharacterVariablesAndSounds(enemy);
                 removeEnemyAndUpdateVariablesAndSound(index, enemy);
-                console.log('Index vom Chicken:', index, 'enemy ist', enemy);
-                world.deadEnemys++;
             }
         });
     }, 1000 / 60);
@@ -108,7 +108,7 @@ function checkCollisionsFromTop() {
  * @param {object} enemy - enemyobject 
  * @returns true when collision from top is true
  */
- function characterJumpedOnEnemy(enemy) {
+function characterJumpedOnEnemy(enemy) {
     return world.character.isColliding(enemy) && world.character.isAboveGround() && world.character.speedY <= 0
 }
 
@@ -118,7 +118,7 @@ function checkCollisionsFromTop() {
  * @param {number} indexOfBottle - index of thrown bottle
  * @param {object} throwedBottle - throwed bottle as object
  */
- function removeBottleAndUpdateVariables(indexOfBottle, throwedBottle) {
+function removeBottleAndUpdateVariables(indexOfBottle, throwedBottle) {
     removeObject(indexOfBottle, throwedBottle, 'bottle', 300);
     world.character.isAttacking = false;
 }
@@ -132,7 +132,7 @@ function checkCollisionsFromTop() {
 function removeEnemyAndUpdateVariablesAndSound(indexOfEnemy, enemy) {
     removeObject(indexOfEnemy, enemy, 'enemy', 300);
     world.throwSuccesSound.play();
-    setTimeout(()=>{
+    setTimeout(() => {
         enemy.isAttacked = true;
     }, 50);
 }
@@ -142,7 +142,7 @@ function removeEnemyAndUpdateVariablesAndSound(indexOfEnemy, enemy) {
  * 
  * @param {object} enemy - enemyobject
  */
- function updateCharacterVariablesAndSounds(enemy) {
+function updateCharacterVariablesAndSounds(enemy) {
     world.throwSuccesSound.play();
     world.character.speedY += 25;
     world.character.y = 150;
@@ -329,6 +329,7 @@ function removeEnemyObject(indexOfObject, object, timeoutTime) {
     setTimeout((() => {
         if (world.level.enemies[indexOfObject] === object) {
             world.level.enemies.splice(indexOfObject, 1);
+            deadEnemys++;
         }
     }), timeoutTime);
 }
@@ -362,18 +363,20 @@ function characterIsInDangerZone(endboss) {
 }
 
 /**
- * This function checks if boss passed character and update variables
+ * This function checks if the character can get the bonus bottles after killing all normal enemys. Also the suitable sound is playing and variables getting updated. 
  * 
  */
-function checkBossPassCharacter() {
+function checkBonusBottles() {
     setInterval(() => {
-        let endboss = world.level.bosses[0];
-        if (endboss.x < world.character.x) {
-            endboss.otherDirection = true;
-            world.character.passedBoss = true;
-        } else {
-            endboss.otherDirection = false;
-            world.character.passedBoss = false;
+        if (deadEnemys >= 8 && world.character.reachedBonus == false && world.character.collectedBottles < 5) {
+            world.character.collectedBottles = world.character.collectedBottles + 3;
+            if (world.character.collectedBottles > 5) {
+                world.character.collectedBottles = 5;
+                world.statusBarBottle.setBottles(world.character.collectedBottles);
+            }
+            world.statusBarBottle.setBottles(world.character.collectedBottles);
+            world.character.reachedBonus = true;
+            world.bonusBottlesSound.play();
         }
     }, 1000 / 60);
 }
