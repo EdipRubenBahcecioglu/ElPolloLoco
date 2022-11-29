@@ -166,7 +166,7 @@ class Character extends MoveableObject {
      * 
      */
     charMovementByKeypressRight() {
-        if (this.userPressButtonRight() && this.characterIsNotAtMapend()) { 
+        if (this.userPressButtonRight() && this.characterIsNotAtMapend() && this.charAndBossIsAlive()) { 
             this.characterIsMovingRight();
         }
     }
@@ -176,7 +176,7 @@ class Character extends MoveableObject {
      * 
      */
     charMovementByKeypressLeft() {
-        if (this.userPressButtonLeft() && this.characterIsNotAtMapstart()) {  
+        if (this.userPressButtonLeft() && this.characterIsNotAtMapstart() && this.charAndBossIsAlive()) {  
             this.characterIsMovingLeft();
         }
     }
@@ -325,5 +325,14 @@ class Character extends MoveableObject {
         this.leaveMap();
         this.charHurtSound.pause();
         this.world.level.bosses[0].bossWillAttack = false;
+    }
+
+    /**
+     * This function checks if our character or endboss still alive and returns true
+     * 
+     * @returns true when our character and enboss still alive
+     */
+    charAndBossIsAlive(){
+        return this.world.character.energyChar > 0 && this.world.level.bosses[0].energyBoss > 0;
     }
 }
